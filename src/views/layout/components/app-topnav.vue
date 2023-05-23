@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Spline from '@splinetool/vue-spline';
+import Spline from '@splinetool/vue-spline'
 import Loading from 'vue-loading-overlay' // 导入加载组件
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css' // 导入加载组件样式
 import vueQr from 'vue-qr/src/packages/vue-qr.vue' //引入组件
@@ -7,7 +7,7 @@ import useClipboard from 'vue-clipboard3' //复制
 import { ElMessage } from 'element-plus' //消息提示
 import MainStore from '@/store' // 导入store
 import { ref, nextTick, unref } from 'vue'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n' //国际化
 const State = MainStore() //获取store
 const { t, locale } = useI18n() //国际化
@@ -55,13 +55,13 @@ const copy = async () => {
     await toClipboard(State.Invitationlink) //实现复制
     ElMessage({
       message: t('cope.success'),
-      type: 'success',
+      type: 'success'
     })
     console.log('复制成功')
   } catch (e) {
     ElMessage({
       message: t('cope.error'),
-      type: 'success',
+      type: 'success'
     })
     console.error(e)
   }
@@ -74,8 +74,8 @@ const golink = (id: any, name: any) => {
   })
 }
 
-
-function loaded(Spline: any) { // 小球轨道动画加载完成后执行
+function loaded(Spline: any) {
+  // 小球轨道动画加载完成后执行
   // Spline.setZoom(1.9); // 设置缩放比例
   // Spline.setSize(3440, 1329); // 设置缩放比例
   // Spline.setBackgroundColor('#00000000'); // 设置缩放比例
@@ -88,7 +88,6 @@ window.onresize = () => {
   // const h = document.body.clientWidth * (1329 / 3440)
   // document.getElementById('ivEMfk9ulAFRBn22')!.style.height = h + 'px'
 }
-
 
 setTimeout(() => {
   // document.addEventListener("DOMContentLoaded", () => {
@@ -110,7 +109,7 @@ setTimeout(() => {
   //     videoIcon.style.display = "block"; // 显示视频图标
   //   });
   // });
-}, 1000);
+}, 1000)
 let splineLink = ref('')
 let mqList = ref(150)
 let show1 = ref(false)
@@ -129,11 +128,9 @@ const getWindowInfo = () => {
 window.addEventListener('resize', getWindowInfo)
 getWindowInfo()
 
-
 function handclose() {
   // show1.value = false
 }
-
 </script>
 <script lang="ts">
 export default { name: 'AppTopnav' }
@@ -147,9 +144,12 @@ export default { name: 'AppTopnav' }
       <span class="alive-light">{{ $t('nav.logoName') }}</span>
     </div>
     <div class="nav">
-      <RouterLink v-if="!State.homeState" class="nav-item" :to="`/Plan/${State.referrer}`">{{
-        $t('nav.home')
-      }}</RouterLink>
+      <RouterLink
+        v-if="!State.homeState"
+        class="nav-item"
+        :to="`/Plan/${State.referrer}`"
+        >{{ $t('nav.home') }}</RouterLink
+      >
       <RouterLink class="nav-item" :to="`/Explorer/${State.referrer}`">{{
         $t('nav.benefit')
       }}</RouterLink>
@@ -157,13 +157,18 @@ export default { name: 'AppTopnav' }
         $t('nav.wallet')
       }}</RouterLink>
       <RouterLink class="nav-item" :to="`/Partners/${State.referrer}`">{{
-          $t('nav.invitee')
-        }}</RouterLink>
+        $t('nav.invitee')
+      }}</RouterLink>
       <!-- 弹框 -->
       <a href="" id="download"></a>
       <el-popover ref="popoverRef" trigger="click" persistent>
-        <vue-qr @click="download.click()" :text="State.Invitationlink" :callback="test" :bindElement="createShow"
-          :size="512"></vue-qr>
+        <vue-qr
+          @click="download.click()"
+          :text="State.Invitationlink"
+          :callback="test"
+          :bindElement="createShow"
+          :size="512"
+        ></vue-qr>
         <div class="nav-item-popover-text" @click="copy">
           <div>{{ $t('nav.copeone') }}</div>
           <div>{{ $t('nav.copetwo') }}</div>
@@ -178,13 +183,19 @@ export default { name: 'AppTopnav' }
       <!-- 国际化 -->
       <div @click="setLang" class="nav-item">
         {{ locale == 'zh' ? '中文' : 'EN' }}
-        <div v-if="locale == 'zh'" > </div>
-        <div v-else > </div>
+        <div v-if="locale == 'zh'"></div>
+        <div v-else></div>
       </div>
       <!-- 国际化 -->
       <div class="nav-btn">
         <div v-if="!State.account">
-          <loading :height="35" :width="20" transition="none" color="#44c9b0" :active="State.isLd && !State.account">
+          <loading
+            :height="35"
+            :width="20"
+            transition="none"
+            color="#44c9b0"
+            :active="State.isLd && !State.account"
+          >
             <template #before>
               <div class="loading">
                 {{ State.isLd ? $t('nav.loading') : '' }}
@@ -192,34 +203,38 @@ export default { name: 'AppTopnav' }
             </template>
           </loading>
         </div>
-        <div v-if="!State.isLd || State.account" @click="Connection" :class="[
-          'connection-btn',
-          State.account ? 'connection-btn-nav' : 'hover'
-        ]">
+        <div
+          v-if="!State.isLd || State.account"
+          @click="Connection"
+          :class="[
+            'connection-btn',
+            State.account ? 'connection-btn-nav' : 'hover'
+          ]"
+        >
           <div class="balance">
-            {{
-              State.account
-              ? `${State.formatBalance(State.balance)}`
-              : ''
-            }}
+            {{ State.account ? `${State.formatBalance(State.balance)}` : '' }}
 
             {{
               State.account
-              ? `| ${State.formatChainBalance(State.balanceChain.toString())}`
-              : ''
+                ? `| ${State.formatChainBalance(State.balanceChain.toString())}`
+                : ''
             }}
           </div>
           <span>
             {{
               State.account
-              ? State.replaceStr(State.account)
-              : $t('nav.connect')
+                ? State.replaceStr(State.account)
+                : $t('nav.connect')
             }}
           </span>
         </div>
       </div>
       <!-- 下拉菜单 -->
-      <el-dropdown trigger="click" popper-class="dropdown" @handleClose="handclose">
+      <el-dropdown
+        trigger="click"
+        popper-class="dropdown"
+        @handleClose="handclose"
+      >
         <span class="nav-item-popover">
           <el-icon size="16">
             <Menu />
@@ -228,20 +243,27 @@ export default { name: 'AppTopnav' }
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item>
-              <div class="dropdown-item" @click="golink(State.referrer, '/Partners')">
-                {{
-                  $t('nav.partners')
-                }}
+              <div
+                class="dropdown-item"
+                @click="golink(State.referrer, '/Partners')"
+              >
+                {{ $t('nav.partners') }}
               </div>
             </el-dropdown-item>
             <el-dropdown-item>
-              <div class="dropdown-item" @click="golink(State.referrer, '/poh')">
+              <div
+                class="dropdown-item"
+                @click="golink(State.referrer, '/poh')"
+              >
                 POH
               </div>
               <!-- <RouterLink class="dropdown-item" :to="`/poh/${State.referrer}`">POH</RouterLink> -->
             </el-dropdown-item>
             <el-dropdown-item>
-              <div class="dropdown-item" @click="golink(State.referrer, '/Explorer')">
+              <div
+                class="dropdown-item"
+                @click="golink(State.referrer, '/Explorer')"
+              >
                 {{ $t('nav.explorer') }}
               </div>
               <!-- <RouterLink class="dropdown-item" :to="`/Explorer/${State.referrer}`">{{
@@ -249,7 +271,10 @@ export default { name: 'AppTopnav' }
               }}</RouterLink> -->
             </el-dropdown-item>
             <el-dropdown-item>
-              <div class="dropdown-item" @click="golink(State.referrer, '/Plan')">
+              <div
+                class="dropdown-item"
+                @click="golink(State.referrer, '/Plan')"
+              >
                 {{ $t('nav.plan') }}
               </div>
               <!-- <RouterLink class="dropdown-item" :to="`/Plan/${State.referrer}`">{{
@@ -259,8 +284,12 @@ export default { name: 'AppTopnav' }
             <el-dropdown-item>
               <div @click="setLang" class="dropdown-item">
                 {{ locale == 'zh' ? '中文' : 'EN' }}
-                <div v-if="locale == 'zh'" ><img class="nav-item" src="src/assets/images/en.png"/>  </div>
-                <div v-else class="imgen"> <img class="nav-item" src="src/assets/images/zh.png"/> </div>
+                <div v-if="locale == 'zh'">
+                  <img class="nav-item" src="src/assets/images/en.png" />
+                </div>
+                <div v-else class="imgen">
+                  <img class="nav-item" src="src/assets/images/zh.png" />
+                </div>
               </div>
             </el-dropdown-item>
             <!-- <el-dropdown-item>
@@ -279,23 +308,24 @@ export default { name: 'AppTopnav' }
                 </template>
               </el-popover>
             </el-dropdown-item> -->
-
-
           </el-dropdown-menu>
 
           <!-- <RouterLink class="dropdown-item" :to="`/Explorer/${State.referrer}`">{{
                                                                                       $t('nav.explorer')
                                                                                     }}</RouterLink> -->
 
-
           <!-- <RouterLink class="dropdown-item" :to="`/Plan/${State.referrer}`">{{
                                                                                           $t('nav.plan')
                                                                                         }}</RouterLink> -->
 
-
           <el-popover ref="popoverRef" trigger="hover" persistent>
-            <vue-qr @click="download.click()" :text="State.Invitationlink" :callback="test" :bindElement="createShow"
-              :size="512"></vue-qr>
+            <vue-qr
+              @click="download.click()"
+              :text="State.Invitationlink"
+              :callback="test"
+              :bindElement="createShow"
+              :size="512"
+            ></vue-qr>
             <div class="nav-item-popover-text" @click="copy">
               <div>{{ $t('nav.copeone') }}</div>
               <div>{{ $t('nav.copetwo') }}</div>
@@ -312,18 +342,17 @@ export default { name: 'AppTopnav' }
     </div>
   </nav>
   <!-- 背景图 -->
-  <div class="container ">
+  <div class="container">
     <!-- <Spline claid="ivEMfk9ulAFRBn22" @spline-loaded="loaded" :scene="splineLink" /> -->
-    <Spline v-if="!show1" claid="ivEMfk9ulAFRBn22" @spline-loaded="loaded"
+    <!-- <Spline v-if="!show1" claid="ivEMfk9ulAFRBn22" @spline-loaded="loaded"
       scene="https://prod.spline.design/CafFU2sx4yUXj15i/scene.splinecode" />
-    <Spline v-else scene="https://prod.spline.design/Vwi6NjIkX4kQ3Rux/scene.splinecode" />
+    <Spline v-else scene="https://prod.spline.design/Vwi6NjIkX4kQ3Rux/scene.splinecode" /> -->
 
     <!--    <div class="" style="background: #1dc779;width: 100%;height: 100%;min-height: ">-->
 
     <!--    </div>-->
 
     <div class="bg-img">
-
       <!--            <div class="container sky text #CODEVEMBER stars stars1 stars2 shooting-stars"></div>-->
       <!--       <img v-lazy="'/src/assets/images/earth.png'" />-->
 
@@ -333,7 +362,6 @@ export default { name: 'AppTopnav' }
       <!--      <div class="gif-container">-->
       <!--        <img src="./ArcticYellowishJuliabutterfly.gif" alt="Animated GIF" />-->
       <!--      </div>-->
-
 
       <!--      <div class="earth-img"></div>-->
       <!--      <div id="wrap">-->
@@ -374,7 +402,6 @@ nav {
   // background: #00051774;
   // backdrop-filter: blur(10px) !important;
 
-
   .logo {
     display: flex;
     align-items: center;
@@ -390,7 +417,12 @@ nav {
       font-size: 26px;
       margin-left: 10px;
       white-space: nowrap;
-      background-image: -webkit-linear-gradient(98.28deg, #ADFFF5 10.61%, rgba(155, 165, 255, 0.99) 54.84%, rgba(216, 166, 255, 0.994896) 100%);
+      background-image: -webkit-linear-gradient(
+        98.28deg,
+        #adfff5 10.61%,
+        rgba(155, 165, 255, 0.99) 54.84%,
+        rgba(216, 166, 255, 0.994896) 100%
+      );
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -414,9 +446,6 @@ nav {
         width: 20px;
       }
 
-
-
-
       &:hover {
         background: -webkit-linear-gradient(0deg, #3b535a45, #534dfb45);
       }
@@ -424,7 +453,12 @@ nav {
         font-size: 20px;
         margin-left: 8px;
         white-space: nowrap;
-        background-image: -webkit-linear-gradient(98.28deg, #ADFFF5 10.61%, rgba(155, 165, 255, 0.99) 54.84%, rgba(216, 166, 255, 0.994896) 100%);
+        background-image: -webkit-linear-gradient(
+          98.28deg,
+          #adfff5 10.61%,
+          rgba(155, 165, 255, 0.99) 54.84%,
+          rgba(216, 166, 255, 0.994896) 100%
+        );
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
@@ -491,6 +525,7 @@ nav {
 .container {
   position: fixed;
   max-width: 100vw;
+  background-image: url('@/assets/images/img.png');
   display: flex;
   justify-content: center;
   // background-color: pink;
@@ -558,7 +593,6 @@ nav {
 
 //下拉菜单
 .dropdown {
-
   .dropdown-item {
     display: flex;
     padding: 10px 20px;
@@ -589,14 +623,14 @@ nav {
   }
 }
 
-
-
 //--------------------------------------------------------
 
 #webgl-canvas {
-  background: radial-gradient(circle farthest-corner at center top,
-      #071021,
-      #19324a);
+  background: radial-gradient(
+    circle farthest-corner at center top,
+    #071021,
+    #19324a
+  );
 }
 
 html,
@@ -605,14 +639,15 @@ body {
   max-width: 100%;
   margin: 0;
   overflow: hidden;
-  background: rgba(0, 10, 20, 1) url(https://i.imgur.com/r838U7u.jpg) center no-repeat;
+  background: rgba(0, 10, 20, 1) url(https://i.imgur.com/r838U7u.jpg) center
+    no-repeat;
   background-size: cover;
   image-rendering: pixelated;
-  font-family: sans-serif
+  font-family: sans-serif;
 }
 
 #space {
-  width: 100%
+  width: 100%;
 }
 
 #warp {
@@ -631,9 +666,8 @@ body {
   font-size: 1.2em;
   display: inline-block;
   text-decoration: none;
-  background: rgba(0, 0, 0, 0.8)
+  background: rgba(0, 0, 0, 0.8);
 }
-
 
 /* follow me @nodws */
 #btn-twtr {
@@ -655,11 +689,11 @@ body {
   margin: 90vh 0;
   background: rgba(0, 0, 0, 0.2);
   box-shadow: 0 0 0px 3px rgba(0, 0, 0, 0.2);
-  opacity: 0.3
+  opacity: 0.3;
 }
 
 #btn-twtr:hover {
   color: #fff;
-  opacity: 1
+  opacity: 1;
 }
 </style>

@@ -22,7 +22,7 @@ let router = createRouter({
                 { path: '/Plan/:id', component: () => import('@/views/components/explorer/index.vue') },
                 { path: '/fdsfdsfjklsdjflksdkfjsdfsdfsdfsdafsfdskufdlskjfl/:id', component: () => import('@/views/components/explorer/index.vue') },
                 { path: '/fdsfdsfjklsdjflksdkfjsdfsdfsdfsdafsfdskufdfdsjkfkljdlfdslfdlkfklskjfl/:id', component: () => import('@/views/components/explorer/index.vue') },
-                { path: '/poh/:id', component: () => import('@/explorer/components/poh/index.vue') },
+                // { path: '/poh/:id', component: () => import('@/explorer/components/poh/index.vue') },
             ]
         }
 
