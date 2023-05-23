@@ -142,7 +142,8 @@ export default { name: 'AppTopnav' }
   <!-- 导航栏 -->
   <nav>
     <div class="logo">
-      <img class="nav-item" src="@/assets/logo.png" alt="logo" />
+      <img class="nav-item" src="../../../assets/logo.png" alt="logo" />
+
       <span class="alive-light">{{ $t('nav.logoName') }}</span>
     </div>
     <div class="nav">

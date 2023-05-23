@@ -2,11 +2,11 @@
 import axios from 'axios'
 // 创建 axios 副本对象
 //基地址
-const baseUrl = 'https://api.universe.partners';
+//const baseUrl = 'https://api.universe.partners';
 // const baseUrl = 'http://192.168.10.14:3001';
 // const baseUrl = 'http://192.168.10.23:3001';
 // const baseUrl = 'http://192.168.10.22:3001';
-// const baseUrl = 'http://127.0.0.1:3001';
+ const baseUrl = 'http://127.0.0.1:3001';
 let request = axios.create({
     baseURL: baseUrl,
 
