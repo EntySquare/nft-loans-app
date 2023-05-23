@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import AppTopNavVue from './components/app-topnav.vue'
+import AppFooterVue from './components/app-footer.vue'
 import MainStore from '@/store'
 const State = MainStore()
-
-
 
 //检查MetaMask是否已安装
 if (typeof window.ethereum !== 'undefined') {
@@ -20,12 +19,11 @@ if (typeof window.ethereum !== 'undefined') {
   //页面加载 自动调用这个 连接钱包
   if (window.ethereum.selectedAddress != undefined) {
     State.Connection()
-    State.setInvitationlink(); //设置邀请链接
+    State.setInvitationlink() //设置邀请链接
   }
 } else {
   console.log('MetaMask未安装!')
 }
-
 </script>
 <script lang="ts">
 export default {
@@ -37,6 +35,7 @@ export default {
   <AppTopNavVue></AppTopNavVue>
   <!-- 二级路由的出口 -->
   <router-view></router-view>
-
+  <!-- 底部通栏组件 -->
+  <AppFooterVue></AppFooterVue>
 </template>
 <style scoped lang="less"></style>
