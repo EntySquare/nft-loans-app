@@ -28,6 +28,10 @@ export default { name: 'AppFooter' }
 
 <style scoped lang="less">
 .app_footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin-top: 30px;
   height: 155px;
   width: 100%;
   background: rgba(255, 255, 255, 0.2);
