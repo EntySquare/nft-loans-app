@@ -1,0 +1,30 @@
+{
+  "id": "4012019",
+  "name": "web3-website",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "19446213",
+      "name": "推特",
+      "font_class": "twitter",
+      "unicode": "ea90",
+      "unicode_decimal": 60048
+    },
+    {
+      "icon_id": "5810190",
+      "name": "cope",
+      "font_class": "cope",
+      "unicode": "e7e8",
+      "unicode_decimal": 59368
+    },
+    {
+      "icon_id": "7575063",
+      "name": "24gf-share",
+      "font_class": "share",
+      "unicode": "e99e",
+      "unicode_decimal": 59806
+    }
+  ]
+}
