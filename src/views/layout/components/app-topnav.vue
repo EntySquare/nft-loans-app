@@ -156,7 +156,7 @@ export default { name: 'AppTopnav' }
       <RouterLink class="nav-item" :to="`/Partners/${State.referrer}`">{{
         $t('nav.wallet')
       }}</RouterLink>
-      <RouterLink class="nav-item" :to="`/Partners/${State.referrer}`">{{
+      <RouterLink class="nav-item" :to="`/record/${State.referrer}`">{{
         $t('nav.invitee')
       }}</RouterLink>
       <!-- 弹框 -->

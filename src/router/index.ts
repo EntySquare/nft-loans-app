@@ -12,20 +12,17 @@ let router = createRouter({
     // 设置路由对象
     routes: [
         {
-            path: '/', redirect: `/Explorer/${'UP'}`,
+            path: '/', redirect: `/Plan/${'UP'}`,
         },
         {
             path: '/Partners/:id', component: layout,
             children: [
-                { path: '', component: () => import('@/views/components/explorer/index.vue') },
+                { path: '', component: () => import('@/views/components/partner/index.vue') },
                 { path: '/Explorer/:id', component: () => import('@/views/components/explorer/index.vue') },
-                { path: '/Plan/:id', component: () => import('@/views/components/explorer/index.vue') },
-                { path: '/fdsfdsfjklsdjflksdkfjsdfsdfsdfsdafsfdskufdlskjfl/:id', component: () => import('@/views/components/explorer/index.vue') },
-                { path: '/fdsfdsfjklsdjflksdkfjsdfsdfsdfsdafsfdskufdfdsjkfkljdlfdslfdlkfklskjfl/:id', component: () => import('@/views/components/explorer/index.vue') },
-                // { path: '/poh/:id', component: () => import('@/explorer/components/poh/index.vue') },
+                { path: '/Plan/:id', component: () => import('@/views/components/plan/index.vue') },
+                { path: '/record/:id', component: () => import('@/views/components/record/index.vue') },
             ]
         }
-
     ]
 })
 
