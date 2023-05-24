@@ -1,8 +1,10 @@
 // 主要数据
 import { defineStore } from 'pinia' //引入pinia
+import {login } from '@/api/user' //*获取计划列表
 import request from "@/request"; //引入axios
 import connectWallet, { UniverseData } from "@/web3/connectWallet";
-import { convertEtherUnits, EtherUnit } from "@/utils/etherUnit"; //引入连接钱包方法
+import { convertEtherUnits, EtherUnit } from "@/utils/etherUnit";
+import {setToken} from "@/utils/auth"; //引入连接钱包方法
 type re = [{
     sub_address: string,
     status: number
@@ -57,13 +59,13 @@ let MainStore = defineStore('main', {
         // 转账
         ToSignfunc(acc: string): any { },
         // 获取奖励列表,
-        async getRewardList() {
-            // myRecommendList
-            const res = await request.post(`/myRecommendList`, { //判断是否有转账记录
-                sender: this.currentAccount,
-            });
-            this.RewardList = res.data.json as any
-        },
+        // async getRewardList() {
+        //     // myRecommendList
+        //     const res = await request.post(`/myRecommendList`, { //判断是否有转账记录
+        //         sender: this.currentAccount,
+        //     });
+        //     this.RewardList = res.data.json as any
+        // },
         async goToSignfunc(acc: any, state: any) {
             if (state) return
             try {
@@ -82,10 +84,10 @@ let MainStore = defineStore('main', {
                     message: acc,
                     signature: resd.sign,
                 });
-                const rese = await request.post(`/fetchEarnList`, { //判断是否有转账记录
-                    address: this.currentAccount, //地址
-                });
-                this.jlList = rese.data.json as any
+                // const rese = await request.post(`/fetchEarnList`, { //判断是否有转账记录
+                //     address: this.currentAccount, //地址
+                // });
+                // this.jlList = rese.data.json as any
                 console.log('resd:', resd)
                 console.log('res:', res)
             } catch (error) {
@@ -134,24 +136,26 @@ let MainStore = defineStore('main', {
                         this.currentBalance = res.balance; //赋值余额
                         this.balanceChain = res.balanceChain; //赋值链余额
                         this.ToSignfunc = res.dataToSignfunc // 要签名的数据
+                        const resLogin = await login({wallet_address:this.currentAccount}) //*使用sync await 异步获取数据
+                        setToken(resLogin.data.toString()); //*打印数据
                         console.log('this.referrerAC:', this.referrerAC)
-                        const { data } = await request.post(`/fetchEarnList`, { //判断是否有转账记录
-                            address: this.currentAccount, //地址
-                        });
-                        this.jlList = data.json
+                        // const { data } = await request.post(`/fetchEarnList`, { //判断是否有转账记录
+                        //     address: this.currentAccount, //地址
+                        // });
+                        // this.jlList = data.json
                         // this.jlList = [{ sub_address: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F', status: 0 }] as any
-                        const re = await request.post(`/checkCode`, { //判断是否有转账记录
-                            from: this.currentAccount, //地址
-                            recommend: this.referrerAC, //介绍地址
-                        });
-                        console.log('re.data.json.status:', re.data)
-                        if (re.data.code == 0) { //有记录
-                            console.log('1:', 1)
-                            this.currentStatus = re.data.json.status; //赋值状态
-                        }
+                        // const re = await request.post(`/checkCode`, { //判断是否有转账记录
+                        //     from: this.currentAccount, //地址
+                        //     recommend: this.referrerAC, //介绍地址
+                        // });
+                        // console.log('re.data.json.status:', re.data)
+                        // if (re.data.code == 0) { //有记录
+                        //     console.log('1:', 1)
+                        //     this.currentStatus = re.data.json.status; //赋值状态
+                        // }
                         this.isLoading = false; //关闭加载
                         this.setInvitationlink(); //设置邀请链接
-                        this.getRewardList() //获取奖励列表
+                        // this.getRewardList() //获取奖励列表
                         resolve(res); //返回数据
                     });
                 } catch (error) {

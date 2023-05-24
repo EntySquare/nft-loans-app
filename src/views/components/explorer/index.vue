@@ -1,14 +1,53 @@
 <script setup lang="ts">
 import Card from '@/components/card/index.vue'
-import { ref } from 'vue'
-
+import {ref} from "vue";
 const navValue = ref(0)
 const navList = ['全部', '质押中', '已完成']
 </script>
 <script lang="ts">
+import {getToken} from "@/utils/auth";
+import {covenantInfo, myCovenantFlow, myCovenantFlowRep} from "@/api/benefit";
+import {onMounted, ref} from "vue";
+
 export default {
   name: 'Partner'
 }
+const cfRes = ref({
+  benefit_info: {
+    balance: 0,
+    last_day_benefit: 0,
+    accumulated_benefit: 0,
+  },
+  covenant_flows: [{
+    nft_name: "",
+    pledge_id: "",
+    chain_name: "",
+    duration: "",
+    hash: "",
+    interest_rate:0,
+    accumulated_benefit:0,
+    pledge_fee:0,
+    release_fee:0,
+    start_time:0,
+    expire_time:0,
+    nft_release_time:0,
+    flag: "",
+  },],
+} as myCovenantFlowRep);
+async function dataInit() {
+  try {
+    const token = getToken()
+    const res = await myCovenantFlow(token);
+    cfRes.value.benefit_info = res.data.benefit_info;
+    cfRes.value.covenant_flows = res.data.covenant_flows;
+  } catch (err) {
+    console.log("queryMyCovenantFlow err-------------------");
+    console.log(err);
+  }
+}
+onMounted(() => {
+  dataInit();
+});
 </script>
 <template>
   <div class="partner">
@@ -21,19 +60,19 @@ export default {
             <div class="partner_one_box_item">
               <div class="partner_one_box_item_top alive-light">持有</div>
               <div class="partner_one_box_item_bom alive-light">
-                213482742 <span>NGT</span>
+                {{ cfRes.benefit_info.balance }} <span>NGT</span>
               </div>
             </div>
             <div class="partner_one_box_item">
               <div class="partner_one_box_item_top alive-light">昨日收益</div>
               <div class="partner_one_box_item_bom alive-light">
-                324 <span>NGT</span>
+                {{ cfRes.benefit_info.last_day_benefit }} <span>NGT</span>
               </div>
             </div>
             <div class="partner_one_box_item">
               <div class="partner_one_box_item_top alive-light">累计总收益</div>
               <div class="partner_one_box_item_bom alive-light">
-                231324 <span>NGT</span>
+                {{ cfRes.benefit_info.accumulated_benefit }} <span>NGT</span>
               </div>
             </div>
           </div>
@@ -56,25 +95,25 @@ export default {
             </div>
           </div>
           <div class="partner_two_box_body" v-if="navValue == 0">
-            <Card v-for="(item, index) in 4" :key="index">
+            <Card v-for="(item, index) in cfRes.covenant_flows.length-1" :key="index">
               <div class="box_body_item_top">
-                <span>Polygon</span>
-                <span>7天</span>
-                <span>日利率0.7%</span>
+                <span>{{ item.chain_name }}</span>
+                <span>{{ item.duration }}</span>
+                <span>日利率{{ item.interest_rate }}%</span>
                 <span class="alive-light">全部</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
                   <span>NFT名称</span>
-                  <span>Vermillion Bird</span>
+                  <span>{{ item.nft_name }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>质押ID</span>
-                  <span>asd**35asda</span>
+                  <span>{{ item.pledge_id }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>交易哈希</span>
-                  <span>01dfae6e5d4d90d9892622325959afbe:7050461</span>
+                  <span>{{ item.hash }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>到期时间</span>
@@ -86,42 +125,42 @@ export default {
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>质押费用</span>
-                  <span>122 NGT</span>
+                  <span>{{ item.pledge_fee }} NGT</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>释放费用</span>
-                  <span>641 NGT</span>
+                  <span>{{ item.release_fee }} NGT</span>
                 </div>
               </div>
               <div class="box_body_item_bom_two">
                 <span class="alive-light">取消订单</span>
                 <div>
                   <span class="alive-light">订单收益</span>
-                  <span class="alive-light">2734 NGT</span>
+                  <span class="alive-light">{{ item.accumulated_benefit }} NGT</span>
                 </div>
               </div>
             </Card>
           </div>
           <div class="partner_two_box_body" v-if="navValue == 1">
-            <Card v-for="(item, index) in 3" :key="index">
-              <div class="box_body_item_top">
-                <span>Polygon</span>
-                <span>7天</span>
-                <span>日利率0.7%</span>
-                <span class="alive-light">质押中</span>
+            <Card v-for="(item, index) in cfRes.covenant_flows.length-1" :key="index">
+              <div class="box_body_item_top" v-if="item.flag == 1">
+                <span>{{ item.chain_name }}</span>
+                <span>{{ item.duration }}</span>
+                <span>日利率{{ item.interest_rate }}%</span>
+                <span class="alive-light">全部</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
                   <span>NFT名称</span>
-                  <span>Vermillion Bird</span>
+                  <span>{{ item.nft_name }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>质押ID</span>
-                  <span>asd**35asda</span>
+                  <span>{{ item.pledge_id }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>交易哈希</span>
-                  <span>01dfae6e5d4d90d9892622325959afbe:7050461</span>
+                  <span>{{ item.hash }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>到期时间</span>
@@ -133,42 +172,42 @@ export default {
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>质押费用</span>
-                  <span>122 NGT</span>
+                  <span>{{ item.pledge_fee }} NGT</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>释放费用</span>
-                  <span>641 NGT</span>
+                  <span>{{ item.release_fee }} NGT</span>
                 </div>
               </div>
               <div class="box_body_item_bom_two">
                 <span class="alive-light">取消订单</span>
                 <div>
                   <span class="alive-light">订单收益</span>
-                  <span class="alive-light">2734 NGT</span>
+                  <span class="alive-light">{{ item.accumulated_benefit }} NGT</span>
                 </div>
               </div>
             </Card>
           </div>
           <div class="partner_two_box_body" v-if="navValue == 2">
-            <Card v-for="(item, index) in 5" :key="index">
-              <div class="box_body_item_top">
-                <span>Polygon</span>
-                <span>7天</span>
-                <span>日利率0.7%</span>
-                <span class="alive-light">已完成</span>
+            <Card v-for="(item, index) in cfRes.covenant_flows.length-1" :key="index">
+              <div class="box_body_item_top" v-if="item.flag == 2">
+                <span>{{ item.chain_name }}</span>
+                <span>{{ item.duration }}</span>
+                <span>日利率{{ item.interest_rate }}%</span>
+                <span class="alive-light">全部</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
                   <span>NFT名称</span>
-                  <span>Vermillion Bird</span>
+                  <span>{{ item.nft_name }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>质押ID</span>
-                  <span>asd**35asda</span>
+                  <span>{{ item.pledge_id }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>交易哈希</span>
-                  <span>01dfae6e5d4d90d9892622325959afbe:7050461</span>
+                  <span>{{ item.hash }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>到期时间</span>
@@ -180,18 +219,18 @@ export default {
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>质押费用</span>
-                  <span>122 NGT</span>
+                  <span>{{ item.pledge_fee }} NGT</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>释放费用</span>
-                  <span>641 NGT</span>
+                  <span>{{ item.release_fee }} NGT</span>
                 </div>
               </div>
               <div class="box_body_item_bom_two">
                 <span class="alive-light">取消订单</span>
                 <div>
                   <span class="alive-light">订单收益</span>
-                  <span class="alive-light">2734 NGT</span>
+                  <span class="alive-light">{{ item.accumulated_benefit }} NGT</span>
                 </div>
               </div>
             </Card>
