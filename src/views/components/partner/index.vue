@@ -1,37 +1,9 @@
 <script setup lang="ts">
 import Card from '@/components/card/index.vue'
-import MainStore from '@/store' //引入store
-import useClipboard from 'vue-clipboard3' //复制
-import {useI18n} from 'vue-i18n' //国际化
-import {ElMessage} from 'element-plus' //消息提示
-const {t} = useI18n() //国际化
-const State = MainStore() //使用store
-State.getPayCount() //获取支付数量
-const {toClipboard} = useClipboard() // 复制
-const copy = async () => {
-  State.setInvitationlink() //设置邀请链接
-  try {
-    await toClipboard(State.Invlink) //实现复制
-    ElMessage({
-      message: t('cope.success'),
-      type: 'success',
-    })
-    window.location.href = State.Invitationlink;
-    console.log('复制成功')
-  } catch (e) {
-    ElMessage({
-      message: t('cope.error'),
-      type: 'success',
-    })
-    console.error(e)
-  }
-}
-State.setInvitationlink() //设置邀请链接
-function share() {
-  console.log('State.Invlink:', State.Invlink)
-  // State.setInvitationlink() //设置邀请链接
-  window.open(`https://twitter.com/intent/tweet?text=Quick%20summon%20${State.Invlink}`, '_blank');
-}
+import { ref } from 'vue'
+
+const navValue = ref(0)
+const navList = ['全部', '充值', '提现']
 </script>
 <script lang="ts">
 export default {
@@ -43,100 +15,197 @@ export default {
     <!-- 居中 -->
     <div class="container">
       <div class="main">
-        <div class="main-title">{{ $t('partner.title1') }}</div>
-        <div class="main-title">{{ $t('partner.title2') }}</div>
-        <div class="main-desc">{{ $t('partner.title3') }}</div>
-        <div class="main-btn">
-          <div :class="['main-btn-item', State.account ? 'btn-bgc-two' : '']" @click="State.Connection">
-            {{ State.account ? $t('partner.btnone2') : $t('partner.btnone1') }}
-          </div>
-          <div v-if="State.status == -3" class="main-btn-item btn-bgc" @click="State.TransferMoney">
-            {{ $t('partner.btntwo1') }}
-          </div>
-          <div v-if="State.status == 1" class="main-btn-item btn-bgc">
-            {{ $t('partner.btntwo2') }}
-          </div>
-          <div v-if="State.status == 0" class="main-btn-item btn-bgc">
-            {{ $t('partner.btntwo3') }}
-          </div>
-        </div>
-        <div class="cardone">
-          <Card class="cardone-item" :title="$t('partner.payCount')">
-            <div class="cardone-item-body">
-              <div class="cardone-body-item">
-                <div class="cardone-body-item-title">{{ $t('partner.Nodetype') }}</div>
-                <div class="cardone-body-item-desc">{{ $t('partner.Ntype') }}</div>
-              </div>
-              <div class="cardone-body-item">
-                <div class="cardone-body-item-title">{{ $t('partner.Residualnode') }}</div>
-                <div class="cardone-body-item-desc">{{
-                    State.payCount >= 300 ? $t('partner.expired') : 300 -
-                        State.payCount
-                  }}
-                </div>
-              </div>
-              <div class="cardone-body-item">
-                <div class="cardone-body-item-title">{{ $t('partner.Nodeprice') }}</div>
-                <div class="cardone-body-item-desc">{{ '3000 ' + 'U' }}</div>
+        <!-- 我的NGT--start -->
+        <Card>
+          <div class="partner_one_box">
+            <div class="partner_one_box_item">
+              <div class="partner_one_box_item_top alive-light">持有</div>
+              <div class="partner_one_box_item_bom alive-light">
+                213482742 <span>NGT</span>
               </div>
             </div>
-          </Card>
-          <Card class="cardone-item" :title="$t('partner.Shareinvitation')">
-            <div class="cardone-item-body">
-              <div class="cardone-Share">{{ State.Invlink }}</div>
-              <div class="cardone-btn" @click="copy">
-                <i class="iconfont icon-cope"></i>
-                <span>{{ $t('cope.copelink') }}</span>
-              </div>
-              <div @click="share" class="icontwitter">
-                <i class="iconfont icon-twitter"></i>
+            <div class="partner_one_box_item">
+              <div class="partner_one_box_item_top alive-light">昨日收益</div>
+              <div class="partner_one_box_item_bom alive-light">
+                324 <span>NGT</span>
               </div>
             </div>
-          </Card>
-        </div>
-        <div class="cardtwo">
-          <Card bgc="none" :boxshow="false" padding="0" class="" :title="$t('partner.Nodalinterest')">
-            <div class="cardtwo-item-body" style="background-color: none;">
-              <Card class="cardtwo-item" bradius="10px">
-                <span>1</span>
-                <div>
-                  {{ $t('partner.cardtwotext1') }}
-                </div>
-              </Card>
-              <Card class="cardtwo-item" bradius="10px">
-                <span>2</span>
-                <div>
-                  {{ $t('partner.cardtwotext2') }}
-                </div>
-              </Card>
-              <Card class="cardtwo-item" bradius="10px">
-                <span>3</span>
-                <div>
-                  {{ $t('partner.cardtwotext3') }}
-                </div>
-              </Card>
+            <div class="partner_one_box_item">
+              <div class="partner_one_box_item_top alive-light">累计总收益</div>
+              <div class="partner_one_box_item_bom alive-light">
+                231324 <span>NGT</span>
+              </div>
             </div>
-          </Card>
+            <div class="partner_one_box_item">
+              <div class="partner_one_box_item_btn">
+                <span>充值</span>
+                <span>提现</span>
+              </div>
+            </div>
+          </div>
+        </Card>
+        <!-- 我的NGT--end -->
+        <!-- 质押订单--start -->
+        <div class="alive-light" style="font-size: 20px; margin-top: 20px">
+          转账记录
         </div>
-        <div class="cardthree">
-          <Card bgc="none" :boxshow="false" padding="0" class="" :title="$t('partner.Rewardlist')">
-            <Card style="margin-bottom: 10px;" v-for="(item, index) in State.jlData" :key="index" bradius="10px"
-                  v-if="State.jlData[0]?.sub_address">
-              <div class="cardthree-item">
-                <div class="cardthree-text">
-                  {{ item.sub_address ? item.sub_address : $t('partner.Temporarilyabsent') }}
+        <Card class="partner_two_box">
+          <div class="partner_two_box_nav">
+            <div
+              :class="[
+                'partner_two_box_nav_btn',
+                navValue == index ? 'active' : ''
+              ]"
+              v-for="(item, index) in navList"
+              :key="index"
+              @click="navValue = index"
+            >
+              <span class="alive-light">{{ item }}</span>
+            </div>
+          </div>
+          <div class="partner_two_box_body" v-if="navValue == 0">
+            <Card v-for="(item, index) in 4" :key="index">
+              <div class="box_body_item_top">
+                <span>Polygon</span>
+                <span>7天</span>
+                <span>日利率0.7%</span>
+                <span class="alive-light">全部</span>
+              </div>
+              <div class="box_body_item_bom">
+                <div class="box_body_item_bom__item">
+                  <span>NFT名称</span>
+                  <span>Vermillion Bird</span>
                 </div>
-                <div :class="[item.status ? 'btn-desable' : 'cardthree-btn']"
-                     @click="State.goToSignfunc(item.sub_address, item.status)">
-                  {{ item.status ? $t('partner.Alreadymentioned') : $t('partner.Withdrawcash') + ' 1000U' }}
+                <div class="box_body_item_bom__item">
+                  <span>质押ID</span>
+                  <span>asd**35asda</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>交易哈希</span>
+                  <span>01dfae6e5d4d90d9892622325959afbe:7050461</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>到期时间</span>
+                  <span>18/05/2023 12:00:00</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>质押时间</span>
+                  <span>23/05/2023 12:00:00</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>质押费用</span>
+                  <span>122 NGT</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>释放费用</span>
+                  <span>641 NGT</span>
+                </div>
+              </div>
+              <div class="box_body_item_bom_two">
+                <span class="alive-light">取消订单</span>
+                <div>
+                  <span class="alive-light">订单收益</span>
+                  <span class="alive-light">2734 NGT</span>
                 </div>
               </div>
             </Card>
-            <Card v-if="!State.jlData[0]?.sub_address" style="text-align: center; font-size: 16px;">
-              {{ $t('partner.Temporarilyabsent') }}
+          </div>
+          <div class="partner_two_box_body" v-if="navValue == 1">
+            <Card v-for="(item, index) in 3" :key="index">
+              <div class="box_body_item_top">
+                <span>Polygon</span>
+                <span>7天</span>
+                <span>日利率0.7%</span>
+                <span class="alive-light">质押中</span>
+              </div>
+              <div class="box_body_item_bom">
+                <div class="box_body_item_bom__item">
+                  <span>NFT名称</span>
+                  <span>Vermillion Bird</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>质押ID</span>
+                  <span>asd**35asda</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>交易哈希</span>
+                  <span>01dfae6e5d4d90d9892622325959afbe:7050461</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>到期时间</span>
+                  <span>18/05/2023 12:00:00</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>质押时间</span>
+                  <span>23/05/2023 12:00:00</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>质押费用</span>
+                  <span>122 NGT</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>释放费用</span>
+                  <span>641 NGT</span>
+                </div>
+              </div>
+              <div class="box_body_item_bom_two">
+                <span class="alive-light">取消订单</span>
+                <div>
+                  <span class="alive-light">订单收益</span>
+                  <span class="alive-light">2734 NGT</span>
+                </div>
+              </div>
             </Card>
-          </Card>
-        </div>
+          </div>
+          <div class="partner_two_box_body" v-if="navValue == 2">
+            <Card v-for="(item, index) in 5" :key="index">
+              <div class="box_body_item_top">
+                <span>Polygon</span>
+                <span>7天</span>
+                <span>日利率0.7%</span>
+                <span class="alive-light">已完成</span>
+              </div>
+              <div class="box_body_item_bom">
+                <div class="box_body_item_bom__item">
+                  <span>NFT名称</span>
+                  <span>Vermillion Bird</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>质押ID</span>
+                  <span>asd**35asda</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>交易哈希</span>
+                  <span>01dfae6e5d4d90d9892622325959afbe:7050461</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>到期时间</span>
+                  <span>18/05/2023 12:00:00</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>质押时间</span>
+                  <span>23/05/2023 12:00:00</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>质押费用</span>
+                  <span>122 NGT</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>释放费用</span>
+                  <span>641 NGT</span>
+                </div>
+              </div>
+              <div class="box_body_item_bom_two">
+                <span class="alive-light">取消订单</span>
+                <div>
+                  <span class="alive-light">订单收益</span>
+                  <span class="alive-light">2734 NGT</span>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </Card>
+        <!-- 质押订单--end -->
       </div>
     </div>
     <!-- 居中 -->
@@ -168,264 +237,127 @@ export default {
       // background: pink;
       padding-top: 50px;
 
-      .cardone {
-        margin-top: 50px;
+      .partner_one_box {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-
-        .cardone-item {
-          width: 49%;
-          height: 100%;
-          margin-bottom: 20px;
-
-          .cardone-item-body {
-            height: 60px;
-            padding: 0px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            .cardone-body-item {
-              height: 100%;
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              justify-content: space-around;
-
-              .cardone-body-item-title {
-                font-size: 18px;
-                color: #fff;
-                font-family: Manrope-Regular;
-                white-space: nowrap;
-              }
-
-              .cardone-body-item-desc {
-                font-size: 20px;
-                color: #fffe00;
-                font-family: Manrope-Regular;
-              }
-            }
-
-            .cardone-Share {
-              background-color: #ffffff37;
-              min-width: 50%;
-              padding: 10px;
-              border-radius: 10px;
-              font-size: 16px;
-              color: #fffe00;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              font-family: Manrope-Regular;
-            }
-
-            .cardone-btn {
-              margin-left: 10px;
-              display: flex;
-              align-items: center;
-              white-space: nowrap;
-              cursor: pointer;
-
-              .iconfont {
-                font-size: 26px;
-                color: #fffe00;
-              }
-
-              span {
-                margin-left: 5px;
-                font-size: 16px;
-                color: #fffe00;
-                font-family: Manrope-Regular;
-              }
-            }
-
-            .icontwitter {
-              margin-left: 10px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              white-space: nowrap;
-              min-width: 30px;
-              height: 30px;
-              box-sizing: border-box;
-              border-radius: 5px;
-              background-color: #e8f1f8;
-              cursor: pointer;
-
-              .iconfont {
-                font-size: 26px;
-                color: #5197eb;
-              }
-            }
-          }
-        }
-      }
-
-      .cardtwo {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-
-        .cardtwo-item-body {
+        justify-content: space-around;
+        padding: 20px 0;
+        .partner_one_box_item {
           display: flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-wrap: wrap;
-
-          .cardtwo-item {
-            width: 32%;
-            margin-bottom: 20px;
-            height: 100%;
-
-
+          flex-direction: column;
+          justify-content: center;
+          gap: 20px;
+          .partner_one_box_item_top {
+            font-size: 20px;
+          }
+          .partner_one_box_item_btn {
+            display: flex;
+            gap: 20px;
             span {
-              display: inline-block;
-              width: 30px;
-              height: 30px;
-              line-height: 30px;
-              text-align: center;
-              border-radius: 50%;
-              background-color: #fffe00;
               font-size: 20px;
-              color: #913fe3;
-            }
-
-            div {
-              display: inline-block;
-              margin-left: 10px;
               text-align: center;
-              font-size: 16px;
-              color: #fff;
+              line-height: 50px;
+              width: 120px;
+              height: 50px;
+              background: linear-gradient(
+                  261.07deg,
+                  rgba(255, 255, 255, 0.213) 0%,
+                  rgba(0, 0, 0, 0.12) 100%
+                ),
+                linear-gradient(
+                  98.93deg,
+                  rgba(23, 183, 69, 0.206) 0%,
+                  rgba(44, 62, 198, 0.485) 100%
+                );
+              border-radius: 50px;
+              border: 1px solid #2299de5a;
+            }
+          }
+          .partner_one_box_item_bom {
+            font-size: 32px;
+            span {
+              font-size: 20px;
             }
           }
         }
       }
-
-      .cardthree {
-        max-width: 50%;
-        width: 100%;
-        margin: 0 auto 200px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        // flex-wrap: wrap;
-
-        .cardthree-item {
-          width: 100%;
-          font-size: 18px;
+      .partner_two_box {
+        margin-top: 20px;
+        .partner_two_box_nav {
+          line-height: 34px;
+          div {
+            font-size: 20px;
+            span {
+              font-size: 20px;
+              margin-left: 0;
+            }
+          }
           display: flex;
-          justify-content: space-between;
-
-          .cardthree-text {
-            // width: 80%;
-            height: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            background-color: #ffffff37;
-            border-radius: 10px;
-            padding: 10px;
+          gap: 20px;
+          .partner_two_box_nav_btn {
+            width: 100px;
+            height: 34px;
+            text-align: center;
+            line-height: 34px;
+            background-color: #ffffff21;
+            border-radius: 15px;
+            border: 1px solid #38de2266;
           }
-
-          .btn-desable {
-            min-width: 60px;
-            margin-left: 10px;
-            padding: 0 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #3e3086;
-            border-radius: 10px;
-            font-size: 18px;
-            color: #c0c048;
-            font-family: Manrope-Regular;
-            cursor: not-allowed;
-            white-space: nowrap;
-          }
-
-          .cardthree-btn {
-            padding: 0 10px;
-            min-width: 60px;
-            margin-left: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f9f840;
-            border-radius: 10px;
-            font-size: 18px;
-            color: #5942d3;
-            font-family: Manrope-Regular;
-            cursor: pointer;
-            white-space: nowrap;
+          .active {
+            background: -webkit-linear-gradient(
+                261.07deg,
+                #ffffff1b 0%,
+                rgba(0, 0, 0, 0) 100%
+              ),
+              linear-gradient(
+                98.93deg,
+                #aafac193 0%,
+                rgba(198, 75, 255, 0.71) 100%
+              ) !important;
+            span {
+              -webkit-text-fill-color: white !important;
+              -webkit-background-clip: none !important;
+            }
           }
         }
-      }
-
-      .main-title {
-        width: 100%;
-        text-align: center;
-        text-shadow: 0 0 10px black;
-        white-space: nowrap;
-        font-size: 5.375rem;
-        color: #fff;
-        font-family: Manrope-Regular;
-        margin-bottom: 20px;
-      }
-
-      .main-desc {
-        // white-space: nowrap;
-        text-shadow: 0 0 10px black;
-        text-align: center;
-        font-size: 28px;
-        color: #fff;
-        font-family: Manrope-Regular;
-        margin-bottom: 20px;
-      }
-
-      .main-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 20px;
-        gap: 20px;
-      }
-
-      .main-btn-item {
-        white-space: nowrap;
-        height: 35px;
-        line-height: 35px;
-        padding: 0px 15px;
-        font-size: 18px;
-        border-radius: 10px;
-        color: #524dfb;
-        background-color: #fff;
-        cursor: pointer;
-      }
-
-      .btn-bgc {
-        background: #776dff !important;
-        box-shadow: 0px 0px 10px 0px #000000;
-        color: #fff !important;
-
-        &:hover {
-          background-color: #645cdbeb !important;
-          color: @hoverColor !important;
-        }
-      }
-
-      .btn-bgc-two {
-        background: #e67bd9 !important;
-        box-shadow: 0px 0px 10px 0px #000000;
-        color: #fff;
-
-        &:hover {
-          background-color: #e67bd9eb !important;
-          color: @hoverColor !important;
+        .partner_two_box_body {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 20px;
+          padding-top: 20px;
+          .box_body_item_top {
+            display: flex;
+            justify-content: space-between;
+            span {
+              font-size: 16px;
+            }
+          }
+          .box_body_item_bom {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            .box_body_item_bom__item {
+              display: flex;
+              span {
+                font-size: 16px;
+                &:first-child {
+                  width: 100px;
+                  margin-right: 30px;
+                  color: #f5fff8;
+                }
+                &:last-child {
+                  color: #ffffff50;
+                }
+              }
+            }
+          }
+          .box_body_item_bom_two {
+            display: flex;
+            justify-content: space-between;
+            span {
+              font-size: 16px;
+            }
+          }
         }
       }
     }
