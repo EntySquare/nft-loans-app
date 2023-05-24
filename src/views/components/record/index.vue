@@ -2,6 +2,17 @@
 import MainStore from '@/store'
 import request from '@/request'
 import Card from '@/components/card/index.vue'
+import Clipboard from 'vue-clipboard3'
+import { ElMessage } from 'element-plus'
+const { toClipboard } = Clipboard() // 复制
+const copy = async () => {
+    try {
+    const res = await toClipboard('复制的内容')
+    ElMessage.success('复制成功')
+  } catch (error) {
+    ElMessage.error('复制失败')
+  }
+}
 </script>
 <script lang="ts">
 export default {
@@ -13,51 +24,59 @@ export default {
     <!-- 居中 -->
     <div class="container">
       <div class="card">
-        <div class="card_title">
-          <div class="card_left">
-            <div class="card_left_dj">
-              <div>我的等级 &nbsp;&nbsp;&nbsp;<span>V1</span></div>
-              <div style="margin-top: 11px">
-                我的UID &nbsp;&nbsp;&nbsp;<span>132**lidfap</span>
+        <Card bradius="24px">
+          <div class="card_title">
+            <div class="card_left">
+              <div class="card_left_dj">
+                <div>我的等级 &nbsp;&nbsp;&nbsp;<span>V1</span></div>
+                <div style="margin-top: 11px">
+                  我的UID &nbsp;&nbsp;&nbsp;<span>132**lidfap</span>
+                </div>
+              </div>
+            </div>
+            <div class="card_right">
+              <div class="card_right_rh">
+                <div>邀请人数&nbsp;&nbsp;&nbsp;<span>2314人</span></div>
+                <div style="margin-top: 11px">
+                  累计质押次数 &nbsp;&nbsp;&nbsp;<span>21478132</span>
+                </div>
               </div>
             </div>
           </div>
-          <div class="card_right">
-            <div class="card_right_rh">
-              <div>邀请人数&nbsp;&nbsp;&nbsp;<span>2314人</span></div>
-              <div style="margin-top: 11px">
-                累计质押次数 &nbsp;&nbsp;&nbsp;<span>21478132</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        </Card>
 
-        <Card bradius="30px" padding="0px" style="margin-top: 20px">
+        <Card bradius="24px" padding="0px" style="margin-top: 20px">
           <div class="address">
             <div class="address_text">
-              <span>邀请地址:</span> <input type="text" />
-              <el-button class="address_text_btu" round>点击复制</el-button>
+              <span>邀请地址:</span> <span>5345sefdjhask </span>
+              <el-button class="address_text_btu" @click="copy" round>
+                点击复制&nbsp;<img
+                  src="../../../assets/images/Vector.png"
+                  alt=""
+              /></el-button>
             </div>
           </div>
         </Card>
         <div class="title">邀请列表</div>
-        <div class="list">
-          <table class="table">
-            <tbody>
-              <tr v-for="(item, index) in 10" :key="index">
-                <td>UID:&nbsp;&nbsp;&nbsp;23145***fsdkjf</td>
-                <td style="text-align: center">当前等级:&nbsp;&nbsp;V3</td>
-                <td style="text-align: right">质押次数&nbsp;&nbsp;123213次</td>
+        <Card bradius="24px">
+          <div class="list">
+            <table class="table">
+              <tbody>
+                <tr v-for="(item, index) in 10" :key="index">
+                  <td>UID:&nbsp;&nbsp;&nbsp;23145***fsdkjf</td>
+                  <td style="text-align: center">当前等级:&nbsp;&nbsp;V3</td>
+                  <td style="text-align: right">
+                    质押次数&nbsp;&nbsp;123213次
+                  </td>
 
-                <i
-                  class="el-icon-arrow-right"
-                  style="float: right; margin-right: 17px"
-                  >></i
-                >
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                  <i style="float: right; margin-right: 10px; line-height: 40px"
+                    ><img src="../../../assets/images/Vector1.png" alt=""
+                  /></i>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </Card>
       </div>
     </div>
     <!-- 居中 -->
@@ -86,9 +105,7 @@ export default {
       .card_title {
         width: 100%;
         height: 118px;
-        border: rgba(173, 255, 245, 1) solid 1px;
-        background: rgb(16, 6, 62);
-        border-radius: 24px;
+
         .card_left {
           width: 50%;
           height: 100%;
@@ -172,8 +189,6 @@ export default {
       .list {
         width: 100%;
         height: 550px;
-        border-radius: 24px;
-        border: rgb(208, 255, 0) solid 1px;
 
         .table {
           margin-top: 28px;
@@ -184,7 +199,7 @@ export default {
             display: block;
             overflow-x: hidden;
             overflow-y: auto;
-            height: 480px;
+            height: 500px;
           }
           tbody tr {
             display: table;
@@ -212,12 +227,13 @@ export default {
           tbody td {
             position: relative;
             left: 15px;
+
             color: #ffffff;
             font-family: 'PingFang SC';
             font-style: normal;
             font-weight: 400;
             font-size: 16px;
-            line-height: 24px;
+            line-height: 40px;
           }
         }
         /* 滚动条样式 */
@@ -229,7 +245,12 @@ export default {
           border-radius: 5px;
         }
         table tbody::-webkit-scrollbar-track {
-          background-color: #004453;
+          background: linear-gradient(
+            98.28deg,
+            #66a39b 10.61%,
+            rgba(97, 112, 252, 0.99) 54.84%,
+            rgba(158, 99, 205, 0.994896) 100%
+          );
         }
         table tbody::-webkit-scrollbar-thumb:hover {
           background: linear-gradient(
