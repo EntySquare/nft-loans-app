@@ -412,8 +412,6 @@ nav {
       height: 50px;
       width: 50px;
     }
-
-
   }
 
   .nav {

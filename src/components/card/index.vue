@@ -16,10 +16,10 @@ export default {
     <div
       class="body"
       :style="{
-        background: props.bgc,
+        'background': props.bgc,
         'box-shadow': props.boxshow ? '0px 0px 10px 0px #000000' : '',
-        padding: props.padding,
-        borderRadius: props.bradius
+        'padding': props.padding,
+        'borderRadius': props.bradius
       }"
     >
       <slot></slot>
@@ -41,12 +41,12 @@ export default {
 
   .body {
     //模糊半径
-    background: -webkit-linear-gradient(
-        261.07deg,
-        #ffffff1b 0%,
-        rgba(0, 0, 0, 0) 100%
-      ),
-      linear-gradient(98.93deg, #aafac123 0%, rgba(198, 75, 255, 0.216) 100%) !important;
+    // background: -webkit-linear-gradient(
+    //     261.07deg,
+    //     #ffffff1b 0%,
+    //     rgba(0, 0, 0, 0) 100%
+    //   ),
+    //   linear-gradient(98.93deg, #aafac123 0%, rgba(198, 75, 255, 0.216) 100%) !important;
     border: 1px solid #11aaa281 !important;
     background-blend-mode: overlay;
     backdrop-filter: blur(10px);
