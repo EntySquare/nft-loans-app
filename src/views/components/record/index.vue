@@ -4,15 +4,65 @@ import request from '@/request'
 import Card from '@/components/card/index.vue'
 import Clipboard from 'vue-clipboard3'
 import { ElMessage } from 'element-plus'
+import {onMounted, ref} from "vue";
+import {myInvestmentRep, myInvitee} from "@/api/invitee";
 const { toClipboard } = Clipboard() // 复制
+
+const inviteeRes = ref({
+  uid: "",
+  level: 0,
+  accumulated_pledge_count: 0,
+  investment_count: 0,
+  investment_address: "",
+  accumulated_benefit: 0,
+  investment_users: [],
+} as myInvestmentRep);
 const copy = async () => {
-    try {
-    const res = await toClipboard('复制的内容')
+  try {
+    const res = await toClipboard(inviteeRes.value.investment_address)
     ElMessage.success('复制成功')
   } catch (error) {
     ElMessage.error('复制失败')
   }
 }
+async function dataInit() {
+  try {
+    // config.headers = { 'Access-Control-Allow-Origin': '*' };
+    // config.headers = {
+    //   'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type',
+    // };
+    // config.headers = {
+    //   'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
+    // };
+    // config.headers = {
+    //   'Content-Type': 'application/x-www-form-urlencoded',
+    // };
+    const res = await myInvitee();
+    let hiddenPart1 = res.data.json.uid.slice(0, 3);
+    let hiddenPart2 = res.data.json.uid.slice(5, 10);//
+    res.data.json.uid = hiddenPart1 + "**" + hiddenPart2// 截取除了最后两位的部分
+    for (let i = 0; i < res.data.json.investment_users.length; i++) {
+      let hiddenPart1 = res.data.json.investment_users[i].uid.slice(0, 3);
+      let hiddenPart2 = res.data.json.investment_users[i].uid.slice(5, 10);//
+      res.data.json.investment_users[i].uid = hiddenPart1 + "**" + hiddenPart2// 截取除了最后两位的部分
+    }
+    inviteeRes.value.uid = res.data.json.uid
+    inviteeRes.value.level = res.data.json.level
+    inviteeRes.value.accumulated_pledge_count = res.data.json.accumulated_pledge_count
+    inviteeRes.value.investment_count = res.data.json.investment_count
+    inviteeRes.value.investment_address = res.data.json.investment_address
+    inviteeRes.value.accumulated_benefit = res.data.json.accumulated_benefit
+    inviteeRes.value.investment_users = res.data.json.investment_users
+    console.log(res.data)
+
+  } catch (err) {
+    console.log("queryMyCovenantFlow err-------------------");
+    console.log(err);
+  }
+}
+onMounted(() => {
+  dataInit();
+});
 </script>
 <script lang="ts">
 export default {
@@ -28,17 +78,17 @@ export default {
           <div class="card_title">
             <div class="card_left">
               <div class="card_left_dj">
-                <div>我的等级 &nbsp;&nbsp;&nbsp;<span>V1</span></div>
+                <div>我的等级 &nbsp;&nbsp;&nbsp;<span>V{{ inviteeRes.level}}</span></div>
                 <div style="margin-top: 11px">
-                  我的UID &nbsp;&nbsp;&nbsp;<span>132**lidfap</span>
+                  我的UID &nbsp;&nbsp;&nbsp;<span>{{ inviteeRes.uid}}</span>
                 </div>
               </div>
             </div>
             <div class="card_right">
               <div class="card_right_rh">
-                <div>邀请人数&nbsp;&nbsp;&nbsp;<span>2314人</span></div>
+                <div>邀请人数&nbsp;&nbsp;&nbsp;<span>{{ inviteeRes.investment_count}}人</span></div>
                 <div style="margin-top: 11px">
-                  累计质押次数 &nbsp;&nbsp;&nbsp;<span>21478132</span>
+                  累计质押次数 &nbsp;&nbsp;&nbsp;<span>{{ inviteeRes.accumulated_pledge_count}}</span>
                 </div>
               </div>
             </div>
@@ -48,7 +98,7 @@ export default {
         <Card bradius="24px" padding="0px" style="margin-top: 20px">
           <div class="address">
             <div class="address_text">
-              <span>邀请地址:</span> <span>5345sefdjhask </span>
+              <span>邀请地址:</span> <span>{{ inviteeRes.investment_address}} </span>
               <el-button class="address_text_btu" @click="copy" round>
                 点击复制&nbsp;<img
                   src="../../../assets/images/Vector.png"
@@ -62,11 +112,11 @@ export default {
           <div class="list">
             <table class="table">
               <tbody>
-                <tr v-for="(item, index) in 10" :key="index">
-                  <td>UID:&nbsp;&nbsp;&nbsp;23145***fsdkjf</td>
-                  <td style="text-align: center">当前等级:&nbsp;&nbsp;V3</td>
+                <tr v-for="(item, index) in inviteeRes.investment_users" :key="index">
+                  <td>UID:&nbsp;&nbsp;&nbsp;{{ item.uid}}</td>
+                  <td style="text-align: center">当前等级:&nbsp;&nbsp;V{{ item.level}}</td>
                   <td style="text-align: right">
-                    质押次数&nbsp;&nbsp;123213次
+                    质押次数&nbsp;&nbsp;{{ item.pledge_count}}次
                   </td>
 
                   <i style="float: right; margin-right: 10px; line-height: 40px"
