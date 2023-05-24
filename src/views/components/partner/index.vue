@@ -2,35 +2,38 @@
 import Card from '@/components/card/index.vue'
 import MainStore from '@/store' //引入store
 import useClipboard from 'vue-clipboard3' //复制
-import {useI18n} from 'vue-i18n' //国际化
-import {ElMessage} from 'element-plus' //消息提示
-const {t} = useI18n() //国际化
+import { useI18n } from 'vue-i18n' //国际化
+import { ElMessage } from 'element-plus' //消息提示
+const { t } = useI18n() //国际化
 const State = MainStore() //使用store
 State.getPayCount() //获取支付数量
-const {toClipboard} = useClipboard() // 复制
+const { toClipboard } = useClipboard() // 复制
 const copy = async () => {
   State.setInvitationlink() //设置邀请链接
   try {
     await toClipboard(State.Invlink) //实现复制
     ElMessage({
       message: t('cope.success'),
-      type: 'success',
+      type: 'success'
     })
-    window.location.href = State.Invitationlink;
+    window.location.href = State.Invitationlink
     console.log('复制成功')
   } catch (e) {
     ElMessage({
       message: t('cope.error'),
-      type: 'success',
+      type: 'success'
     })
     console.error(e)
   }
 }
 State.setInvitationlink() //设置邀请链接
-function share() {
+function share () {
   console.log('State.Invlink:', State.Invlink)
   // State.setInvitationlink() //设置邀请链接
-  window.open(`https://twitter.com/intent/tweet?text=Quick%20summon%20${State.Invlink}`, '_blank');
+  window.open(
+    `https://twitter.com/intent/tweet?text=Quick%20summon%20${State.Invlink}`,
+    '_blank'
+  )
 }
 </script>
 <script lang="ts">
@@ -42,102 +45,7 @@ export default {
   <div class="partner">
     <!-- 居中 -->
     <div class="container">
-      <div class="main">
-        <div class="main-title">{{ $t('partner.title1') }}</div>
-        <div class="main-title">{{ $t('partner.title2') }}</div>
-        <div class="main-desc">{{ $t('partner.title3') }}</div>
-        <div class="main-btn">
-          <div :class="['main-btn-item', State.account ? 'btn-bgc-two' : '']" @click="State.Connection">
-            {{ State.account ? $t('partner.btnone2') : $t('partner.btnone1') }}
-          </div>
-          <div v-if="State.status == -3" class="main-btn-item btn-bgc" @click="State.TransferMoney">
-            {{ $t('partner.btntwo1') }}
-          </div>
-          <div v-if="State.status == 1" class="main-btn-item btn-bgc">
-            {{ $t('partner.btntwo2') }}
-          </div>
-          <div v-if="State.status == 0" class="main-btn-item btn-bgc">
-            {{ $t('partner.btntwo3') }}
-          </div>
-        </div>
-        <div class="cardone">
-          <Card class="cardone-item" :title="$t('partner.payCount')">
-            <div class="cardone-item-body">
-              <div class="cardone-body-item">
-                <div class="cardone-body-item-title">{{ $t('partner.Nodetype') }}</div>
-                <div class="cardone-body-item-desc">{{ $t('partner.Ntype') }}</div>
-              </div>
-              <div class="cardone-body-item">
-                <div class="cardone-body-item-title">{{ $t('partner.Residualnode') }}</div>
-                <div class="cardone-body-item-desc">{{
-                    State.payCount >= 300 ? $t('partner.expired') : 300 -
-                        State.payCount
-                  }}
-                </div>
-              </div>
-              <div class="cardone-body-item">
-                <div class="cardone-body-item-title">{{ $t('partner.Nodeprice') }}</div>
-                <div class="cardone-body-item-desc">{{ '3000 ' + 'U' }}</div>
-              </div>
-            </div>
-          </Card>
-          <Card class="cardone-item" :title="$t('partner.Shareinvitation')">
-            <div class="cardone-item-body">
-              <div class="cardone-Share">{{ State.Invlink }}</div>
-              <div class="cardone-btn" @click="copy">
-                <i class="iconfont icon-cope"></i>
-                <span>{{ $t('cope.copelink') }}</span>
-              </div>
-              <div @click="share" class="icontwitter">
-                <i class="iconfont icon-twitter"></i>
-              </div>
-            </div>
-          </Card>
-        </div>
-        <div class="cardtwo">
-          <Card bgc="none" :boxshow="false" padding="0" class="" :title="$t('partner.Nodalinterest')">
-            <div class="cardtwo-item-body" style="background-color: none;">
-              <Card class="cardtwo-item" bradius="10px">
-                <span>1</span>
-                <div>
-                  {{ $t('partner.cardtwotext1') }}
-                </div>
-              </Card>
-              <Card class="cardtwo-item" bradius="10px">
-                <span>2</span>
-                <div>
-                  {{ $t('partner.cardtwotext2') }}
-                </div>
-              </Card>
-              <Card class="cardtwo-item" bradius="10px">
-                <span>3</span>
-                <div>
-                  {{ $t('partner.cardtwotext3') }}
-                </div>
-              </Card>
-            </div>
-          </Card>
-        </div>
-        <div class="cardthree">
-          <Card bgc="none" :boxshow="false" padding="0" class="" :title="$t('partner.Rewardlist')">
-            <Card style="margin-bottom: 10px;" v-for="(item, index) in State.jlData" :key="index" bradius="10px"
-                  v-if="State.jlData[0]?.sub_address">
-              <div class="cardthree-item">
-                <div class="cardthree-text">
-                  {{ item.sub_address ? item.sub_address : $t('partner.Temporarilyabsent') }}
-                </div>
-                <div :class="[item.status ? 'btn-desable' : 'cardthree-btn']"
-                     @click="State.goToSignfunc(item.sub_address, item.status)">
-                  {{ item.status ? $t('partner.Alreadymentioned') : $t('partner.Withdrawcash') + ' 1000U' }}
-                </div>
-              </div>
-            </Card>
-            <Card v-if="!State.jlData[0]?.sub_address" style="text-align: center; font-size: 16px;">
-              {{ $t('partner.Temporarilyabsent') }}
-            </Card>
-          </Card>
-        </div>
-      </div>
+      <div class="alive-light">dkjflksdjfg</div>
     </div>
     <!-- 居中 -->
   </div>
@@ -281,7 +189,6 @@ export default {
             width: 32%;
             margin-bottom: 20px;
             height: 100%;
-
 
             span {
               display: inline-block;

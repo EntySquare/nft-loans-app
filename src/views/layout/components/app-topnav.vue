@@ -413,19 +413,7 @@ nav {
       width: 50px;
     }
 
-    .alive-light {
-      font-size: 26px;
-      margin-left: 10px;
-      white-space: nowrap;
-      background-image: -webkit-linear-gradient(
-        98.28deg,
-        #adfff5 10.61%,
-        rgba(155, 165, 255, 0.99) 54.84%,
-        rgba(216, 166, 255, 0.994896) 100%
-      );
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+
   }
 
   .nav {

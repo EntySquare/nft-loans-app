@@ -1,66 +1,9 @@
 <script setup lang="ts">
 import MainStore from '@/store'
-import request from "@/request";
-import { ElTable, ElMessage } from 'element-plus'
-import { onMounted, ref, computed, nextTick } from 'vue';
+import request from '@/request'
 import Card from '@/components/card/index.vue'
-const State = MainStore()
-// const multipleTableRef = ref<InstanceType<typeof ElTable>>()
-const list = ref([{ ID: 0, Buyer: '', Round: '', SeRound: '', AplValue: 0, UpdateValue: 0, BuyNum: 0, Select: false }])
-
-const AplValueSum =ref(0)
-//提交调整后的金额
-async function getData(password: string, currentDa: string, subroundXiao: string, status: number) {
-  const re = await request.post(`/admin/selectOrderList`, {
-    password, currentDa, subroundXiao, status
-  });//查看预约和购买信息
-  if (re.data.code == 0) {
-    console.log('re:', re)
-    list.value = re.data.json.list
-
-    AplValueSum.value = 0;
-    list.value.forEach((item) => {
-      AplValueSum.value += item.AplValue
-    })
-
-    ElMessage({
-      message: '成功获取数据',
-      type: 'success',
-      duration: 2000
-    })
-  } else {
-    ElMessage.error('～～～')
-  }
-}
-
-//获取屏幕高度
-const getScreenHeight = () => {
-  return window.screen.height - 500
-}
-
-const successFun = () => {
-  dialogVisible.value = false
-  getData(State.password, State.current, State.subroundXi, status.value)
-  State.statusss = status.value
-}
-
-const height = ref()
-const dialogVisible = ref(false)
-const status = ref(0)
-function handleClose(done: any) {
-  console.log('done:', done)
-}
-
-onMounted(() => {
-  height.value = getScreenHeight()
-  if (State.passworddd) {
-    getData(State.passworddd, State.current, State.subroundXi, State.stat)
-  }
-})
-nextTick(() => {
-})
 </script>
-<script  lang="ts">
+<script lang="ts">
 export default {
   name: 'Record'
 }
@@ -68,69 +11,54 @@ export default {
 <template>
   <div class="home">
     <!-- 居中 -->
-    <!-- <div style="height: 50px"></div> -->
     <div class="container">
-      <Card style="margin-bottom: 10px;" bradius="10px">
-        <el-button @click="dialogVisible = true">
-          获取数据
-        </el-button>
-
-
-         <h3 style="padding: 20px">总申请金额 {{AplValueSum}}</h3>
-        <el-dialog v-model="dialogVisible" title="" width="30%">
-          <div style="height: 10px;"></div>
-          <el-input v-model="State.passworddd" placeholder="密码" />
-          <div style="height: 10px;"></div>
-          <el-input v-model="State.currentDa" placeholder="大轮次" />
-          <div style="height: 10px;"></div>
-          <el-input v-model="State.subroundXiao" placeholder="小轮次" />
-          <div style="height: 10px;"></div>
-          <el-radio-group v-model="status">
-            <el-radio :label="0">申请中</el-radio>
-            <el-radio :label="1">申请通过</el-radio>
-            <el-radio :label="4">成功</el-radio>
-          </el-radio-group>
-          <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="dialogVisible = false">取消</el-button>
-              <el-button type="primary" @click="successFun">
-                确认
-              </el-button>
-            </span>
-          </template>
-        </el-dialog>
-        <div class="list_box-center">
-          <div class="list_box" style="flex: 1;">
-            <el-table :data="list" style="width: 100%" :height="height" ref="multipleTableRef">
-              <el-table-column label="钱包" header-align="center" :align="'center'" width="380">
-                <template #default="scope">
-                  <div class="list_box_item_one">{{ scope.row.Buyer }}</div>
-                </template>
-              </el-table-column>
-              <el-table-column label="购买次数" header-align="center" :align="'center'">
-                <template #default="scope">
-                  <div class="list_box_item">{{ scope.row.BuyNum }}</div>
-                </template>
-              </el-table-column>
-              <el-table-column label="轮数" header-align="center" :align="'center'">
-                <template #default="scope">
-                  <div class="list_box_item">{{ scope.row.Round }}</div>
-                </template>
-              </el-table-column>
-              <el-table-column label="子轮数" header-align="center" :align="'center'">
-                <template #default="scope">
-                  <div class="list_box_item">{{ scope.row.SeRound }}</div>
-                </template>
-              </el-table-column>
-              <el-table-column label="预约金额" header-align="center" :align="'center'">
-                <template #default="scope">
-                  <div class="list_box_item">{{ scope.row.AplValue }}</div>
-                </template>
-              </el-table-column>
-            </el-table>
+      <div class="card">
+        <div class="card_title">
+          <div class="card_left">
+            <div class="card_left_dj">
+              <div>我的等级 &nbsp;&nbsp;&nbsp;<span>V1</span></div>
+              <div style="margin-top: 11px">
+                我的UID &nbsp;&nbsp;&nbsp;<span>132**lidfap</span>
+              </div>
+            </div>
+          </div>
+          <div class="card_right">
+            <div class="card_right_rh">
+              <div>邀请人数&nbsp;&nbsp;&nbsp;<span>2314人</span></div>
+              <div style="margin-top: 11px">
+                累计质押次数 &nbsp;&nbsp;&nbsp;<span>21478132</span>
+              </div>
+            </div>
           </div>
         </div>
-      </Card>
+
+        <Card bradius="30px" padding="0px" style="margin-top: 20px">
+          <div class="address">
+            <div class="address_text">
+              <span>邀请地址:</span> <input type="text" />
+              <el-button class="address_text_btu" round>点击复制</el-button>
+            </div>
+          </div>
+        </Card>
+        <div class="title">邀请列表</div>
+        <div class="list">
+          <table class="table">
+            <tbody>
+              <tr v-for="(item, index) in 10" :key="index">
+                <td>UID:&nbsp;&nbsp;&nbsp;23145***fsdkjf</td>
+                <td style="text-align: center">当前等级:&nbsp;&nbsp;V3</td>
+                <td style="text-align: right">质押次数&nbsp;&nbsp;123213次</td>
+
+                <i
+                  class="el-icon-arrow-right"
+                  style="float: right; margin-right: 17px"
+                  >></i
+                >
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
     <!-- 居中 -->
   </div>
@@ -145,56 +73,182 @@ export default {
   .container {
     position: relative;
     z-index: 1; //三级
-    max-width: 1400px;
+    max-width: 1390px;
     width: 100%;
     height: calc(100vh - 100px);
     color: aliceblue;
     display: flex;
     justify-content: center;
     align-items: center;
-
-    .list_box-center {
-      display: flex;
-      gap: 5px;
-
-      .list_box {
-        background-color: #141414;
-        padding: 15px 0;
-        border-radius: 10px;
-
-
-        .list_box_item,
-        .list_box_item_one {
-          padding: 5px 5px;
-          text-align: center;
+    .card {
+      width: 100%;
+      // border: red solid 1px;
+      .card_title {
+        width: 100%;
+        height: 118px;
+        border: rgba(173, 255, 245, 1) solid 1px;
+        background: rgb(16, 6, 62);
+        border-radius: 24px;
+        .card_left {
+          width: 50%;
+          height: 100%;
+          float: left;
+          // border: rgb(208, 255, 0) solid 1px;
+          .card_left_dj {
+            margin-top: 20px;
+            margin-left: 35px;
+            font-family: 'PingFang SC';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 28px;
+            color: #ffffff;
+          }
         }
+        .card_right {
+          width: 50%;
+          height: 100%;
+          float: left;
+          // border: rgb(208, 255, 0) solid 1px;
 
-        .list_box_item_one {
-          background: #1e1e1e;
-          width: 380px;
-        }
-
-        .calculation_box {
-          padding: 5px 12px;
-          padding-bottom: 10px;
-          border-bottom: 1px solid #6f3ccd;
-          display: flex;
-          justify-content: space-between;
-
-          .radio-box {
-            // flex: 1;
-            // border-left: 1px solid #6f3ccd;
-            // border-right: 1px solid #6f3ccd;
-            padding-left: 10px;
-            padding-right: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+          .card_right_rh {
+            margin-top: 20px;
+            margin-left: 35px;
+            font-family: 'PingFang SC';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 28px;
+            color: #ffffff;
           }
         }
       }
-    }
 
+      .address {
+        width: 100%;
+        height: 47px;
+        display: flex;
+        align-items: center;
+        .address_text {
+          // margin-top: 11px;
+          margin-left: 35px;
+          width: 100%;
+          height: 24px;
+          font-family: 'PingFang SC';
+          font-weight: 400;
+          font-size: 20px;
+          line-height: 24px;
+        }
+        .address_text_btu {
+          width: 182px;
+          height: 47px;
+          font-size: 20px;
+          margin-top: -12px;
+          // margin-right: 35px;
+
+          font-style: normal;
+          background: linear-gradient(
+            98.28deg,
+            #66a39b 10.61%,
+            rgba(97, 112, 252, 0.99) 54.84%,
+            rgba(158, 99, 205, 0.994896) 100%
+          );
+          float: right;
+        }
+      }
+      .title {
+        width: 100%;
+        height: 54px;
+        font-family: 'PingFang SC';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        // line-height: 28px;
+        position: relative;
+        top: 22px;
+        color: #adfff5 10.61%, rgba(155, 165, 255, 0.99) 54.84%,
+          rgba(216, 166, 255, 0.994896);
+      }
+      .list {
+        width: 100%;
+        height: 550px;
+        border-radius: 24px;
+        border: rgb(208, 255, 0) solid 1px;
+
+        .table {
+          margin-top: 28px;
+          margin-left: 32.59px;
+          font-size: 16px;
+
+          tbody {
+            display: block;
+            overflow-x: hidden;
+            overflow-y: auto;
+            height: 480px;
+          }
+          tbody tr {
+            display: table;
+            width: 98%;
+            margin-top: 12px;
+            border: #66a39b solid 1px;
+            table-layout: fixed;
+            word-break: break-all;
+            height: 40px;
+            border-radius: 24px;
+            background-blend-mode: overlay;
+            background: linear-gradient(
+              98.93deg,
+              #aafac0 0%,
+              rgba(198, 75, 255, 0) 100%
+            );
+            background-blend-mode: overlay;
+            background: linear-gradient(
+              261.07deg,
+              #ffffff 0%,
+              rgba(0, 0, 0, 0) 100%
+            );
+            background: rgba(255, 255, 255, 0.2);
+          }
+          tbody td {
+            position: relative;
+            left: 15px;
+            color: #ffffff;
+            font-family: 'PingFang SC';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 24px;
+          }
+        }
+        /* 滚动条样式 */
+        table tbody::-webkit-scrollbar {
+          width: 10px;
+        }
+        table tbody::-webkit-scrollbar-thumb {
+          background-color: #01f5f1;
+          border-radius: 5px;
+        }
+        table tbody::-webkit-scrollbar-track {
+          background-color: #004453;
+        }
+        table tbody::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(
+            98.28deg,
+            #66a39b 10.61%,
+            rgba(97, 112, 252, 0.99) 54.84%,
+            rgba(158, 99, 205, 0.994896) 100%
+          );
+        }
+        table tbody::-webkit-scrollbar-thumb:active {
+          background: linear-gradient(
+            98.28deg,
+            #66a39b 10.61%,
+            rgba(97, 112, 252, 0.99) 54.84%,
+            rgba(158, 99, 205, 0.994896) 100%
+          );
+        }
+      }
+    }
   }
 }
 </style>
