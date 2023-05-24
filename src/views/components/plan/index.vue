@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import Card from '@/components/card/index.vue'
 import MainStore from '@/store'
+import { getPlanList, getPlanDetail } from '@/api/plan' //*获取计划列表
 import { ref } from 'vue'
+import { fr } from 'element-plus/es/locale'
 const State = MainStore() //获取store
 const imgData = [
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5711684853279_.pic.jpg',
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5701684853267_.pic.jpg',
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5691684853125_.pic.jpg'
 ]
+
+const getPlanListData = async () => { //*获取计划列表
+  const res = await getPlanList(1) //*使用sync await 异步获取数据
+  console.log(res) //*打印数据
+}
 </script>
 <script lang="ts">
 export default {
