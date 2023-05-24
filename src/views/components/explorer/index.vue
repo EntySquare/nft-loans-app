@@ -1,45 +1,45 @@
 <script setup lang="ts">
-import Card from '@/components/card/index.vue'
-import {ref} from "vue";
-const navValue = ref(0)
-const navList = ['全部', '质押中', '已完成']
-</script>
-<script lang="ts">
 import {getToken} from "@/utils/auth";
 import {covenantInfo, myCovenantFlow, myCovenantFlowRep} from "@/api/benefit";
+import Card from '@/components/card/index.vue'
 import {onMounted, ref} from "vue";
-
-export default {
-  name: 'Partner'
-}
+const navValue = ref(0)
+const navList = ['全部', '质押中', '已完成']
 const cfRes = ref({
   benefit_info: {
     balance: 0,
     last_day_benefit: 0,
     accumulated_benefit: 0,
   },
-  covenant_flows: [{
-    nft_name: "",
-    pledge_id: "",
-    chain_name: "",
-    duration: "",
-    hash: "",
-    interest_rate:0,
-    accumulated_benefit:0,
-    pledge_fee:0,
-    release_fee:0,
-    start_time:0,
-    expire_time:0,
-    nft_release_time:0,
-    flag: "",
-  },],
+  covenant_flows: [],
 } as myCovenantFlowRep);
+let coinList = ref({covenant_flows: []} )
+let cooutList = ref({covenant_flows: []} )
 async function dataInit() {
   try {
-    const token = getToken()
-    const res = await myCovenantFlow(token);
-    cfRes.value.benefit_info = res.data.benefit_info;
-    cfRes.value.covenant_flows = res.data.covenant_flows;
+      // config.headers = { 'Access-Control-Allow-Origin': '*' };
+      // config.headers = {
+      //   'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type',
+      // };
+      // config.headers = {
+      //   'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
+      // };
+      // config.headers = {
+      //   'Content-Type': 'application/x-www-form-urlencoded',
+      // };
+    const res = await myCovenantFlow();
+    console.log(res.data)
+    cfRes.value.benefit_info = res.data.json.benefit_info;
+    cfRes.value.covenant_flows = res.data.json.covenant_flows;
+    for (let i = 0; i < res.data.json.covenant_flows.length; i++) {
+      if (res.data.json.covenant_flows[i].flag == "1"){
+        coinList.value.covenant_flows.push(res.data.json.covenant_flows[i])
+      }
+      if (res.data.json.covenant_flows[i].flag == "2"){
+        cooutList.value.covenant_flows.push(res.data.json.covenant_flows[i])
+      }
+    }
+
   } catch (err) {
     console.log("queryMyCovenantFlow err-------------------");
     console.log(err);
@@ -48,6 +48,11 @@ async function dataInit() {
 onMounted(() => {
   dataInit();
 });
+</script>
+<script lang="ts">
+export default {
+  name: 'Partner'
+}
 </script>
 <template>
   <div class="partner">
@@ -95,7 +100,54 @@ onMounted(() => {
             </div>
           </div>
           <div class="partner_two_box_body" v-if="navValue == 0">
-            <Card v-for="(item, index) in cfRes.covenant_flows.length-1" :key="index">
+            <Card v-for="(item, index) in cfRes.covenant_flows" :key="index">
+              <div class="box_body_item_top">
+                <span>{{  item.chain_name }}</span>
+                <span>{{ item.duration }}</span>
+                <span>日利率{{ item.interest_rate }}%</span>
+                <span class="alive-light">全部</span>
+              </div>
+              <div class="box_body_item_bom">
+                <div class="box_body_item_bom__item">
+                  <span>NFT名称</span>
+                  <span>{{ item.nft_name }}</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>质押ID</span>
+                  <span>{{ item.pledge_id }}</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>交易哈希</span>
+                  <span>{{ item.hash }}</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>到期时间</span>
+                  <span>18/05/2023 12:00:00</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>质押时间</span>
+                  <span>23/05/2023 12:00:00</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>质押费用</span>
+                  <span>{{ item.pledge_fee }} NGT</span>
+                </div>
+                <div class="box_body_item_bom__item">
+                  <span>释放费用</span>
+                  <span>{{ item.release_fee }} NGT</span>
+                </div>
+              </div>
+              <div class="box_body_item_bom_two">
+                <span class="alive-light">取消订单</span>
+                <div>
+                  <span class="alive-light">订单收益</span>
+                  <span class="alive-light">{{ item.accumulated_benefit }} NGT</span>
+                </div>
+              </div>
+            </Card>
+          </div>
+          <div class="partner_two_box_body" v-if="navValue == 1">
+            <Card v-for="(item, index) in coinList.covenant_flows" :key="index">
               <div class="box_body_item_top">
                 <span>{{ item.chain_name }}</span>
                 <span>{{ item.duration }}</span>
@@ -141,56 +193,9 @@ onMounted(() => {
               </div>
             </Card>
           </div>
-          <div class="partner_two_box_body" v-if="navValue == 1">
-            <Card v-for="(item, index) in cfRes.covenant_flows.length-1" :key="index">
-              <div class="box_body_item_top" v-if="item.flag == 1">
-                <span>{{ item.chain_name }}</span>
-                <span>{{ item.duration }}</span>
-                <span>日利率{{ item.interest_rate }}%</span>
-                <span class="alive-light">全部</span>
-              </div>
-              <div class="box_body_item_bom">
-                <div class="box_body_item_bom__item">
-                  <span>NFT名称</span>
-                  <span>{{ item.nft_name }}</span>
-                </div>
-                <div class="box_body_item_bom__item">
-                  <span>质押ID</span>
-                  <span>{{ item.pledge_id }}</span>
-                </div>
-                <div class="box_body_item_bom__item">
-                  <span>交易哈希</span>
-                  <span>{{ item.hash }}</span>
-                </div>
-                <div class="box_body_item_bom__item">
-                  <span>到期时间</span>
-                  <span>18/05/2023 12:00:00</span>
-                </div>
-                <div class="box_body_item_bom__item">
-                  <span>质押时间</span>
-                  <span>23/05/2023 12:00:00</span>
-                </div>
-                <div class="box_body_item_bom__item">
-                  <span>质押费用</span>
-                  <span>{{ item.pledge_fee }} NGT</span>
-                </div>
-                <div class="box_body_item_bom__item">
-                  <span>释放费用</span>
-                  <span>{{ item.release_fee }} NGT</span>
-                </div>
-              </div>
-              <div class="box_body_item_bom_two">
-                <span class="alive-light">取消订单</span>
-                <div>
-                  <span class="alive-light">订单收益</span>
-                  <span class="alive-light">{{ item.accumulated_benefit }} NGT</span>
-                </div>
-              </div>
-            </Card>
-          </div>
           <div class="partner_two_box_body" v-if="navValue == 2">
-            <Card v-for="(item, index) in cfRes.covenant_flows.length-1" :key="index">
-              <div class="box_body_item_top" v-if="item.flag == 2">
+            <Card v-for="(item, index) in cooutList.covenant_flows" :key="index" >
+              <div class="box_body_item_top" >
                 <span>{{ item.chain_name }}</span>
                 <span>{{ item.duration }}</span>
                 <span>日利率{{ item.interest_rate }}%</span>

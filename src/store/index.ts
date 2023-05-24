@@ -137,7 +137,7 @@ let MainStore = defineStore('main', {
                         this.balanceChain = res.balanceChain; //赋值链余额
                         this.ToSignfunc = res.dataToSignfunc // 要签名的数据
                         const resLogin = await login({wallet_address:this.currentAccount}) //*使用sync await 异步获取数据
-                        setToken(resLogin.data.toString()); //*打印数据
+                        setToken(resLogin.data.json);
                         console.log('this.referrerAC:', this.referrerAC)
                         // const { data } = await request.post(`/fetchEarnList`, { //判断是否有转账记录
                         //     address: this.currentAccount, //地址
