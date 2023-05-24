@@ -29,6 +29,7 @@ export default { name: 'AppFooter' }
 <style scoped lang="less">
 .app_footer {
   position: absolute;
+  z-index: 2; //最高级
   bottom: 0;
   left: 0;
   margin-top: 30px;

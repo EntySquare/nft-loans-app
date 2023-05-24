@@ -220,6 +220,7 @@ export default {
   padding-top: 70px;
 
   .container {
+    padding-bottom: 30px;
     width: 100%;
     // height: calc(100vh - 70px);
     height: 100%;

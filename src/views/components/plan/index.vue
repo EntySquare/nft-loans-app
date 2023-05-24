@@ -11,7 +11,8 @@ const imgData = [
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5691684853125_.pic.jpg'
 ]
 
-const getPlanListData = async () => { //*获取计划列表
+const getPlanListData = async () => {
+  //*获取计划列表
   const res = await getPlanList(1) //*使用sync await 异步获取数据
   console.log(res) //*打印数据
 }
@@ -189,6 +190,7 @@ export default {
     position: relative;
     z-index: 1; //三级
     width: 100%;
+    padding-bottom: 20px;
     color: aliceblue;
     display: flex;
     flex-direction: column;
