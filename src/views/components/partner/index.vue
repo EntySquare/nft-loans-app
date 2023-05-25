@@ -4,8 +4,6 @@ import {onMounted, ref} from 'vue'
 import {myNgt, myTransactionsRep} from "@/api/flow";
 
 const navValue = ref(0)
-let isModal1Visible = false
-let isModal2Visible = false
 const navList = ['全部', '充值', '提现']
 const txsRes = ref({
   benefit_info: {
@@ -15,6 +13,7 @@ const txsRes = ref({
   },
   transactions: [],
 } as myTransactionsRep);
+let chainValue =  ref("选择公链")
 let depositList = ref({transactions: []} )
 let withdrawList = ref({transactions: []} )
 async function dataInit() {
@@ -47,20 +46,7 @@ async function dataInit() {
     console.log(err);
   }
 }
-const deposit = () => {
-  isModal1Visible = true;
-  console.log("deposit");
-};
-const withdraw = () => {
-  isModal2Visible = true;
-  console.log("withdraw");
-};
-const closeModal1 = () => {
-  isModal1Visible = false;
-};
-const closeModal2 = () => {
-  isModal2Visible = false;
-};
+
 onMounted(() => {
   dataInit();
 });
@@ -98,22 +84,8 @@ export default {
             </div>
             <div class="partner_one_box_item">
               <div class="partner_one_box_item_btn">
-                <span @click="deposit">充值</span>
-                <div class="modal" v-if="isModal1Visible">
-                  <div class="modal-content">
-                    <span class="close" @click="closeModal1">&times;</span>
-                    <h2>弹窗标题</h2>
-                    <p>这是弹窗的内容。</p>
-                  </div>
-                </div>
-                <span @click="withdraw">提现</span>
-                <div class="modal" v-if="isModal2Visible">
-                  <div class="modal-content">
-                    <span class="close" @click="closeModal2">&times;</span>
-                    <h2>弹窗标题</h2>
-                    <p>这是弹窗的内容。</p>
-                  </div>
-                </div>
+                <span @click="navValue = 3">充值</span>
+                <span @click="navValue = 4">提现</span>
               </div>
             </div>
           </div>
@@ -237,6 +209,67 @@ export default {
               </div>
             </Card>
           </div>
+          <div class="partner_cross_box_body" v-if="navValue == 3">
+            <Card >
+              <div class="partner_cross_middle">
+                  <div class="partner_cross_input">
+                    <input class = "partner_cross_input_text" type="text" placeholder="   请输入数量" />
+                  </div>
+                <el-dropdown
+                    trigger="click"
+                >
+                  <div  class="partner_cross_select">
+                    <div
+                        class="partner_cross_select_text"
+                    >
+                      {{chainValue}}
+                    </div>
+                  </div>
+                    <div class="partner_cross_select_tri"></div>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item @click="chainValue = 'Polygon'">Polygon</el-dropdown-item>
+                        <el-dropdown-item @click="chainValue = 'ETH'"> ETH </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+                  <div class="partner_cross_button">
+                    <div class="partner_cross_button_text">立即充值</div>
+                  </div>
+              </div>
+            </Card>
+          </div>
+          <div class="partner_cross_box_body" v-if="navValue == 4">
+            <Card >
+              <div class="partner_cross_middle">
+                <div class="partner_cross_input">
+                  <input class = "partner_cross_input_text" type="text" placeholder="   请输入数量" />
+                </div>
+                <el-dropdown
+
+                    trigger="click"
+                >
+                  <div  class="partner_cross_select">
+                  <div
+                      class="partner_cross_select_text"
+                  >
+                    {{chainValue}}
+                  </div>
+                  </div>
+                  <div class="partner_cross_select_tri"></div>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item @click="chainValue = 'Polygon'">Polygon</el-dropdown-item>
+                      <el-dropdown-item @click="chainValue = 'ETH'">ETH</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+                <div class="partner_cross_button">
+                  <div class="partner_cross_button_text">立即提现</div>
+                </div>
+              </div>
+            </Card>
+          </div>
         </Card>
         <!-- 质押订单--end -->
       </div>
@@ -246,30 +279,11 @@ export default {
 </template>
 
 <style scoped lang="less">
-.modal {
-  display: block;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+.button {
+  border: 1px solid;
+  border-image-source: linear-gradient(98.93deg, #AAFAC0 0%, rgba(198, 75, 255, 0) 100%);
 }
 
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-}
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}
 .partner {
   // background-color: @xtxColor;
   width: 100%;
@@ -416,6 +430,173 @@ export default {
               font-size: 16px;
             }
           }
+        }
+        .partner_cross_box_body {
+          box-sizing: border-box;
+
+          position: absolute;
+          width: 1180px;
+          height: 210px;
+          top: 60px;
+
+          background: rgba(255, 255, 255, 0.2);
+          backdrop-filter: blur(50px);
+          /* Note: backdrop-filter has minimal browser support */
+
+          border-radius: 24px;
+          .partner_cross_middle {
+            height: 60px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            .partner_cross_input {
+              width: 629px;
+              height: 67px;
+
+              /* border line */
+
+              background: linear-gradient(98.28deg, rgba(102, 163, 155, 0.3) 10.61%, rgba(97, 112, 252, 0.297) 54.84%, rgba(158, 99, 205, 0.298469) 100%);
+              background-blend-mode: overlay;
+              /* InnerShadow-Box */
+              box-shadow: 2px 2px 3px 0px rgba(101, 0, 118, 0.25) inset;
+
+
+              border-radius: 12px;
+
+
+              order: 0;
+              flex-grow: 0;
+              .partner_cross_input_text {
+                position: fixed;
+                width: 569px;
+                left: 30px;
+                height: 67px;
+                border-radius: 12px;
+                background: none;
+                font-family: 'PingFang SC';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 20px;
+                line-height: 16px;
+                /* identical to box height, or 80% */
+
+                display: flex;
+                align-items: center;
+
+                /* Font-Light-Inactive */
+
+                color: rgba(255, 255, 255, 0.8);
+
+                opacity: 0.8;
+              }
+            }
+            .partner_cross_select{
+              /* Kinsta */
+
+
+              box-sizing: border-box;
+
+              width: 167px;
+              height: 63px;
+
+              background: rgba(255, 255, 255, 0.2);
+              backdrop-filter: blur(50px);
+              /* Note: backdrop-filter has minimal browser support */
+
+              border-radius: 12px;
+
+              /* Inside auto layout */
+
+              flex: none;
+              order: 1;
+              flex-grow: 0;
+              .partner_cross_select_text{
+                position: absolute;
+                width: 80px;
+                height: 12px;
+                left: 31px;
+                top: 26px;
+
+                font-family: 'PingFang SC';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 20px;
+                line-height: 16px;
+                /* identical to box height, or 80% */
+
+                display: flex;
+                align-items: center;
+
+                color: #FFFFFF;
+              }
+              .partner_cross_select_tri{
+                /* Rectangle 18251 */
+
+                position: absolute;
+                width: 22.08px;
+                height: 22.08px;
+                left: 135px;
+                top: 25.62px;
+
+                /* Font-Fill-Bright */
+                background: linear-gradient(98.28deg, #ADFFF5 10.61%, rgba(155, 165, 255, 0.99) 54.84%, rgba(216, 166, 255, 0.994896) 100%);
+                border-radius: 2px;
+                transform: rotate(-45deg);
+
+              }
+
+            }
+            .partner_cross_button{
+              /* Kinsta */
+
+              box-sizing: border-box;
+
+              position: fixed;
+
+              /* button-fill */
+              background: linear-gradient(98.28deg, #66A39B 10.61%, rgba(97, 112, 252, 0.99) 54.84%, rgba(158, 99, 205, 0.994896) 100%);
+              border-radius: 12px;
+
+
+              /* 开始质押 */
+
+              position: absolute;
+              width: 167px;
+              height: 63px;
+              left:840px;
+              top: 6px;
+              border-radius: 12px;
+
+              /* Inside auto layout */
+
+              flex: none;
+              order: 1;
+              flex-grow: 0;
+              .partner_cross_button_text{
+                position: absolute;
+                width: 80px;
+                height: 12px;
+                left: 31px;
+                top: 26px;
+
+                font-family: 'PingFang SC';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 20px;
+                line-height: 16px;
+                /* identical to box height, or 80% */
+
+                display: flex;
+                align-items: center;
+
+                color: #FFFFFF;
+              }
+
+
+            }
+
+          }
+
         }
       }
     }
