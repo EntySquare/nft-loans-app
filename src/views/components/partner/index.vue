@@ -1,9 +1,69 @@
 <script setup lang="ts">
 import Card from '@/components/card/index.vue'
-import { ref } from 'vue'
+import {onMounted, ref} from 'vue'
+import {myNgt, myTransactionsRep} from "@/api/flow";
 
 const navValue = ref(0)
+let isModal1Visible = false
+let isModal2Visible = false
 const navList = ['全部', '充值', '提现']
+const txsRes = ref({
+  benefit_info: {
+    balance: 0,
+    last_day_benefit: 0,
+    accumulated_benefit: 0,
+  },
+  transactions: [],
+} as myTransactionsRep);
+let depositList = ref({transactions: []} )
+let withdrawList = ref({transactions: []} )
+async function dataInit() {
+  try {
+    // config.headers = { 'Access-Control-Allow-Origin': '*' };
+    // config.headers = {
+    //   'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type',
+    // };
+    // config.headers = {
+    //   'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
+    // };
+    // config.headers = {
+    //   'Content-Type': 'application/x-www-form-urlencoded',
+    // };
+    const res = await myNgt();
+    console.log(res.data)
+    txsRes.value.benefit_info = res.data.json.benefit_info;
+    txsRes.value.transactions = res.data.json.transactions;
+    for (let i = 0; i < res.data.json.transactions.length; i++) {
+      if (res.data.json.transactions[i].transaction_type == "1"){
+        depositList.value.transactions.push(res.data.json.transactions[i])
+      }
+      if (res.data.json.transactions[i].transaction_type == "2"){
+        withdrawList.value.transactions.push(res.data.json.transactions[i])
+      }
+    }
+
+  } catch (err) {
+    console.log("query myNgt err-------------------");
+    console.log(err);
+  }
+}
+const deposit = () => {
+  isModal1Visible = true;
+  console.log("deposit");
+};
+const withdraw = () => {
+  isModal2Visible = true;
+  console.log("withdraw");
+};
+const closeModal1 = () => {
+  isModal1Visible = false;
+};
+const closeModal2 = () => {
+  isModal2Visible = false;
+};
+onMounted(() => {
+  dataInit();
+});
 </script>
 <script lang="ts">
 export default {
@@ -21,25 +81,39 @@ export default {
             <div class="partner_one_box_item">
               <div class="partner_one_box_item_top alive-light">持有</div>
               <div class="partner_one_box_item_bom alive-light">
-                213482742 <span>NGT</span>
+                {{ txsRes.benefit_info.balance }} <span>NGT</span>
               </div>
             </div>
             <div class="partner_one_box_item">
               <div class="partner_one_box_item_top alive-light">昨日收益</div>
               <div class="partner_one_box_item_bom alive-light">
-                324 <span>NGT</span>
+                {{ txsRes.benefit_info.last_day_benefit }} <span>NGT</span>
               </div>
             </div>
             <div class="partner_one_box_item">
               <div class="partner_one_box_item_top alive-light">累计总收益</div>
               <div class="partner_one_box_item_bom alive-light">
-                231324 <span>NGT</span>
+                {{ txsRes.benefit_info.accumulated_benefit }} <span>NGT</span>
               </div>
             </div>
             <div class="partner_one_box_item">
               <div class="partner_one_box_item_btn">
-                <span>充值</span>
-                <span>提现</span>
+                <span @click="deposit">充值</span>
+                <div class="modal" v-if="isModal1Visible">
+                  <div class="modal-content">
+                    <span class="close" @click="closeModal1">&times;</span>
+                    <h2>弹窗标题</h2>
+                    <p>这是弹窗的内容。</p>
+                  </div>
+                </div>
+                <span @click="withdraw">提现</span>
+                <div class="modal" v-if="isModal2Visible">
+                  <div class="modal-content">
+                    <span class="close" @click="closeModal2">&times;</span>
+                    <h2>弹窗标题</h2>
+                    <p>这是弹窗的内容。</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -64,142 +138,101 @@ export default {
             </div>
           </div>
           <div class="partner_two_box_body" v-if="navValue == 0">
-            <Card v-for="(item, index) in 4" :key="index">
+            <Card v-for="(item, index) in txsRes.transactions" :key="index">
               <div class="box_body_item_top">
-                <span>Polygon</span>
-                <span>7天</span>
-                <span>日利率0.7%</span>
-                <span class="alive-light">全部</span>
+                <span v-if="item.transaction_type == 1">充值</span>
+                <span v-if="item.transaction_type == 2">提现</span>
+                <span>{{ item.num }}NGT</span>
+                <span >{{  item.chain }}</span>
+                <span v-if="item.status == 1" class="alive-light">确认中</span>
+                <span v-if="item.status == 2" class="alive-light">已完成</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
-                  <span>NFT名称</span>
-                  <span>Vermillion Bird</span>
-                </div>
-                <div class="box_body_item_bom__item">
-                  <span>质押ID</span>
-                  <span>asd**35asda</span>
+                  <span>充值地址</span>
+                  <span>{{  item.address }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>交易哈希</span>
-                  <span>01dfae6e5d4d90d9892622325959afbe:7050461</span>
+                  <span>{{  item.hash }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>到期时间</span>
+                  <span>申请时间</span>
                   <span>18/05/2023 12:00:00</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>质押时间</span>
+                  <span>到账时间</span>
                   <span>23/05/2023 12:00:00</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>质押费用</span>
-                  <span>122 NGT</span>
-                </div>
-                <div class="box_body_item_bom__item">
-                  <span>释放费用</span>
+                  <span>手续费</span>
                   <span>641 NGT</span>
-                </div>
-              </div>
-              <div class="box_body_item_bom_two">
-                <span class="alive-light">取消订单</span>
-                <div>
-                  <span class="alive-light">订单收益</span>
-                  <span class="alive-light">2734 NGT</span>
                 </div>
               </div>
             </Card>
           </div>
           <div class="partner_two_box_body" v-if="navValue == 1">
-            <Card v-for="(item, index) in 3" :key="index">
+            <Card v-for="(item, index) in depositList.transactions" :key="index">
               <div class="box_body_item_top">
-                <span>Polygon</span>
-                <span>7天</span>
-                <span>日利率0.7%</span>
-                <span class="alive-light">质押中</span>
+                <span>充值</span>
+                <span>{{ item.num }}NGT</span>
+                <span >{{  item.chain }}</span>
+                <span v-if="item.status == 1" class="alive-light">确认中</span>
+                <span v-if="item.status == 2" class="alive-light">已完成</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
-                  <span>NFT名称</span>
-                  <span>Vermillion Bird</span>
-                </div>
-                <div class="box_body_item_bom__item">
-                  <span>质押ID</span>
-                  <span>asd**35asda</span>
+                  <span>充值地址</span>
+                  <span>{{  item.address }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>交易哈希</span>
-                  <span>01dfae6e5d4d90d9892622325959afbe:7050461</span>
+                  <span>{{  item.hash }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>到期时间</span>
+                  <span>申请时间</span>
                   <span>18/05/2023 12:00:00</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>质押时间</span>
+                  <span>到账时间</span>
                   <span>23/05/2023 12:00:00</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>质押费用</span>
-                  <span>122 NGT</span>
-                </div>
-                <div class="box_body_item_bom__item">
-                  <span>释放费用</span>
+                  <span>手续费</span>
                   <span>641 NGT</span>
-                </div>
-              </div>
-              <div class="box_body_item_bom_two">
-                <span class="alive-light">取消订单</span>
-                <div>
-                  <span class="alive-light">订单收益</span>
-                  <span class="alive-light">2734 NGT</span>
                 </div>
               </div>
             </Card>
           </div>
           <div class="partner_two_box_body" v-if="navValue == 2">
-            <Card v-for="(item, index) in 5" :key="index">
+            <Card v-for="(item, index) in withdrawList.transactions" :key="index">
               <div class="box_body_item_top">
-                <span>Polygon</span>
-                <span>7天</span>
-                <span>日利率0.7%</span>
-                <span class="alive-light">已完成</span>
+                <span>提现</span>
+                <span>{{ item.num }}NGT</span>
+                <span >{{  item.chain }}</span>
+                <span v-if="item.status == 1" class="alive-light">确认中</span>
+                <span v-if="item.status == 2" class="alive-light">已完成</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
-                  <span>NFT名称</span>
-                  <span>Vermillion Bird</span>
-                </div>
-                <div class="box_body_item_bom__item">
-                  <span>质押ID</span>
-                  <span>asd**35asda</span>
+                  <span>充值地址</span>
+                  <span>{{  item.address }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>交易哈希</span>
-                  <span>01dfae6e5d4d90d9892622325959afbe:7050461</span>
+                  <span>{{  item.hash }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>到期时间</span>
+                  <span>申请时间</span>
                   <span>18/05/2023 12:00:00</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>质押时间</span>
+                  <span>到账时间</span>
                   <span>23/05/2023 12:00:00</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>质押费用</span>
-                  <span>122 NGT</span>
-                </div>
-                <div class="box_body_item_bom__item">
-                  <span>释放费用</span>
+                  <span>手续费</span>
                   <span>641 NGT</span>
-                </div>
-              </div>
-              <div class="box_body_item_bom_two">
-                <span class="alive-light">取消订单</span>
-                <div>
-                  <span class="alive-light">订单收益</span>
-                  <span class="alive-light">2734 NGT</span>
                 </div>
               </div>
             </Card>
@@ -213,6 +246,30 @@ export default {
 </template>
 
 <style scoped lang="less">
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
 .partner {
   // background-color: @xtxColor;
   width: 100%;
