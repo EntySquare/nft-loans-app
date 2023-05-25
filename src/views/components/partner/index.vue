@@ -2,7 +2,9 @@
 import Card from '@/components/card/index.vue'
 import {onMounted, ref} from 'vue'
 import {myNgt, myTransactionsRep} from "@/api/flow";
-
+import Clipboard from "vue-clipboard3";
+import {ElMessage} from "element-plus";
+const { toClipboard } = Clipboard()
 const navValue = ref(0)
 const navList = ['全部', '充值', '提现']
 const txsRes = ref({
@@ -46,7 +48,14 @@ async function dataInit() {
     console.log(err);
   }
 }
-
+const copy = async (hash) => {
+  try {
+    const res = await toClipboard(hash)
+    ElMessage.success('复制成功')
+  } catch (error) {
+    ElMessage.error('复制失败')
+  }
+}
 onMounted(() => {
   dataInit();
 });
@@ -126,7 +135,12 @@ export default {
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>交易哈希</span>
-                  <span>{{  item.hash }}</span>
+                  <span>{{ item.hash.slice(0, 32)  }}********
+                  <el-button class="copyBtn" @click="copy(item.hash)" round><img
+                      src="../../../assets/images/VectorMini.png"
+                      alt=""
+                  /></el-button>
+                  </span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>申请时间</span>
@@ -159,7 +173,12 @@ export default {
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>交易哈希</span>
-                  <span>{{  item.hash }}</span>
+                  <span>{{ item.hash.slice(0, 32)  }}********
+                  <el-button class="copyBtn" @click="copy(item.hash)" round><img
+                      src="../../../assets/images/VectorMini.png"
+                      alt=""
+                  /></el-button>
+                  </span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>申请时间</span>
@@ -192,7 +211,12 @@ export default {
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>交易哈希</span>
-                  <span>{{  item.hash }}</span>
+                  <span>{{ item.hash.slice(0, 32)  }}********
+                  <el-button class="copyBtn" @click="copy(item.hash)" round><img
+                      src="../../../assets/images/VectorMini.png"
+                      alt=""
+                  /></el-button>
+                  </span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>申请时间</span>
@@ -420,6 +444,10 @@ export default {
                 &:last-child {
                   color: #ffffff50;
                 }
+              }
+              .copyBtn{
+                width: 40px;
+                height: 40px;
               }
             }
           }

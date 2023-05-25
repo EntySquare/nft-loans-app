@@ -5,7 +5,8 @@ import MainStore from '@/store'
 import { ref } from 'vue'
 import { fr } from 'element-plus/es/locale'
 const State = MainStore() //获取store
-
+let chainValue =  ref("选择公链")
+let durationValue =  ref("质押天数")
 const imgData = [
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5711684853279_.pic.jpg',
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5701684853267_.pic.jpg',
@@ -107,15 +108,12 @@ export default {
                   justify-content: center;
                 "
               >
-                选择公链
+                {{chainValue}}
               </div>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item>Action 1</el-dropdown-item>
-                  <el-dropdown-item> Action 2 </el-dropdown-item>
-                  <el-dropdown-item>Action 3</el-dropdown-item>
-                  <el-dropdown-item>Action 4</el-dropdown-item>
-                  <el-dropdown-item>Action 5</el-dropdown-item>
+                  <el-dropdown-item @click="chainValue = 'Polygon'">Polygon</el-dropdown-item>
+                  <el-dropdown-item @click="chainValue = 'ETH'"> ETH </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -133,15 +131,12 @@ export default {
                   justify-content: center;
                 "
               >
-                质押天数
+                {{durationValue}}
               </div>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item>Action 1</el-dropdown-item>
-                  <el-dropdown-item> Action 2 </el-dropdown-item>
-                  <el-dropdown-item>Action 3</el-dropdown-item>
-                  <el-dropdown-item>Action 4</el-dropdown-item>
-                  <el-dropdown-item>Action 5</el-dropdown-item>
+                  <el-dropdown-item @click="durationValue = '7天'">7天</el-dropdown-item>
+                  <el-dropdown-item @click="durationValue = '30天'"> 30天 </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
