@@ -4,7 +4,9 @@ import {onMounted, ref} from 'vue'
 import {myNgt, myTransactionsRep} from "@/api/flow";
 import Clipboard from "vue-clipboard3";
 import {ElMessage} from "element-plus";
+import MainStore from "@/store";
 const { toClipboard } = Clipboard()
+const State = MainStore() //获取store
 const navValue = ref(0)
 const navList = ['全部', '充值', '提现']
 const txsRes = ref({
@@ -16,6 +18,7 @@ const txsRes = ref({
   transactions: [],
 } as myTransactionsRep);
 let chainValue =  ref("选择公链")
+const num = ref(0)
 let depositList = ref({transactions: []} )
 let withdrawList = ref({transactions: []} )
 async function dataInit() {
@@ -54,6 +57,27 @@ const copy = async (hash) => {
     ElMessage.success('复制成功')
   } catch (error) {
     ElMessage.error('复制失败')
+  }
+}
+
+const deposit = async () => {
+  try {
+    console.log(num.value)
+    console.log(State.account.toString())
+    console.log(chainValue.value.toString())
+    ElMessage.success('充值成功')
+  } catch (error) {
+    ElMessage.error('充值失败')
+  }
+}
+const withdraw = async () => {
+  try {
+    console.log(num.value)
+    console.log(State.account.toString())
+    console.log(chainValue.value.toString())
+    ElMessage.success('提现成功')
+  } catch (error) {
+    ElMessage.error('提现失败')
   }
 }
 onMounted(() => {
@@ -237,7 +261,7 @@ export default {
             <Card >
               <div class="partner_cross_middle">
                   <div class="partner_cross_input">
-                    <input class = "partner_cross_input_text" type="text" placeholder="   请输入数量" />
+                    <input class = "partner_cross_input_text" type="text" v-model="num" placeholder="   请输入数量" />
                   </div>
                 <el-dropdown
                     trigger="click"
@@ -252,13 +276,13 @@ export default {
                     <div class="partner_cross_select_tri"></div>
                     <template #dropdown>
                       <el-dropdown-menu>
-                        <el-dropdown-item @click="chainValue = 'Polygon'">Polygon</el-dropdown-item>
+                        <el-dropdown-item @click="chainValue = 'Polygon'" >Polygon</el-dropdown-item>
                         <el-dropdown-item @click="chainValue = 'ETH'"> ETH </el-dropdown-item>
                       </el-dropdown-menu>
                     </template>
                   </el-dropdown>
                   <div class="partner_cross_button">
-                    <div class="partner_cross_button_text">立即充值</div>
+                    <div class="partner_cross_button_text" @click="deposit()">立即充值</div>
                   </div>
               </div>
             </Card>
@@ -267,7 +291,7 @@ export default {
             <Card >
               <div class="partner_cross_middle">
                 <div class="partner_cross_input">
-                  <input class = "partner_cross_input_text" type="text" placeholder="   请输入数量" />
+                  <input class = "partner_cross_input_text" type="text" v-model="num" placeholder="   请输入数量" />
                 </div>
                 <el-dropdown
 
@@ -289,7 +313,7 @@ export default {
                   </template>
                 </el-dropdown>
                 <div class="partner_cross_button">
-                  <div class="partner_cross_button_text">立即提现</div>
+                  <div class="partner_cross_button_text" @click="withdraw">立即提现</div>
                 </div>
               </div>
             </Card>

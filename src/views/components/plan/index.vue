@@ -4,6 +4,7 @@ import MainStore from '@/store'
 //import {login } from '@/api/user' //*获取计划列表
 import { ref } from 'vue'
 import { fr } from 'element-plus/es/locale'
+import {ElMessage} from "element-plus";
 const State = MainStore() //获取store
 let chainValue =  ref("选择公链")
 let durationValue =  ref("质押天数")
@@ -12,7 +13,14 @@ const imgData = [
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5701684853267_.pic.jpg',
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5691684853125_.pic.jpg'
 ]
-
+const pledgeNft = async (id) => {
+  try {
+    console.log('质押nft id:'+id)
+    ElMessage.success('质押成功')
+  } catch (error) {
+    ElMessage.error('质押失败')
+  }
+}
 // const loginRequest = async () => {
 //   //*获取计划列表
 //   const data = {address:State.account}
@@ -142,7 +150,7 @@ export default {
             </el-dropdown>
 
             <div class="three_middle_dropdown border_my">
-              <div style="height: 30px">开始质押</div>
+              <div style="height: 30px" @click="pledgeNft">开始质押</div>
             </div>
           </div>
           <div class="three_bom">
