@@ -6,7 +6,8 @@ import axios from 'axios'
 // const baseUrl = 'http://192.168.10.14:3001';
 // const baseUrl = 'http://192.168.10.23:3001';
 // const baseUrl = 'http://192.168.10.22:3001';
- const baseUrl = 'http://127.0.0.1:4000';
+// const baseUrl = 'http://127.0.0.1:4000';
+ const baseUrl = 'https://metagalaxylands.com';
 let request = axios.create({
     baseURL: baseUrl,
 
