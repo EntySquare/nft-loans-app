@@ -162,7 +162,7 @@ export default {
                   src="https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5731684853378_.pic.jpg"
                   alt=""
                 />
-                <div class="three_bom_box_itemt_desc">0.5% 每日</div>
+                <div class="three_bom_box_itemt_desc">0.6% 每日</div>
               </div>
               <div class="three_bom_box_itemt">
                 <div class="three_bom_box_itemt_text alive-light">朱雀</div>
@@ -170,7 +170,7 @@ export default {
                   src="https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5741684853386_.pic.jpg"
                   alt=""
                 />
-                <div class="three_bom_box_itemt_desc">0.5% 每日</div>
+                <div class="three_bom_box_itemt_desc">0.7% 每日</div>
               </div>
             </div>
           </div>
