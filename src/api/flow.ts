@@ -1,6 +1,5 @@
 import request from '@/request'
 import {getToken} from "@/utils/auth";
-import {benefitInfo} from "@/api/benefit"; // 引入封装好的 axios 请求
 // type MyNgtResp struct {
 //     BenefitInfo  BenefitInfo       `json:"benefit_info"`
 //     Transactions []TransactionInfo `json:"transactions"`

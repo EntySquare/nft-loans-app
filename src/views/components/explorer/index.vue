@@ -14,10 +14,10 @@ const cfRes = ref({
     last_day_benefit: 0,
     accumulated_benefit: 0,
   },
-  covenant_flows: [],
+  covenant_flows: []as covenantInfo[],
 } as myCovenantFlowRep);
-let coinList = ref({covenant_flows: []} )
-let cooutList = ref({covenant_flows: []} )
+let coinList = ref({covenant_flows: []as covenantInfo[]} )
+let cooutList = ref({covenant_flows: []as covenantInfo[]} )
 async function dataInit() {
   try {
       // config.headers = { 'Access-Control-Allow-Origin': '*' };
@@ -48,7 +48,7 @@ async function dataInit() {
     console.log(err);
   }
 }
-const copy = async (hash) => {
+const copy = async (hash:string) => {
   try {
     const res = await toClipboard(hash)
     ElMessage.success('复制成功')

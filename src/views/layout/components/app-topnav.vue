@@ -285,10 +285,10 @@ export default { name: 'AppTopnav' }
               <div @click="setLang" class="dropdown-item">
                 {{ locale == 'zh' ? '中文' : 'EN' }}
                 <div v-if="locale == 'zh'">
-                  <img class="nav-item" src="src/assets/images/en.png" />
+                  <img class="nav-item" src="../../../assets/en.png" />
                 </div>
                 <div v-else class="imgen">
-                  <img class="nav-item" src="src/assets/images/zh.png" />
+                  <img class="nav-item" src="../../../assets/zh.png" />
                 </div>
               </div>
             </el-dropdown-item>
@@ -538,7 +538,6 @@ nav {
       right: 0;
       bottom: 0;
       left: 0;
-      background-image: url('@/assets/images/earth.png');
       background-size: cover;
       background-repeat: no-repeat;
     }

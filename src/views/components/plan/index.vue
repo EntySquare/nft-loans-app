@@ -13,7 +13,8 @@ const imgData = [
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5701684853267_.pic.jpg',
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5691684853125_.pic.jpg'
 ]
-const pledgeNft = async (id) => {
+const id = ref("")
+const pledgeNft = async (id: string) => {
   try {
     console.log('质押nft id:'+id)
     ElMessage.success('质押成功')
@@ -100,7 +101,7 @@ export default {
           </div>
           <div class="three_middle">
             <div class="three_middle_input border_my">
-              <input type="text" placeholder="请输入ID" />
+              <input type="text" v-model="id" placeholder="请输入ID" />
             </div>
 
             <el-dropdown
@@ -150,7 +151,7 @@ export default {
             </el-dropdown>
 
             <div class="three_middle_dropdown border_my">
-              <div style="height: 30px" @click="pledgeNft">开始质押</div>
+              <div style="height: 30px" @click="pledgeNft(id)">开始质押</div>
             </div>
           </div>
           <div class="three_bom">

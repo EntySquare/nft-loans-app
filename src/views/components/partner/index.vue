@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Card from '@/components/card/index.vue'
 import {onMounted, ref} from 'vue'
-import {myNgt, myTransactionsRep} from "@/api/flow";
+import {myNgt, myTransactionsRep, transactionInfo} from "@/api/flow";
 import Clipboard from "vue-clipboard3";
 import {ElMessage} from "element-plus";
 import MainStore from "@/store";
@@ -15,12 +15,12 @@ const txsRes = ref({
     last_day_benefit: 0,
     accumulated_benefit: 0,
   },
-  transactions: [],
+  transactions: []as transactionInfo[],
 } as myTransactionsRep);
 let chainValue =  ref("选择公链")
 const num = ref(0)
-let depositList = ref({transactions: []} )
-let withdrawList = ref({transactions: []} )
+let depositList = ref({transactions: []as transactionInfo[]} )
+let withdrawList = ref({transactions: []as transactionInfo[]} )
 async function dataInit() {
   try {
     // config.headers = { 'Access-Control-Allow-Origin': '*' };
@@ -51,7 +51,7 @@ async function dataInit() {
     console.log(err);
   }
 }
-const copy = async (hash) => {
+const copy = async (hash:string) => {
   try {
     const res = await toClipboard(hash)
     ElMessage.success('复制成功')
@@ -145,12 +145,12 @@ export default {
           <div class="partner_two_box_body" v-if="navValue == 0">
             <Card v-for="(item, index) in txsRes.transactions" :key="index">
               <div class="box_body_item_top">
-                <span v-if="item.transaction_type == 1">充值</span>
-                <span v-if="item.transaction_type == 2">提现</span>
+                <span v-if="item.transaction_type == '1'">充值</span>
+                <span v-if="item.transaction_type == '2'">提现</span>
                 <span>{{ item.num }}NGT</span>
                 <span >{{  item.chain }}</span>
-                <span v-if="item.status == 1" class="alive-light">确认中</span>
-                <span v-if="item.status == 2" class="alive-light">已完成</span>
+                <span v-if="item.status == '1'" class="alive-light">确认中</span>
+                <span v-if="item.status == '2'" class="alive-light">已完成</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
@@ -187,8 +187,8 @@ export default {
                 <span>充值</span>
                 <span>{{ item.num }}NGT</span>
                 <span >{{  item.chain }}</span>
-                <span v-if="item.status == 1" class="alive-light">确认中</span>
-                <span v-if="item.status == 2" class="alive-light">已完成</span>
+                <span v-if="item.status == '1'" class="alive-light">确认中</span>
+                <span v-if="item.status == '2'" class="alive-light">已完成</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
@@ -225,8 +225,8 @@ export default {
                 <span>提现</span>
                 <span>{{ item.num }}NGT</span>
                 <span >{{  item.chain }}</span>
-                <span v-if="item.status == 1" class="alive-light">确认中</span>
-                <span v-if="item.status == 2" class="alive-light">已完成</span>
+                <span v-if="item.status == '1'" class="alive-light">确认中</span>
+                <span v-if="item.status == '2'" class="alive-light">已完成</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
