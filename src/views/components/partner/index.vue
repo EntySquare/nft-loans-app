@@ -98,27 +98,27 @@ export default {
         <Card>
           <div class="partner_one_box">
             <div class="partner_one_box_item">
-              <div class="partner_one_box_item_top alive-light">持有</div>
+              <div class="partner_one_box_item_top alive-light">{{ $t('explorer.balance') }}</div>
               <div class="partner_one_box_item_bom alive-light">
                 {{ txsRes.benefit_info.balance }} <span>NGT</span>
               </div>
             </div>
             <div class="partner_one_box_item">
-              <div class="partner_one_box_item_top alive-light">昨日收益</div>
+              <div class="partner_one_box_item_top alive-light">{{ $t('explorer.yesterdayIncome') }}</div>
               <div class="partner_one_box_item_bom alive-light">
                 {{ txsRes.benefit_info.last_day_benefit }} <span>NGT</span>
               </div>
             </div>
             <div class="partner_one_box_item">
-              <div class="partner_one_box_item_top alive-light">累计总收益</div>
+              <div class="partner_one_box_item_top alive-light">{{ $t('explorer.accumulateIncome') }}</div>
               <div class="partner_one_box_item_bom alive-light">
                 {{ txsRes.benefit_info.accumulated_benefit }} <span>NGT</span>
               </div>
             </div>
             <div class="partner_one_box_item">
               <div class="partner_one_box_item_btn">
-                <span @click="navValue = 3">充值</span>
-                <span @click="navValue = 4">提现</span>
+                <span @click="navValue = 3">{{ $t('partner.navList2') }}</span>
+                <span @click="navValue = 4">{{ $t('partner.navList3') }}</span>
               </div>
             </div>
           </div>
@@ -126,7 +126,7 @@ export default {
         <!-- 我的NGT--end -->
         <!-- 质押订单--start -->
         <div class="alive-light" style="font-size: 20px; margin-top: 20px">
-          转账记录
+          {{ $t('partner.znzz') }}
         </div>
         <Card class="partner_two_box">
           <div class="partner_two_box_nav">
@@ -139,26 +139,28 @@ export default {
               :key="index"
               @click="navValue = index"
             >
-              <span class="alive-light">{{ item }}</span>
+              <span class="alive-light" v-if="index == 0">{{ $t('partner.navList1') }}</span>
+              <span class="alive-light" v-if="index == 1">{{ $t('partner.navList2') }}</span>
+              <span class="alive-light" v-if="index == 2">{{ $t('partner.navList3') }}</span>
             </div>
           </div>
           <div class="partner_two_box_body" v-if="navValue == 0">
             <Card v-for="(item, index) in txsRes.transactions" :key="index">
               <div class="box_body_item_top">
-                <span v-if="item.transaction_type == '1'">充值</span>
-                <span v-if="item.transaction_type == '2'">提现</span>
+                <span v-if="item.transaction_type == '1'">{{ $t('partner.navList2') }}</span>
+                <span v-if="item.transaction_type == '2'">{{ $t('partner.navList3') }}</span>
                 <span>{{ item.num }}NGT</span>
                 <span >{{  item.chain }}</span>
-                <span v-if="item.status == '1'" class="alive-light">确认中</span>
-                <span v-if="item.status == '2'" class="alive-light">已完成</span>
+                <span v-if="item.status == '1'" class="alive-light">{{ $t('partner.confirming') }}</span>
+                <span v-if="item.status == '2'" class="alive-light">{{ $t('partner.confirmed') }}</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
-                  <span>充值地址</span>
+                  <span>{{ $t('partner.address') }}</span>
                   <span>{{  item.address }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>交易哈希</span>
+                  <span>{{ $t('partner.hash') }}</span>
                   <span>{{ item.hash.slice(0, 32)  }}********
                   <el-button class="copyBtn" @click="copy(item.hash)" round><img
                       src="../../../assets/images/VectorMini.png"
@@ -167,15 +169,15 @@ export default {
                   </span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>申请时间</span>
+                  <span>{{ $t('partner.applicationTime') }}</span>
                   <span>18/05/2023 12:00:00</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>到账时间</span>
+                  <span>{{ $t('partner.timeOfReceipt') }}</span>
                   <span>23/05/2023 12:00:00</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>手续费</span>
+                  <span>{{ $t('partner.commission') }}</span>
                   <span>641 NGT</span>
                 </div>
               </div>
@@ -184,19 +186,19 @@ export default {
           <div class="partner_two_box_body" v-if="navValue == 1">
             <Card v-for="(item, index) in depositList.transactions" :key="index">
               <div class="box_body_item_top">
-                <span>充值</span>
+                <span>{{ $t('partner.navList2') }}</span>
                 <span>{{ item.num }}NGT</span>
                 <span >{{  item.chain }}</span>
-                <span v-if="item.status == '1'" class="alive-light">确认中</span>
-                <span v-if="item.status == '2'" class="alive-light">已完成</span>
+                <span v-if="item.status == '1'" class="alive-light">{{ $t('partner.confirming') }}</span>
+                <span v-if="item.status == '2'" class="alive-light">{{ $t('partner.confirmed') }}</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
-                  <span>充值地址</span>
+                  <span>{{ $t('partner.address') }}</span>
                   <span>{{  item.address }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>交易哈希</span>
+                  <span>{{ $t('partner.hash') }}</span>
                   <span>{{ item.hash.slice(0, 32)  }}********
                   <el-button class="copyBtn" @click="copy(item.hash)" round><img
                       src="../../../assets/images/VectorMini.png"
@@ -205,15 +207,15 @@ export default {
                   </span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>申请时间</span>
+                  <span>{{ $t('partner.applicationTime') }}</span>
                   <span>18/05/2023 12:00:00</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>到账时间</span>
+                  <span>{{ $t('partner.timeOfReceipt') }}</span>
                   <span>23/05/2023 12:00:00</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>手续费</span>
+                  <span>{{ $t('partner.commission') }}</span>
                   <span>641 NGT</span>
                 </div>
               </div>
@@ -222,19 +224,19 @@ export default {
           <div class="partner_two_box_body" v-if="navValue == 2">
             <Card v-for="(item, index) in withdrawList.transactions" :key="index">
               <div class="box_body_item_top">
-                <span>提现</span>
+                <span>{{ $t('partner.navList3') }}</span>
                 <span>{{ item.num }}NGT</span>
                 <span >{{  item.chain }}</span>
-                <span v-if="item.status == '1'" class="alive-light">确认中</span>
-                <span v-if="item.status == '2'" class="alive-light">已完成</span>
+                <span v-if="item.status == '1'" class="alive-light">{{ $t('partner.confirming') }}</span>
+                <span v-if="item.status == '2'" class="alive-light">{{ $t('partner.confirmed') }}</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
-                  <span>充值地址</span>
+                  <span>{{ $t('partner.address') }}</span>
                   <span>{{  item.address }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>交易哈希</span>
+                  <span>{{ $t('partner.hash') }}</span>
                   <span>{{ item.hash.slice(0, 32)  }}********
                   <el-button class="copyBtn" @click="copy(item.hash)" round><img
                       src="../../../assets/images/VectorMini.png"
@@ -243,15 +245,15 @@ export default {
                   </span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>申请时间</span>
+                  <span>{{ $t('partner.applicationTime') }}</span>
                   <span>18/05/2023 12:00:00</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>到账时间</span>
+                  <span>{{ $t('partner.timeOfReceipt') }}</span>
                   <span>23/05/2023 12:00:00</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>手续费</span>
+                  <span>{{ $t('partner.commission') }}</span>
                   <span>641 NGT</span>
                 </div>
               </div>

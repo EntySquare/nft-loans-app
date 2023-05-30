@@ -8,6 +8,7 @@ import Clipboard from "vue-clipboard3";
 const { toClipboard } = Clipboard()
 const navValue = ref(0)
 const navList = ['全部', '质押中', '已完成']
+
 const cfRes = ref({
   benefit_info: {
     balance: 0,
@@ -74,19 +75,19 @@ export default {
         <Card>
           <div class="partner_one_box">
             <div class="partner_one_box_item">
-              <div class="partner_one_box_item_top alive-light">持有</div>
+              <div class="partner_one_box_item_top alive-light">{{ $t('explorer.balance') }}</div>
               <div class="partner_one_box_item_bom alive-light">
                 {{ cfRes.benefit_info.balance }} <span>NGT</span>
               </div>
             </div>
             <div class="partner_one_box_item">
-              <div class="partner_one_box_item_top alive-light">昨日收益</div>
+              <div class="partner_one_box_item_top alive-light">{{ $t('explorer.yesterdayIncome') }}</div>
               <div class="partner_one_box_item_bom alive-light">
                 {{ cfRes.benefit_info.last_day_benefit }} <span>NGT</span>
               </div>
             </div>
             <div class="partner_one_box_item">
-              <div class="partner_one_box_item_top alive-light">累计总收益</div>
+              <div class="partner_one_box_item_top alive-light">{{ $t('explorer.accumulateIncome') }}</div>
               <div class="partner_one_box_item_bom alive-light">
                 {{ cfRes.benefit_info.accumulated_benefit }} <span>NGT</span>
               </div>
@@ -97,7 +98,7 @@ export default {
         <!-- 质押订单--start -->
         <div class="partner_two_box">
           <div class="partner_two_box_nav">
-            <div class="alive-light">质押订单</div>
+            <div class="alive-light">{{ $t('explorer.pledgeOrder') }}</div>
             <div
               :class="[
                 'partner_two_box_nav_btn',
@@ -107,56 +108,58 @@ export default {
               :key="index"
               @click="navValue = index"
             >
-              <span class="alive-light">{{ item }}</span>
+              <span class="alive-light" v-if="index == 0">{{ $t('explorer.navList1') }}</span>
+              <span class="alive-light" v-if="index == 1">{{ $t('explorer.navList2') }}</span>
+              <span class="alive-light" v-if="index == 2">{{ $t('explorer.navList3') }}</span>
             </div>
           </div>
           <div class="partner_two_box_body" v-if="navValue == 0">
             <Card v-for="(item, index) in cfRes.covenant_flows" :key="index">
               <div class="box_body_item_top">
                 <span>{{  item.chain_name }}</span>
-                <span>{{ item.duration }}</span>
-                <span>日利率{{ item.interest_rate }}%</span>
-                <span class="alive-light">全部</span>
+                <span>{{ item.duration }}{{ $t('explorer.day') }}</span>
+                <span>{{ $t('explorer.dailyIncome') }}{{ item.interest_rate }}%</span>
+                <span class="alive-light">{{ $t('explorer.navList1') }}</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
-                  <span>NFT名称</span>
+                  <span>{{ $t('explorer.nftName') }}</span>
                   <span>{{ item.nft_name }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>质押ID</span>
+                  <span>{{ $t('explorer.nftID') }}</span>
                   <span>{{ item.pledge_id }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>交易哈希</span>
+                  <span>{{ $t('explorer.hash') }}</span>
                   <span>{{ item.hash.slice(0, 32)  }}********
-                    <el-button class="copyBtn" @click="copy(item.hash)" round><img
+                  <el-button class="copyBtn" @click="copy(item.hash)" round><img
                       src="../../../assets/images/VectorMini.png"
                       alt=""
                   /></el-button>
                   </span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>到期时间</span>
+                  <span>{{ $t('explorer.expirationTime') }}</span>
                   <span>18/05/2023 12:00:00</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>质押时间</span>
+                  <span>{{ $t('explorer.pledgeTime') }}</span>
                   <span>23/05/2023 12:00:00</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>质押费用</span>
+                  <span>{{ $t('explorer.pledgeFee') }}</span>
                   <span>{{ item.pledge_fee }} NGT</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>释放费用</span>
+                  <span>{{ $t('explorer.releaseFee') }}</span>
                   <span>{{ item.release_fee }} NGT</span>
                 </div>
               </div>
               <div class="box_body_item_bom_two">
-                <span class="alive-light">取消订单</span>
+                <span class="alive-light">{{ $t('explorer.cancelOrder') }}</span>
                 <div>
-                  <span class="alive-light">订单收益</span>
+                  <span class="alive-light">{{ $t('explorer.orderIncome') }}</span>
                   <span class="alive-light">{{ item.accumulated_benefit }} NGT</span>
                 </div>
               </div>
@@ -166,21 +169,21 @@ export default {
             <Card v-for="(item, index) in coinList.covenant_flows" :key="index">
               <div class="box_body_item_top">
                 <span>{{ item.chain_name }}</span>
-                <span>{{ item.duration }}</span>
-                <span>日利率{{ item.interest_rate }}%</span>
-                <span class="alive-light">全部</span>
+                <span>{{ item.duration }}{{ $t('explorer.day') }}</span>
+                <span>{{ $t('explorer.dailyIncome') }}{{ item.interest_rate }}%</span>
+                <span class="alive-light">{{ $t('explorer.navList2') }}</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
-                  <span>NFT名称</span>
+                  <span>{{ $t('explorer.nftName') }}</span>
                   <span>{{ item.nft_name }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>质押ID</span>
+                  <span>{{ $t('explorer.nftID') }}</span>
                   <span>{{ item.pledge_id }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>交易哈希</span>
+                  <span>{{ $t('explorer.hash') }}</span>
                   <span>{{ item.hash.slice(0, 32)  }}********
                   <el-button class="copyBtn" @click="copy(item.hash)" round><img
                       src="../../../assets/images/VectorMini.png"
@@ -189,26 +192,26 @@ export default {
                   </span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>到期时间</span>
+                  <span>{{ $t('explorer.expirationTime') }}</span>
                   <span>18/05/2023 12:00:00</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>质押时间</span>
+                  <span>{{ $t('explorer.pledgeTime') }}</span>
                   <span>23/05/2023 12:00:00</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>质押费用</span>
+                  <span>{{ $t('explorer.pledgeFee') }}</span>
                   <span>{{ item.pledge_fee }} NGT</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>释放费用</span>
+                  <span>{{ $t('explorer.releaseFee') }}</span>
                   <span>{{ item.release_fee }} NGT</span>
                 </div>
               </div>
               <div class="box_body_item_bom_two">
-                <span class="alive-light">取消订单</span>
+                <span class="alive-light">{{ $t('explorer.cancelOrder') }}</span>
                 <div>
-                  <span class="alive-light">订单收益</span>
+                  <span class="alive-light">{{ $t('explorer.orderIncome') }}</span>
                   <span class="alive-light">{{ item.accumulated_benefit }} NGT</span>
                 </div>
               </div>
@@ -218,21 +221,21 @@ export default {
             <Card v-for="(item, index) in cooutList.covenant_flows" :key="index" >
               <div class="box_body_item_top" >
                 <span>{{ item.chain_name }}</span>
-                <span>{{ item.duration }}</span>
-                <span>日利率{{ item.interest_rate }}%</span>
-                <span class="alive-light">全部</span>
+                <span>{{ item.duration }}{{ $t('explorer.day') }}</span>
+                <span>{{ $t('explorer.dailyIncome') }}{{ item.interest_rate }}%</span>
+                <span class="alive-light">{{ $t('explorer.navList3') }}</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
-                  <span>NFT名称</span>
+                  <span>{{ $t('explorer.nftName') }}</span>
                   <span>{{ item.nft_name }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>质押ID</span>
+                  <span>{{ $t('explorer.nftID') }}</span>
                   <span>{{ item.pledge_id }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>交易哈希</span>
+                  <span>{{ $t('explorer.hash') }}</span>
                   <span>{{ item.hash.slice(0, 32)  }}********
                   <el-button class="copyBtn" @click="copy(item.hash)" round><img
                       src="../../../assets/images/VectorMini.png"
@@ -241,26 +244,26 @@ export default {
                   </span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>到期时间</span>
+                  <span>{{ $t('explorer.expirationTime') }}</span>
                   <span>18/05/2023 12:00:00</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>质押时间</span>
+                  <span>{{ $t('explorer.pledgeTime') }}</span>
                   <span>23/05/2023 12:00:00</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>质押费用</span>
+                  <span>{{ $t('explorer.pledgeFee') }}</span>
                   <span>{{ item.pledge_fee }} NGT</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>释放费用</span>
+                  <span>{{ $t('explorer.releaseFee') }}</span>
                   <span>{{ item.release_fee }} NGT</span>
                 </div>
               </div>
               <div class="box_body_item_bom_two">
-                <span class="alive-light">取消订单</span>
+                <span class="alive-light">{{ $t('explorer.cancelOrder') }}</span>
                 <div>
-                  <span class="alive-light">订单收益</span>
+                  <span class="alive-light">{{ $t('explorer.orderIncome') }}</span>
                   <span class="alive-light">{{ item.accumulated_benefit }} NGT</span>
                 </div>
               </div>

@@ -7,7 +7,7 @@ import { ElMessage } from 'element-plus'
 import {onMounted, ref} from "vue";
 import {myInvestmentRep, myInvitee} from "@/api/invitee";
 const { toClipboard } = Clipboard() // 复制
-
+const inviteeUid = ref("0")
 const inviteeRes = ref({
   uid: "",
   level: 0,
@@ -39,11 +39,11 @@ async function dataInit() {
     // };
     const res = await myInvitee();
     let hiddenPart1 = res.data.json.uid.slice(0, 3);
-    let hiddenPart2 = res.data.json.uid.slice(5, 10);//
+    let hiddenPart2 = res.data.json.uid.slice(5, 12);//
     res.data.json.uid = hiddenPart1 + "**" + hiddenPart2// 截取除了最后两位的部分
     for (let i = 0; i < res.data.json.investment_users.length; i++) {
       let hiddenPart1 = res.data.json.investment_users[i].uid.slice(0, 3);
-      let hiddenPart2 = res.data.json.investment_users[i].uid.slice(5, 10);//
+      let hiddenPart2 = res.data.json.investment_users[i].uid.slice(5, 12);//
       res.data.json.investment_users[i].uid = hiddenPart1 + "**" + hiddenPart2// 截取除了最后两位的部分
     }
     inviteeRes.value.uid = res.data.json.uid
@@ -107,9 +107,10 @@ export default {
             </div>
           </div>
         </Card>
-        <div class="title">邀请列表</div>
+        <div class="title" v-if="inviteeUid == '0'"><span class="alive-light">邀请列表</span></div>
+        <div class="title" v-if="inviteeUid != '0'"><span class="alive-light">邀请详情</span></div>
         <Card bradius="24px">
-          <div class="list">
+          <div class="list" v-if="inviteeUid == '0'">
             <table class="table">
               <tbody>
                 <tr v-for="(item, index) in inviteeRes.investment_users" :key="index">
@@ -119,12 +120,21 @@ export default {
                     质押次数&nbsp;&nbsp;{{ item.pledge_count}}次
                   </td>
 
-                  <i style="float: right; margin-right: 10px; line-height: 40px"
-                    ><img src="../../../assets/images/Vector1.png" alt=""
-                  /></i>
+                  <i style="float: right; margin-right: 10px; line-height: 40px" @click="inviteeUid = item.uid">
+                    <img src="../../../assets/images/Vector1.png" alt=""
+                  />
+                  </i>
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div class="list" v-if="inviteeUid != '0'">
+            <i style="float: left; margin-left: 10px; line-height: 20px" @click="inviteeUid = '0'">
+              <img src="../../../assets/images/Vector2.png" alt=""
+              />
+            </i>
+            <div class="detail_info">
+            </div>
           </div>
         </Card>
       </div>
@@ -226,20 +236,41 @@ export default {
       .title {
         width: 100%;
         height: 54px;
-        font-family: 'PingFang SC';
-        font-style: normal;
-        font-weight: 600;
-        font-size: 20px;
         // line-height: 28px;
         position: relative;
         top: 22px;
-        color: #adfff5 10.61%, rgba(155, 165, 255, 0.99) 54.84%,
-          rgba(216, 166, 255, 0.994896);
+        .alive-light {
+          font-size: 20px;
+          margin-left: 8px;
+          white-space: nowrap;
+          background-image: -webkit-linear-gradient(
+              98.28deg,
+              #adfff5 10.61%,
+              rgba(155, 165, 255, 0.99) 54.84%,
+              rgba(216, 166, 255, 0.994896) 100%
+          );
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
       }
       .list {
         width: 100%;
         height: 550px;
+        .detail_info {
+          box-sizing: border-box;
 
+          position: absolute;
+          width: 1176px;
+          height: 40px;
+          left: calc(50% - 1176px/2 - 0.5px);
+          top: calc(50% - 40px/2 - 148.5px);
+
+          background: rgba(255, 255, 255, 0.2);
+          backdrop-filter: blur(50px);
+          /* Note: backdrop-filter has minimal browser support */
+
+          border-radius: 24px;
+        }
         .table {
           margin-top: 28px;
           margin-left: 32.59px;
@@ -251,6 +282,7 @@ export default {
             overflow-y: auto;
             height: 500px;
           }
+
           tbody tr {
             display: table;
             width: 98%;

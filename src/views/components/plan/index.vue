@@ -3,11 +3,13 @@ import Card from '@/components/card/index.vue'
 import MainStore from '@/store'
 //import {login } from '@/api/user' //*获取计划列表
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n' //国际化
+const { t, locale } = useI18n() //国际化
 import { fr } from 'element-plus/es/locale'
 import {ElMessage} from "element-plus";
 const State = MainStore() //获取store
-let chainValue =  ref("选择公链")
-let durationValue =  ref("质押天数")
+let chainValue =  ref("")
+let durationValue =  ref("")
 const imgData = [
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5711684853279_.pic.jpg',
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5701684853267_.pic.jpg',
@@ -70,7 +72,7 @@ export default {
               <span
                 class="alive-light"
                 style="font-weight: 600; font-size: 20px"
-                >Whire Tiger
+                >White Tiger
               </span>
             </div>
           </div>
@@ -83,7 +85,7 @@ export default {
       </Card>
       <Card bradius="100px">
         <p style="font-weight: 400; font-size: 20px; margin-left: 20px">
-          消息通知：元旦认购玄武有奖
+          {{ $t('plan.news') }}
         </p>
       </Card>
       <Card>
@@ -96,12 +98,12 @@ export default {
               alt=""
             />
             <span class="alive-light" style="font-weight: 600; font-size: 20px"
-              >质押赚取NGT
+              >{{ $t('plan.pledgeTitle') }}
             </span>
           </div>
           <div class="three_middle">
             <div class="three_middle_input border_my">
-              <input type="text" v-model="id" placeholder="请输入ID" />
+              <input type="text" v-model="id" :placeholder="$t('plan.input')" />
             </div>
 
             <el-dropdown
@@ -116,8 +118,21 @@ export default {
                   align-items: center;
                   justify-content: center;
                 "
+                v-if="chainValue!=''"
               >
                 {{chainValue}}
+              </div>
+              <div
+                  style="
+                  height: 100%;
+                  width: 100%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+                  v-if="chainValue==''"
+              >
+                {{ $t('plan.chainSelect') }}
               </div>
               <template #dropdown>
                 <el-dropdown-menu>
@@ -139,47 +154,60 @@ export default {
                   align-items: center;
                   justify-content: center;
                 "
+                v-if="durationValue==''"
+              >
+                {{ $t('plan.pledgeDays') }}
+              </div>
+              <div
+                  style="
+                  height: 100%;
+                  width: 100%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+                  v-if="durationValue!=''"
               >
                 {{durationValue}}
               </div>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item @click="durationValue = '7天'">7天</el-dropdown-item>
-                  <el-dropdown-item @click="durationValue = '30天'"> 30天 </el-dropdown-item>
+                  <el-dropdown-item @click="durationValue = '7天'">{{ $t('plan.options1') }}</el-dropdown-item>
+                  <el-dropdown-item @click="durationValue = '30天'"> {{ $t('plan.options2') }} </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
 
             <div class="three_middle_dropdown border_my">
-              <div style="height: 30px" @click="pledgeNft(id)">开始质押</div>
+              <div style="height: 30px" @click="pledgeNft(id)"> {{ $t('plan.pledgeButton') }}</div>
             </div>
           </div>
           <div class="three_bom">
-            <div class="three_bom_left_text alive-light">日收益率：</div>
+            <div class="three_bom_left_text alive-light"> {{ $t('plan.dayBenefit') }}：</div>
             <div class="three_bom_box">
               <div class="three_bom_box_itemt">
-                <div class="three_bom_box_itemt_text alive-light">玄武</div>
+                <div class="three_bom_box_itemt_text alive-light">{{ $t('plan.btTitle') }}</div>
                 <img
                   src="https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5721684853355_.pic.jpg"
                   alt=""
                 />
-                <div class="three_bom_box_itemt_desc">0.5% 每日</div>
+                <div class="three_bom_box_itemt_desc">0.5% {{ $t('plan.per') }}</div>
               </div>
               <div class="three_bom_box_itemt">
-                <div class="three_bom_box_itemt_text alive-light">白虎</div>
-                <img
-                  src="https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5731684853378_.pic.jpg"
-                  alt=""
-                />
-                <div class="three_bom_box_itemt_desc">0.6% 每日</div>
-              </div>
-              <div class="three_bom_box_itemt">
-                <div class="three_bom_box_itemt_text alive-light">朱雀</div>
+                <div class="three_bom_box_itemt_text alive-light">{{ $t('plan.wtTitle') }}</div>
                 <img
                   src="https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5741684853386_.pic.jpg"
                   alt=""
                 />
-                <div class="three_bom_box_itemt_desc">0.7% 每日</div>
+                <div class="three_bom_box_itemt_desc">0.6% {{ $t('plan.per') }}</div>
+              </div>
+              <div class="three_bom_box_itemt">
+                <div class="three_bom_box_itemt_text alive-light">{{ $t('plan.vbTitle') }}</div>
+                <img
+                  src="https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5731684853378_.pic.jpg"
+                  alt=""
+                />
+                <div class="three_bom_box_itemt_desc">0.7% {{ $t('plan.per') }}</div>
               </div>
             </div>
           </div>
