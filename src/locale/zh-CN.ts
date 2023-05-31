@@ -16,7 +16,7 @@ export default {
         copeone: '点击下载二维码',
         copetwo: '复制分享链接',
         loading: '加载中...',
-        connect: '连接',
+        connect: '连    接',
         POH: 'POH',
     },
     partner: {

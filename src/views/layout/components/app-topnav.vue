@@ -225,11 +225,11 @@ export default { name: 'AppTopnav' }
             }}
           </div>
           <span>
-            {{
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{
               State.account
                 ? State.replaceStr(State.account)
                 : $t('nav.connect')
-            }}
+            }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </span>
           <div class="log_out" v-if="State.account">
             <img src="../../../assets/log_out.png" @click="DisConnection"/>
@@ -400,7 +400,11 @@ nav {
           padding: 0 10px;
           white-space: nowrap;
           background: -webkit-linear-gradient(0deg, #a82ae7, #524dfb);
+          font-family: 'PingFang SC';
+          font-style: normal;
+          font-weight: 500;
         }
+
         .log_out{
           position: absolute;
           right: 4.5%;
