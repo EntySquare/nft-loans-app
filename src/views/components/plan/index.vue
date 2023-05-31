@@ -169,12 +169,15 @@ export default {
                 "
                   v-if="durationValue!=''"
               >
-                {{durationValue}}
+                {{durationValue}} {{ $t('plan.day') }}
               </div>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item @click="durationValue = '7天'">{{ $t('plan.options1') }}</el-dropdown-item>
-                  <el-dropdown-item @click="durationValue = '30天'"> {{ $t('plan.options2') }} </el-dropdown-item>
+                  <el-dropdown-item @click="durationValue = '30'">{{ $t('plan.options1') }}</el-dropdown-item>
+                  <el-dropdown-item @click="durationValue = '60'"> {{ $t('plan.options2') }} </el-dropdown-item>
+                  <el-dropdown-item @click="durationValue = '90'"> {{ $t('plan.options3') }} </el-dropdown-item>
+                  <el-dropdown-item @click="durationValue = '120'"> {{ $t('plan.options4') }} </el-dropdown-item>
+                  <el-dropdown-item @click="durationValue = '180'"> {{ $t('plan.options5') }} </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>

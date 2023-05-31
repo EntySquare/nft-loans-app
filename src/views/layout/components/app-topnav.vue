@@ -29,6 +29,10 @@ const Connection = async () => {
   if (State.account) return
   await State.Connection()
 }
+const DisConnection = async () => {
+  if (!State.account) return
+  await State.DisConnection()
+}
 let download: HTMLAnchorElement
 nextTick(() => {
   download = document.getElementById('download') as HTMLAnchorElement
@@ -227,118 +231,11 @@ export default { name: 'AppTopnav' }
                 : $t('nav.connect')
             }}
           </span>
+          <div class="log_out" v-if="State.account">
+            <img src="../../../assets/log_out.png" @click="DisConnection"/>
+          </div>
         </div>
       </div>
-      <!-- 下拉菜单 -->
-      <el-dropdown
-        trigger="click"
-        popper-class="dropdown"
-        @handleClose="handclose"
-      >
-        <span class="nav-item-popover">
-          <el-icon size="16">
-            <Menu />
-          </el-icon>
-        </span>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item>
-              <div
-                class="dropdown-item"
-                @click="golink(State.referrer, '/Partners')"
-              >
-                {{ $t('nav.partners') }}
-              </div>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <div
-                class="dropdown-item"
-                @click="golink(State.referrer, '/poh')"
-              >
-                POH
-              </div>
-              <!-- <RouterLink class="dropdown-item" :to="`/poh/${State.referrer}`">POH</RouterLink> -->
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <div
-                class="dropdown-item"
-                @click="golink(State.referrer, '/Explorer')"
-              >
-                {{ $t('nav.explorer') }}
-              </div>
-              <!-- <RouterLink class="dropdown-item" :to="`/Explorer/${State.referrer}`">{{
-                $t('nav.explorer')
-              }}</RouterLink> -->
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <div
-                class="dropdown-item"
-                @click="golink(State.referrer, '/Plan')"
-              >
-                {{ $t('nav.plan') }}
-              </div>
-              <!-- <RouterLink class="dropdown-item" :to="`/Plan/${State.referrer}`">{{
-                $t('nav.plan')
-              }}</RouterLink> -->
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <div @click="setLang" class="dropdown-item">
-                {{ locale == 'zh' ? '中文' : 'EN' }}
-                <div v-if="locale == 'zh'">
-                  <img class="nav-item" src="../../../assets/en.png" />
-                </div>
-                <div v-else class="imgen">
-                  <img class="nav-item" src="../../../assets/zh.png" />
-                </div>
-              </div>
-            </el-dropdown-item>
-            <!-- <el-dropdown-item>
-              <el-popover ref="popoverRef" trigger="hover" persistent>
-                <vue-qr @click="download.click()" :text="State.Invitationlink" :callback="test" :bindElement="createShow"
-                  :size="512"></vue-qr>
-                <div class="nav-item-popover-text" @click="copy">
-                  <div>{{ $t('nav.copeone') }}</div>
-                  <div>{{ $t('nav.copetwo') }}</div>
-                </div>
-                <template #reference>
-                  <div @click="onClickOutside" class="dropdown-item">
-                    <i class="iconfont icon-share"></i>
-                    分享
-                  </div>
-                </template>
-              </el-popover>
-            </el-dropdown-item> -->
-          </el-dropdown-menu>
-
-          <!-- <RouterLink class="dropdown-item" :to="`/Explorer/${State.referrer}`">{{
-                                                                                      $t('nav.explorer')
-                                                                                    }}</RouterLink> -->
-
-          <!-- <RouterLink class="dropdown-item" :to="`/Plan/${State.referrer}`">{{
-                                                                                          $t('nav.plan')
-                                                                                        }}</RouterLink> -->
-
-          <el-popover ref="popoverRef" trigger="hover" persistent>
-            <vue-qr
-              @click="download.click()"
-              :text="State.Invitationlink"
-              :callback="test"
-              :bindElement="createShow"
-              :size="512"
-            ></vue-qr>
-            <div class="nav-item-popover-text" @click="copy">
-              <div>{{ $t('nav.copeone') }}</div>
-              <div>{{ $t('nav.copetwo') }}</div>
-            </div>
-            <template #reference>
-              <div @click="onClickOutside" class="dropdown-item">
-                <i class="iconfont icon-share"></i>
-                分享
-              </div>
-            </template>
-          </el-popover>
-        </template>
-      </el-dropdown>
     </div>
   </nav>
   <!-- 背景图 -->
@@ -416,7 +313,7 @@ nav {
 
   .nav {
     display: flex;
-
+    width: 960px;
     .nav-item {
       height: 70px;
       font-size: 14px;
@@ -467,15 +364,16 @@ nav {
 
     .nav-btn {
       height: 70px;
-      margin-left: 20px;
+      margin-left: 70px;
       display: flex;
       align-items: center;
 
-      .connection-btn,
+
+      .connection-btn ,
       .connection-btn-nav {
         height: 35px;
         line-height: 35px;
-        padding: 0px 15px;
+        padding: 0px 1px;
         font-size: 16px;
         border-radius: 10px;
         color: #524dfb;
@@ -490,12 +388,12 @@ nav {
 
       .connection-btn-nav {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 10px;
         background: -webkit-linear-gradient(0deg, #3b535a, #524dfb);
         color: #fff;
         padding-left: 10px;
-        padding-right: 0;
+        padding-right: 0px;
 
         span {
           border-radius: 10px;
@@ -503,8 +401,14 @@ nav {
           white-space: nowrap;
           background: -webkit-linear-gradient(0deg, #a82ae7, #524dfb);
         }
+        .log_out{
+          position: absolute;
+          right: 4.5%;
+          top: 25%;
+        }
       }
     }
+
   }
 }
 

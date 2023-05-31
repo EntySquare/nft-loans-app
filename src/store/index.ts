@@ -165,6 +165,46 @@ let MainStore = defineStore('main', {
                 }
             });
         },
+        //连接
+        async DisConnection() {
+            console.log('登出')
+            if (!this.account) return   //判断是否连接
+            this.isLoading = true; //打开加载
+            return new Promise(async (resolve, reject) => {
+                try {
+                    await connectWallet().then(async (res: any) => {
+
+                        this.currentAccount = ""; //赋值地址
+                        this.currentBalance = ""; //赋值余额
+                        this.balanceChain = 0; //赋值链余额
+                        setToken("");
+                        //console.log('this.referrerAC:', this.referrerAC)
+                        // const { data } = await request.post(`/fetchEarnList`, { //判断是否有转账记录
+                        //     address: this.currentAccount, //地址
+                        // });
+                        // this.jlList = data.json
+                        // this.jlList = [{ sub_address: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F', status: 0 }] as any
+                        // const re = await request.post(`/checkCode`, { //判断是否有转账记录
+                        //     from: this.currentAccount, //地址
+                        //     recommend: this.referrerAC, //介绍地址
+                        // });
+                        // console.log('re.data.json.status:', re.data)
+                        // if (re.data.code == 0) { //有记录
+                        //     console.log('1:', 1)
+                        //     this.currentStatus = re.data.json.status; //赋值状态
+                        // }
+                        this.isLoading = false; //关闭加载
+                        //this.setInvitationlink(); //设置邀请链接
+                        // this.getRewardList() //获取奖励列表
+                        resolve(res); //返回数据
+                    });
+                } catch (error) {
+                    // alert("please check MetaMask!");
+                    this.isLoading = false;
+                    reject(error); //返回错误
+                }
+            });
+        },
         //转账
         async TransferMoney() {
             console.log("转账"); //打印转账

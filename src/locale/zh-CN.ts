@@ -70,8 +70,12 @@ export default {
         vbTitle:"朱雀",
         wtTitle:"白虎",
         per:"每日",
-        options1: "7 天",
-        options2: "30 天"
+        day:"天",
+        options1: "30 天",
+        options2: "60 天",
+        options3: "90 天",
+        options4: "120 天",
+        options5: "180 天"
     },
     record:{
         level:'我的等级',

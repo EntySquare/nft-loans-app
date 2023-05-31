@@ -71,8 +71,12 @@ export default {
         vbTitle:"Vermilion Bird",
         wtTitle:"White Tiger",
         per:"per day",
-        options1: "7 days",
-        options2: "30 days"
+        day:"day",
+        options1: "30 day",
+        options2: "60 day",
+        options3: "90 day",
+        options4: "120 day",
+        options5: "180 day"
     },
     record:{
         level:'My level',
