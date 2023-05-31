@@ -19,15 +19,26 @@ const imgData = [
 const id = ref("")
 const pledgeNftById = async (id: string) => {
   try {
-    console.log('质押nft id:'+id)
-    console.log('质押nft 时间:'+durationValue.value)
-    console.log('质押nft 链:'+chainValue.value)
+    if (id == ""){
+      ElMessage.error('请输入id')
+      return
+    }
+    if (durationValue.value == ""){
+      ElMessage.error('请选择时间')
+      return
+    }
+    if (chainValue.value == ""){
+      ElMessage.error('请选择公链')
+      return
+    }
     const pledgeReq = {nft_id: id,duration:durationValue.value,hash:"0x63c48fe0c1f4b60f6ae90b86ea91051b06fb8b371068db84c0ad68a54e9a466c",chain:chainValue.value} as pledgeNftReq
     const res = await pledgeNft(pledgeReq);
    if (res.data.code == 0){
      ElMessage.success('质押成功')
+     return
    }else{
      ElMessage.error('质押失败')
+     return
    }
   } catch (error) {
     ElMessage.error('质押失败')

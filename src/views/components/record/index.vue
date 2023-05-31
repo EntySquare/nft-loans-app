@@ -120,8 +120,8 @@ export default {
             <div class="address_text">
               <span>{{ $t('record.invitationAddress') }}:</span> <span>{{ inviteeRes.investment_address}} </span>
               <el-button class="address_text_btu" @click="copy" round>
-                {{ $t('record.copy') }}<img
-                  src="../../../assets/images/Vector.png"
+                {{ $t('record.copy') }} <img
+                  src="../../../assets/images/VectorMini.png"
                   alt=""
               /></el-button>
             </div>
@@ -247,7 +247,7 @@ export default {
         .address_text_btu {
           width: 182px;
           height: 47px;
-          font-size: 20px;
+          font-size: 18px;
           margin-top: -12px;
           // margin-right: 35px;
 

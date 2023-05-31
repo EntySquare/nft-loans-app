@@ -3,6 +3,7 @@ import Card from '@/components/card/index.vue'
 import {onMounted, ref} from 'vue'
 import { formatDateY } from '@/utils/time'
 import {myNgt, myTransactionsRep, transactionInfo} from "@/api/flow";
+import {depositNgt, withdrawNgt, withdrawNgtReq,depositNgtReq} from "@/api/wallet";
 import Clipboard from "vue-clipboard3";
 import {ElMessage} from "element-plus";
 import MainStore from "@/store";
@@ -64,22 +65,54 @@ const copy = async (hash:string) => {
 
 const deposit = async () => {
   try {
-    console.log(num.value)
-    console.log(State.account.toString())
-    console.log(chainValue.value.toString())
-    ElMessage.success('充值成功')
+    if (chainValue.value == ""){
+      ElMessage.error('请选择公链')
+      return
+    }
+    if (num.value == 0){
+      ElMessage.error('请输入数量')
+      return
+    }
+    let req = {
+      num:num.value,address:State.account,hash:"0x63c48fe0c1f4b60f6ae90b86ea91051b06fb8b371068db84c0ad68a54e9a466c",chain:chainValue.value
+    }as depositNgtReq
+    const res = await  depositNgt(req)
+    if (res.data.code == 0){
+      ElMessage.success('充值成功')
+      return
+    }else{
+      ElMessage.error('充值失败')
+      return
+    }
   } catch (error) {
     ElMessage.error('充值失败')
+    return
   }
 }
 const withdraw = async () => {
   try {
-    console.log(num.value)
-    console.log(State.account.toString())
-    console.log(chainValue.value.toString())
-    ElMessage.success('提现成功')
+    if (chainValue.value == ""){
+      ElMessage.error('请选择公链')
+      return
+    }
+    if (num.value == 0){
+      ElMessage.error('请输入数量')
+      return
+    }
+    let req = {
+      num:num.value,address:State.account,chain:chainValue.value
+    }as depositNgtReq
+    const res = await  depositNgt(req)
+    if (res.data.code == 0){
+      ElMessage.success('充值成功')
+      return
+    }else{
+      ElMessage.error('充值失败')
+      return
+    }
   } catch (error) {
     ElMessage.error('提现失败')
+    return
   }
 }
 onMounted(() => {
@@ -265,7 +298,7 @@ export default {
             <Card >
               <div class="partner_cross_middle">
                   <div class="partner_cross_input">
-                    <input class = "partner_cross_input_text" type="text" v-model="num" placeholder="   请输入数量" />
+                    <input class = "partner_cross_input_text" type="number" v-model="num" placeholder="   请输入数量" />
                   </div>
                 <el-dropdown
                     trigger="click"
@@ -303,7 +336,7 @@ export default {
             <Card >
               <div class="partner_cross_middle">
                 <div class="partner_cross_input">
-                  <input class = "partner_cross_input_text" type="text" v-model="num" placeholder="   请输入数量" />
+                  <input class = "partner_cross_input_text" type="number" v-model="num" placeholder="   请输入数量" />
                 </div>
                 <el-dropdown
 
@@ -519,7 +552,7 @@ export default {
             height: 60px;
             display: flex;
             gap: 25px;
-
+            border-radius: 24px;
             align-items: center;
             .partner_cross_input {
               width: 629px;
@@ -533,22 +566,22 @@ export default {
               box-shadow: 2px 2px 3px 0px rgba(101, 0, 118, 0.25) inset;
 
 
-              border-radius: 12px;
+              border-radius: 24px;
 
 
               order: 0;
               flex-grow: 0;
               .partner_cross_input_text {
                 position: fixed;
-                width: 569px;
-                left: 30px;
+                width: 629px;
                 height: 67px;
-                border-radius: 12px;
+                border-radius: 24px;
                 background: none;
                 font-family: 'PingFang SC';
                 font-style: normal;
                 font-weight: 400;
-                font-size: 20px;
+                font-size: 24px;
+                gap: normal;
                 line-height: 16px;
                 /* identical to box height, or 80% */
 
