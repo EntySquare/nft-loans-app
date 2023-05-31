@@ -4,9 +4,10 @@ import MainStore from '@/store'
 //import {login } from '@/api/user' //*获取计划列表
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n' //国际化
-const { t, locale } = useI18n() //国际化
 import { fr } from 'element-plus/es/locale'
 import {ElMessage} from "element-plus";
+const { t, locale } = useI18n() //国际化
+
 const State = MainStore() //获取store
 let chainValue =  ref("")
 let durationValue =  ref("")

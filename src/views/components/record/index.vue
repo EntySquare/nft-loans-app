@@ -4,8 +4,10 @@ import request from '@/request'
 import Card from '@/components/card/index.vue'
 import Clipboard from 'vue-clipboard3'
 import { ElMessage } from 'element-plus'
+import { formatDateY } from '@/utils/time'
 import {onMounted, ref} from "vue";
-import {myInvestmentRep, myInvitee} from "@/api/invitee";
+import {myInvestmentRep, myInvitee, inviteeInfoRep,getThisInviteeInfo} from "@/api/invitee";
+import {covenantInfo} from "@/api/benefit";
 const { toClipboard } = Clipboard() // 复制
 const inviteeUid = ref("0")
 const inviteeRes = ref({
@@ -17,12 +19,38 @@ const inviteeRes = ref({
   accumulated_benefit: 0,
   investment_users: [],
 } as myInvestmentRep);
+const inviteeInfoRes = ref({
+  uid: "",
+  level: 0,
+  pledge_count: 0,
+  create_time: 0,
+  covenant_flows: [],
+} as inviteeInfoRep);
 const copy = async () => {
   try {
     const res = await toClipboard(inviteeRes.value.investment_address)
     ElMessage.success('复制成功')
   } catch (error) {
     ElMessage.error('复制失败')
+  }
+}
+async function getInviteeInfo(uid: string){
+  try {
+    let data = {
+      uid: uid
+    }
+    console.log(uid)
+    inviteeUid.value = uid
+   const res = await getThisInviteeInfo(data)
+    inviteeInfoRes.value.uid = res.data.json.uid
+    inviteeInfoRes.value.level = res.data.json.level
+    inviteeInfoRes.value.pledge_count = res.data.json.pledge_count
+    inviteeInfoRes.value.create_time = res.data.json.create_time
+    inviteeInfoRes.value.covenant_flows = res.data.json.covenant_flows
+    console.log(res.data)
+  } catch (err) {
+    console.log("queryMyCovenantFlow err-------------------");
+    console.log(err);
   }
 }
 async function dataInit() {
@@ -38,14 +66,6 @@ async function dataInit() {
     //   'Content-Type': 'application/x-www-form-urlencoded',
     // };
     const res = await myInvitee();
-    let hiddenPart1 = res.data.json.uid.slice(0, 3);
-    let hiddenPart2 = res.data.json.uid.slice(5, 12);//
-    res.data.json.uid = hiddenPart1 + "**" + hiddenPart2// 截取除了最后两位的部分
-    for (let i = 0; i < res.data.json.investment_users.length; i++) {
-      let hiddenPart1 = res.data.json.investment_users[i].uid.slice(0, 3);
-      let hiddenPart2 = res.data.json.investment_users[i].uid.slice(5, 12);//
-      res.data.json.investment_users[i].uid = hiddenPart1 + "**" + hiddenPart2// 截取除了最后两位的部分
-    }
     inviteeRes.value.uid = res.data.json.uid
     inviteeRes.value.level = res.data.json.level
     inviteeRes.value.accumulated_pledge_count = res.data.json.accumulated_pledge_count
@@ -78,17 +98,17 @@ export default {
           <div class="card_title">
             <div class="card_left">
               <div class="card_left_dj">
-                <div>我的等级 &nbsp;&nbsp;&nbsp;<span>V{{ inviteeRes.level}}</span></div>
+                <div>{{ $t('record.level') }}: <span>V{{ inviteeRes.level}}</span></div>
                 <div style="margin-top: 11px">
-                  我的UID &nbsp;&nbsp;&nbsp;<span>{{ inviteeRes.uid}}</span>
+                  {{ $t('record.uid') }}: &nbsp;<span>{{ inviteeRes.uid.slice(0, 3)}}**{{ inviteeRes.uid.slice(5, 12)  }}</span>
                 </div>
               </div>
             </div>
             <div class="card_right">
               <div class="card_right_rh">
-                <div>邀请人数&nbsp;&nbsp;&nbsp;<span>{{ inviteeRes.investment_count}}人</span></div>
+                <div>{{ $t('record.noi') }}: <span>{{ inviteeRes.investment_count}}人</span></div>
                 <div style="margin-top: 11px">
-                  累计质押次数 &nbsp;&nbsp;&nbsp;<span>{{ inviteeRes.accumulated_pledge_count}}</span>
+                  {{ $t('record.anop') }}: &nbsp<span>{{ inviteeRes.accumulated_pledge_count}}</span>
                 </div>
               </div>
             </div>
@@ -98,29 +118,29 @@ export default {
         <Card bradius="24px" padding="0px" style="margin-top: 20px">
           <div class="address">
             <div class="address_text">
-              <span>邀请地址:</span> <span>{{ inviteeRes.investment_address}} </span>
+              <span>{{ $t('record.invitationAddress') }}:</span> <span>{{ inviteeRes.investment_address}} </span>
               <el-button class="address_text_btu" @click="copy" round>
-                点击复制&nbsp;<img
+                {{ $t('record.copy') }}<img
                   src="../../../assets/images/Vector.png"
                   alt=""
               /></el-button>
             </div>
           </div>
         </Card>
-        <div class="title" v-if="inviteeUid == '0'"><span class="alive-light">邀请列表</span></div>
-        <div class="title" v-if="inviteeUid != '0'"><span class="alive-light">邀请详情</span></div>
+        <div class="title" v-if="inviteeUid == '0'"><span class="alive-light">{{ $t('record.invitationList') }}</span></div>
+        <div class="title" v-if="inviteeUid != '0'"><span class="alive-light">{{ $t('record.invitationInfo') }}</span></div>
         <Card bradius="24px">
           <div class="list" v-if="inviteeUid == '0'">
             <table class="table">
               <tbody>
                 <tr v-for="(item, index) in inviteeRes.investment_users" :key="index">
-                  <td>UID:&nbsp;&nbsp;&nbsp;{{ item.uid}}</td>
-                  <td style="text-align: center">当前等级:&nbsp;&nbsp;V{{ item.level}}</td>
+                  <td>UID:&nbsp;&nbsp;&nbsp;{{ item.uid.slice(0, 3)}}**{{ item.uid.slice(5, 12)  }}</td>
+                  <td style="text-align: center">{{ $t('record.nowLevel') }}:&nbsp;&nbsp;V{{ item.level}}</td>
                   <td style="text-align: right">
-                    质押次数&nbsp;&nbsp;{{ item.pledge_count}}次
+                    {{ $t('record.nop') }}&nbsp;&nbsp;{{ item.pledge_count}}次
                   </td>
 
-                  <i style="float: right; margin-right: 10px; line-height: 40px" @click="inviteeUid = item.uid">
+                  <i style="float: right; margin-right: 10px; line-height: 40px" @click="getInviteeInfo(item.uid)">
                     <img src="../../../assets/images/Vector1.png" alt=""
                   />
                   </i>
@@ -134,6 +154,14 @@ export default {
               />
             </i>
             <div class="detail_info">
+              <td class="td1">UID:&nbsp;&nbsp;&nbsp;{{ inviteeUid.slice(0, 3)}}**{{ inviteeUid.slice(5, 12)  }}</td>
+                <td style="text-align: center" class="td2">{{ $t('record.nowLevel') }}:&nbsp;&nbsp;V{{ inviteeInfoRes.level}}</td>
+                <td style="text-align: right" class="td3">
+                {{ $t('record.nop') }}&nbsp;&nbsp;{{ inviteeInfoRes.pledge_count}}次
+              </td>
+              <td style="text-align: right" class="td4">
+                {{ $t('record.inviteTime') }}&nbsp;&nbsp;{{ formatDateY(inviteeInfoRes.create_time)}}
+              </td>
             </div>
           </div>
         </Card>
@@ -261,7 +289,7 @@ export default {
 
           position: absolute;
           width: 1176px;
-          height: 40px;
+          height: 50px;
           left: calc(50% - 1176px/2 - 0.5px);
           top: calc(50% - 40px/2 - 148.5px);
 
@@ -270,6 +298,68 @@ export default {
           /* Note: backdrop-filter has minimal browser support */
 
           border-radius: 24px;
+          .td1{
+            position: absolute;
+            width: 154px;
+            height: 22px;
+            left: 25px;
+            top: 11px;
+
+            font-family: 'PingFang SC';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 22px;
+
+            color: #FFFFFF;
+
+            opacity: 0.8;
+          }
+          .td2{
+            position: absolute;
+            width: 150px;
+            height: 22px;
+            left: 220px;
+            top: 11px;
+
+            font-family: 'PingFang SC';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 22px;
+
+            color: #FFFFFF;
+          }
+          .td3{
+                       position: absolute;
+                       width: 350px;
+                       height: 22px;
+                       left: 300px;
+                       top: 11px;
+
+                       font-family: 'PingFang SC';
+                       font-style: normal;
+                       font-weight: 400;
+                       font-size: 16px;
+                       line-height: 22px;
+
+                       color: #FFFFFF;
+           }
+          .td4{
+            position: absolute;
+            width: 383px;
+            height: 22px;
+            right: 80.5px;
+            top: 11px;
+
+            font-family: 'PingFang SC';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 22px;
+
+            color: #FFFFFF;
+          }
         }
         .table {
           margin-top: 28px;

@@ -3,6 +3,7 @@ import {getToken} from "@/utils/auth";
 import {covenantInfo, myCovenantFlow, myCovenantFlowRep} from "@/api/benefit";
 import Card from '@/components/card/index.vue'
 import {onMounted, ref} from "vue";
+import { formatDateY } from '@/utils/time'
 import {ElMessage} from "element-plus";
 import Clipboard from "vue-clipboard3";
 const { toClipboard } = Clipboard()
@@ -141,11 +142,11 @@ export default {
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('explorer.expirationTime') }}</span>
-                  <span>18/05/2023 12:00:00</span>
+                  <span>{{ formatDateY(item.expire_time)  }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('explorer.pledgeTime') }}</span>
-                  <span>23/05/2023 12:00:00</span>
+                  <span>{{ formatDateY(item.start_time)  }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('explorer.pledgeFee') }}</span>
@@ -193,11 +194,11 @@ export default {
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('explorer.expirationTime') }}</span>
-                  <span>18/05/2023 12:00:00</span>
+                  <span>{{ formatDateY(item.expire_time)  }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('explorer.pledgeTime') }}</span>
-                  <span>23/05/2023 12:00:00</span>
+                  <span>{{ formatDateY(item.start_time)  }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('explorer.pledgeFee') }}</span>
@@ -245,11 +246,11 @@ export default {
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('explorer.expirationTime') }}</span>
-                  <span>18/05/2023 12:00:00</span>
+                  <span>{{ formatDateY(item.expire_time)  }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('explorer.pledgeTime') }}</span>
-                  <span>23/05/2023 12:00:00</span>
+                  <span>{{ formatDateY(item.start_time)  }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('explorer.pledgeFee') }}</span>

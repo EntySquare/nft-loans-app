@@ -73,5 +73,18 @@ export default {
         per:"per day",
         options1: "7 days",
         options2: "30 days"
+    },
+    record:{
+        level:'My level',
+        uid:'My UID',
+        noi:'Number of Invitations',
+        anop:'Accumulated number of pledges',
+        invitationAddress:'Invitation address',
+        copy:'Copy',
+        nowLevel:'Current level',
+        nop:'Number of pledges',
+        invitationList:'Invitee list',
+        invitationInfo:'Invitee information',
+        inviteTime:'Invitation success time'
     }
 }

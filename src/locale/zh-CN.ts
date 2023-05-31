@@ -72,5 +72,18 @@ export default {
         per:"每日",
         options1: "7 天",
         options2: "30 天"
+    },
+    record:{
+        level:'我的等级',
+        uid:'我的UID',
+        noi:'邀请人数',
+        anop:'累计质押次数',
+        invitationAddress:'邀请地址',
+        copy:'点击复制',
+        nowLevel:'当前等级',
+        nop:'质押次数',
+        invitationList:'邀请列表',
+        invitationInfo:'邀请详情',
+        inviteTime:'邀请成功时间'
     }
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Card from '@/components/card/index.vue'
 import {onMounted, ref} from 'vue'
+import { formatDateY } from '@/utils/time'
 import {myNgt, myTransactionsRep, transactionInfo} from "@/api/flow";
 import Clipboard from "vue-clipboard3";
 import {ElMessage} from "element-plus";
@@ -170,11 +171,11 @@ export default {
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.applicationTime') }}</span>
-                  <span>18/05/2023 12:00:00</span>
+                  <span>{{ formatDateY(item.ask_for_time)}}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.timeOfReceipt') }}</span>
-                  <span>23/05/2023 12:00:00</span>
+                  <span>{{ formatDateY(item.achieve_time)}}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.commission') }}</span>
@@ -208,11 +209,11 @@ export default {
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.applicationTime') }}</span>
-                  <span>18/05/2023 12:00:00</span>
+                  <span>{{ formatDateY(item.ask_for_time)}}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.timeOfReceipt') }}</span>
-                  <span>23/05/2023 12:00:00</span>
+                  <span>{{ formatDateY(item.achieve_time)}}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.commission') }}</span>
@@ -246,11 +247,11 @@ export default {
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.applicationTime') }}</span>
-                  <span>18/05/2023 12:00:00</span>
+                  <span>{{ formatDateY(item.ask_for_time)}}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.timeOfReceipt') }}</span>
-                  <span>23/05/2023 12:00:00</span>
+                  <span>{{ formatDateY(item.achieve_time)}}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.commission') }}</span>
