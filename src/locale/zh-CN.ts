@@ -30,7 +30,9 @@ export default {
         hash: "交易哈希",
         applicationTime: "申请时间",
         timeOfReceipt: "到账时间",
-        commission: "手续费"
+        commission: "手续费",
+        withdraw: "立即提现",
+        deposit: "立即充值"
     },
     explorer: {
         check: '请检查您的钱包链接',
@@ -70,12 +72,7 @@ export default {
         vbTitle:"朱雀",
         wtTitle:"白虎",
         per:"每日",
-        day:"天",
-        options1: "30 天",
-        options2: "60 天",
-        options3: "90 天",
-        options4: "120 天",
-        options5: "180 天"
+        day:"天"
     },
     record:{
         level:'我的等级',

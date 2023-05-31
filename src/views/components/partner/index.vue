@@ -8,6 +8,7 @@ import {ElMessage} from "element-plus";
 import MainStore from "@/store";
 const { toClipboard } = Clipboard()
 const State = MainStore() //获取store
+let chainValue =  ref("")
 const navValue = ref(0)
 const navList = ['全部', '充值', '提现']
 const txsRes = ref({
@@ -18,7 +19,7 @@ const txsRes = ref({
   },
   transactions: []as transactionInfo[],
 } as myTransactionsRep);
-let chainValue =  ref("选择公链")
+
 const num = ref(0)
 let depositList = ref({transactions: []as transactionInfo[]} )
 let withdrawList = ref({transactions: []as transactionInfo[]} )
@@ -272,11 +273,19 @@ export default {
                   <div  class="partner_cross_select">
                     <div
                         class="partner_cross_select_text"
+                        v-if="chainValue!=''"
                     >
                       {{chainValue}}
                     </div>
+                    <div
+                        class="partner_cross_select_text"
+                        v-if="chainValue==''"
+                    >
+                      {{ $t('plan.chainSelect') }}
+                    </div>
+                    <div class="partner_cross_select_tri"> <img src="../../../assets/images/select.png" /></div>
                   </div>
-                    <div class="partner_cross_select_tri"></div>
+
                     <template #dropdown>
                       <el-dropdown-menu>
                         <el-dropdown-item @click="chainValue = 'Polygon'" >Polygon</el-dropdown-item>
@@ -285,7 +294,7 @@ export default {
                     </template>
                   </el-dropdown>
                   <div class="partner_cross_button">
-                    <div class="partner_cross_button_text" @click="deposit()">立即充值</div>
+                    <div class="partner_cross_button_text" @click="deposit()">{{ $t('partner.deposit') }}</div>
                   </div>
               </div>
             </Card>
@@ -301,13 +310,20 @@ export default {
                     trigger="click"
                 >
                   <div  class="partner_cross_select">
-                  <div
-                      class="partner_cross_select_text"
-                  >
-                    {{chainValue}}
+                    <div
+                        class="partner_cross_select_text"
+                        v-if="chainValue!=''"
+                    >
+                      {{chainValue}}
+                    </div>
+                    <div
+                        class="partner_cross_select_text"
+                        v-if="chainValue==''"
+                    >
+                      {{ $t('plan.chainSelect') }}
+                    </div>
+                    <div class="partner_cross_select_tri"> <img src="../../../assets/images/select.png" /></div>
                   </div>
-                  </div>
-                  <div class="partner_cross_select_tri"></div>
                   <template #dropdown>
                     <el-dropdown-menu>
                       <el-dropdown-item @click="chainValue = 'Polygon'">Polygon</el-dropdown-item>
@@ -316,7 +332,7 @@ export default {
                   </template>
                 </el-dropdown>
                 <div class="partner_cross_button">
-                  <div class="partner_cross_button_text" @click="withdraw">立即提现</div>
+                  <div class="partner_cross_button_text" @click="withdraw">{{ $t('partner.withdraw') }}</div>
                 </div>
               </div>
             </Card>
@@ -491,8 +507,8 @@ export default {
 
           position: absolute;
           width: 1180px;
-          height: 210px;
-          top: 60px;
+          height: 120px;
+          top: 160px;
 
           background: rgba(255, 255, 255, 0.2);
           backdrop-filter: blur(50px);
@@ -502,7 +518,8 @@ export default {
           .partner_cross_middle {
             height: 60px;
             display: flex;
-            gap: 15px;
+            gap: 25px;
+
             align-items: center;
             .partner_cross_input {
               width: 629px;
@@ -552,7 +569,7 @@ export default {
               box-sizing: border-box;
 
               width: 167px;
-              height: 63px;
+              height: 67px;
 
               background: rgba(255, 255, 255, 0.2);
               backdrop-filter: blur(50px);
@@ -567,15 +584,15 @@ export default {
               flex-grow: 0;
               .partner_cross_select_text{
                 position: absolute;
-                width: 80px;
+                width: 120px;
                 height: 12px;
-                left: 31px;
+                left: 24px;
                 top: 26px;
 
                 font-family: 'PingFang SC';
                 font-style: normal;
                 font-weight: 400;
-                font-size: 20px;
+                font-size: 18px;
                 line-height: 16px;
                 /* identical to box height, or 80% */
 
@@ -585,18 +602,17 @@ export default {
                 color: #FFFFFF;
               }
               .partner_cross_select_tri{
-                /* Rectangle 18251 */
-
                 position: absolute;
                 width: 22.08px;
                 height: 22.08px;
                 left: 135px;
-                top: 25.62px;
+                top: 24px;
 
                 /* Font-Fill-Bright */
-                background: linear-gradient(98.28deg, #ADFFF5 10.61%, rgba(155, 165, 255, 0.99) 54.84%, rgba(216, 166, 255, 0.994896) 100%);
+
+                background: transparent;
                 border-radius: 2px;
-                transform: rotate(-45deg);
+
 
               }
 
@@ -617,7 +633,7 @@ export default {
 
               position: absolute;
               width: 167px;
-              height: 63px;
+              height: 67px;
               left:840px;
               top: 6px;
               border-radius: 12px;
@@ -629,7 +645,7 @@ export default {
               flex-grow: 0;
               .partner_cross_button_text{
                 position: absolute;
-                width: 80px;
+                width: 120px;
                 height: 12px;
                 left: 31px;
                 top: 26px;
@@ -637,7 +653,7 @@ export default {
                 font-family: 'PingFang SC';
                 font-style: normal;
                 font-weight: 400;
-                font-size: 20px;
+                font-size: 18px;
                 line-height: 16px;
                 /* identical to box height, or 80% */
 

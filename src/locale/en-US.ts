@@ -30,7 +30,9 @@ export default {
         hash: "Transaction Hash",
         applicationTime: "Application time",
         timeOfReceipt: "Time of receipt",
-        commission: "Commission"
+        commission: "Commission",
+        withdraw: "Withdraw",
+        deposit: "Deposit"
     },
     explorer: {
         check: 'Please check your wallet link',
@@ -71,12 +73,7 @@ export default {
         vbTitle:"Vermilion Bird",
         wtTitle:"White Tiger",
         per:"per day",
-        day:"day",
-        options1: "30 day",
-        options2: "60 day",
-        options3: "90 day",
-        options4: "120 day",
-        options5: "180 day"
+        day:"day"
     },
     record:{
         level:'My level',

@@ -6,8 +6,8 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n' //国际化
 import { fr } from 'element-plus/es/locale'
 import {ElMessage} from "element-plus";
+import {pledgeNftReq,pledgeNft} from "@/api/pledge";
 const { t, locale } = useI18n() //国际化
-
 const State = MainStore() //获取store
 let chainValue =  ref("")
 let durationValue =  ref("")
@@ -17,10 +17,18 @@ const imgData = [
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5691684853125_.pic.jpg'
 ]
 const id = ref("")
-const pledgeNft = async (id: string) => {
+const pledgeNftById = async (id: string) => {
   try {
     console.log('质押nft id:'+id)
-    ElMessage.success('质押成功')
+    console.log('质押nft 时间:'+durationValue.value)
+    console.log('质押nft 链:'+chainValue.value)
+    const pledgeReq = {nft_id: id,duration:durationValue.value,hash:"0x63c48fe0c1f4b60f6ae90b86ea91051b06fb8b371068db84c0ad68a54e9a466c",chain:chainValue.value} as pledgeNftReq
+    const res = await pledgeNft(pledgeReq);
+   if (res.data.code == 0){
+     ElMessage.success('质押成功')
+   }else{
+     ElMessage.error('质押失败')
+   }
   } catch (error) {
     ElMessage.error('质押失败')
   }
@@ -136,7 +144,7 @@ export default {
                 {{ $t('plan.chainSelect') }}
               </div>
               <template #dropdown>
-                <el-dropdown-menu>
+                <el-dropdown-menu >
                   <el-dropdown-item @click="chainValue = 'Polygon'">Polygon</el-dropdown-item>
                   <el-dropdown-item @click="chainValue = 'ETH'"> ETH </el-dropdown-item>
                 </el-dropdown-menu>
@@ -172,18 +180,18 @@ export default {
                 {{durationValue}} {{ $t('plan.day') }}
               </div>
               <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item @click="durationValue = '30'">{{ $t('plan.options1') }}</el-dropdown-item>
-                  <el-dropdown-item @click="durationValue = '60'"> {{ $t('plan.options2') }} </el-dropdown-item>
-                  <el-dropdown-item @click="durationValue = '90'"> {{ $t('plan.options3') }} </el-dropdown-item>
-                  <el-dropdown-item @click="durationValue = '120'"> {{ $t('plan.options4') }} </el-dropdown-item>
-                  <el-dropdown-item @click="durationValue = '180'"> {{ $t('plan.options5') }} </el-dropdown-item>
+                <el-dropdown-menu >
+                  <el-dropdown-item @click="durationValue = '30'">30 {{ $t('plan.day') }}</el-dropdown-item>
+                  <el-dropdown-item @click="durationValue = '60'">60 {{ $t('plan.day') }} </el-dropdown-item>
+                  <el-dropdown-item @click="durationValue = '90'">90 {{ $t('plan.day') }} </el-dropdown-item>
+                  <el-dropdown-item @click="durationValue = '120'">120 {{ $t('plan.day') }} </el-dropdown-item>
+                  <el-dropdown-item @click="durationValue = '180'">180 {{ $t('plan.day') }} </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
 
             <div class="three_middle_dropdown border_my">
-              <div style="height: 30px" @click="pledgeNft(id)"> {{ $t('plan.pledgeButton') }}</div>
+              <div style="height: 30px" @click="pledgeNftById(id)"> {{ $t('plan.pledgeButton') }}</div>
             </div>
           </div>
           <div class="three_bom">
