@@ -54,6 +54,7 @@ export default {
         orderIncome: '订单收益',
         balance: '持有',
         yesterdayIncome: '昨日收益',
+        incomeList: '收益记录',
         accumulateIncome: '累计总收益',
         pledgeOrder: '质押订单'
     },

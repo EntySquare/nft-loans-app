@@ -54,6 +54,7 @@ export default {
         orderIncome: 'Order income',
         balance: 'Balance',
         yesterdayIncome: 'Yesterday income',
+        incomeList: 'income List',
         accumulateIncome: 'Accumulate income',
         pledgeOrder: 'pledge orders'
 

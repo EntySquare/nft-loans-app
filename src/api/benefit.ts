@@ -20,9 +20,18 @@ export interface covenantInfo {
     nft_release_time: number;
     flag: string;
 }
+export interface benefitFlowInfo {
+    time: number
+    num: number;
+    flag: string;
+}
 export interface myCovenantFlowRep {
     benefit_info: benefitInfo;
     covenant_flows: covenantInfo[];
+}
+export interface myBenefitFlowRep {
+    covenant_info: covenantInfo;
+    benefit_flows: benefitFlowInfo[];
 }
 // 获取计划详情
 export function myCovenantFlow() {
@@ -34,5 +43,19 @@ export function myCovenantFlow() {
             'token': token,
             // Add more headers as needed
         },
+    })
+}
+
+export function covenantFlowDetail(hash:string){
+    const token = getToken()
+   const data = {hash:hash}
+    return request({
+        url: '/app/getCovenantDetail', // 请求地址
+        method: 'post', // 请求类型 get/post
+        headers: {
+            'token': token,
+            // Add more headers as needed
+        },
+        data
     })
 }
