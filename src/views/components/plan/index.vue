@@ -31,7 +31,7 @@ const pledgeNftById = async (id: string) => {
       ElMessage.error('请选择公链')
       return
     }
-    const pledgeReq = {nft_id: id,duration:durationValue.value,hash:"0x63c48fe0c1f4b60f6ae90b86ea91051b06fb8b371068db84c0ad68a54e9a466c",chain:chainValue.value} as pledgeNftReq
+    const pledgeReq = {nft_id: id,duration:durationValue.value,hash:"0xtesttest0ctesttesttest"+id+"84c0ad"+id+"ste9testestc",chain:chainValue.value} as pledgeNftReq
     const res = await pledgeNft(pledgeReq);
    if (res.data.code == 0){
      ElMessage.success('质押成功')
@@ -192,6 +192,7 @@ export default {
               </div>
               <template #dropdown>
                 <el-dropdown-menu >
+                  <el-dropdown-item @click="durationValue = '1'">1 {{ $t('plan.day') }}</el-dropdown-item>
                   <el-dropdown-item @click="durationValue = '30'">30 {{ $t('plan.day') }}</el-dropdown-item>
                   <el-dropdown-item @click="durationValue = '60'">60 {{ $t('plan.day') }} </el-dropdown-item>
                   <el-dropdown-item @click="durationValue = '90'">90 {{ $t('plan.day') }} </el-dropdown-item>
