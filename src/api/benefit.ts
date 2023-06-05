@@ -1,5 +1,5 @@
 import request from '@/request'
-import {getToken} from "@/utils/auth"; // 引入封装好的 axios 请求
+import { getToken } from "@/utils/auth"; // 引入封装好的 axios 请求
 export interface benefitInfo {
     balance: number;
     last_day_benefit: number;
@@ -36,6 +36,7 @@ export interface myBenefitFlowRep {
 // 获取计划详情
 export function myCovenantFlow() {
     const token = getToken()
+    console.log('token:', token)
     return request({
         url: '/app/myCovenantFlow', // 请求地址
         method: 'post', // 请求类型 get/post
@@ -46,9 +47,9 @@ export function myCovenantFlow() {
     })
 }
 
-export function covenantFlowDetail(hash:string){
+export function covenantFlowDetail(hash: string) {
     const token = getToken()
-   const data = {hash:hash}
+    const data = { hash: hash }
     return request({
         url: '/app/getCovenantDetail', // 请求地址
         method: 'post', // 请求类型 get/post

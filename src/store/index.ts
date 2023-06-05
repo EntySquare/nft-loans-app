@@ -5,6 +5,13 @@ import request from "@/request"; //引入axios
 import connectWallet, { UniverseData } from "@/web3/connectWallet";
 import { convertEtherUnits, EtherUnit } from "@/utils/etherUnit";
 import {setToken} from "@/utils/auth"; //引入连接钱包方法
+import {
+    benefitFlowInfo, covenantFlowDetail,
+    covenantInfo,
+    myBenefitFlowRep,
+    myCovenantFlow,
+    myCovenantFlowRep
+  } from "@/api/benefit";
 type re = [{
     sub_address: string,
     status: number

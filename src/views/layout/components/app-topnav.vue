@@ -16,6 +16,7 @@ const changeLang = (lang: string) => {
   locale.value = lang
   localStorage.setItem('upaclang', lang)
 }
+const dropdown = ref(false) //下拉菜单
 const setLang = () => {
   if (locale.value === 'en') {
     changeLang('zh')
@@ -143,9 +144,59 @@ export default { name: 'AppTopnav' }
   <!-- 导航栏 -->
   <nav>
     <div class="logo">
-      <img class="nav-item" src="../../../assets/logo.png" alt="logo" />
-
-      <span class="alive-light">{{ $t('nav.logoName') }}</span>
+      <div style="display: flex; align-items: center">
+        <img class="nav-item" src="../../../assets/logo.png" alt="logo" />
+        <span class="alive-light">{{ $t('nav.logoName') }}</span>
+      </div>
+      <div class="nav_more" @click="dropdown = !dropdown">
+        <i v-for="(item, index) in 3" :key="index"></i>
+        <div v-show="dropdown" class="Dropdownbox">
+          <div class="Dropdownbox_item">
+            <RouterLink
+              class="nav_item_s alive-light"
+              :to="`/Plan/${State.referrer}`"
+              >{{ $t('nav.home') }}</RouterLink
+            >
+          </div>
+          <div class="Dropdownbox_item">
+            <RouterLink
+              class="nav_item_s alive-light"
+              :to="`/Explorer/${State.referrer}`"
+              >{{ $t('nav.benefit') }}</RouterLink
+            >
+          </div>
+          <div class="Dropdownbox_item">
+            <RouterLink
+              class="nav_item_s alive-light"
+              :to="`/Partners/${State.referrer}`"
+              >{{ $t('nav.wallet') }}</RouterLink
+            >
+          </div>
+          <div class="Dropdownbox_item">
+            <RouterLink
+              class="nav_item_s alive-light"
+              :to="`/record/${State.referrer}`"
+              >{{ $t('nav.invitee') }}</RouterLink
+            >
+          </div>
+          <div class="Dropdownbox_item">
+            <div @click="setLang" class="nav_item_s alive-light">
+              {{ locale == 'zh' ? '中文' : 'EN' }}
+              <div v-if="locale == 'zh'"></div>
+              <div v-else></div>
+            </div>
+          </div>
+          <div
+            class="log_out Dropdownbox_item"
+            @click="DisConnection"
+            v-if="State.account"
+          >
+            <img src="../../../assets/log_out.png" />
+            登出
+          </div>
+        </div>
+        <div class="pool" v-show="dropdown"></div>
+      </div>
     </div>
     <div class="nav">
       <RouterLink
@@ -231,9 +282,13 @@ export default { name: 'AppTopnav' }
                 : $t('nav.connect')
             }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </span>
-          <div class="log_out" v-if="State.account">
-            <img src="../../../assets/log_out.png" @click="DisConnection"/>
-          </div>
+        </div>
+        <div
+          class="log_out nonel"
+          v-if="State.account"
+          style="margin-left: 10px"
+        >
+          <img src="../../../assets/log_out.png" @click="DisConnection" />
         </div>
       </div>
     </div>
@@ -278,6 +333,8 @@ export default { name: 'AppTopnav' }
   height: 70px;
   width: 100vw;
   backdrop-filter: blur(10px) !important;
+  // 浏览器兼容
+  -webkit-backdrop-filter: blur(10px) !important;
   background: #0005178e;
 }
 
@@ -300,7 +357,9 @@ nav {
   // backdrop-filter: blur(10px) !important;
 
   .logo {
+    min-width: 202px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     cursor: pointer;
     height: 70px;
@@ -309,11 +368,82 @@ nav {
       height: 50px;
       width: 50px;
     }
+    .nav_more {
+      position: relative;
+      // display: flex;
+      display: none;
+      align-items: center;
+      height: 50px;
+      padding: 20px;
+      gap: 2px;
+      margin-right: 10px;
+      i {
+        height: 5px !important;
+        width: 5px !important;
+        background: #bea7fa;
+        border-radius: 50%;
+        &:nth-child(1) {
+          background: #b7e0f6;
+        }
+        &:nth-child(2) {
+          background: #9ca3f8;
+        }
+      }
+      .Dropdownbox {
+        position: relative;
+        z-index: 2030;
+        transition: all 0.3s ease-in-out;
+        position: absolute;
+        top: 30px;
+        right: 0;
+        backdrop-filter: blur(100px) !important;
+        -webkit-backdrop-filter: blur(100px) !important;
+        background: rgba(255, 255, 255, 0.229);
+        border-radius: 10px;
+        padding: 10px;
+        border: 1px solid #08aabc;
+        .Dropdownbox_item {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          white-space: nowrap;
+          .nav_item_s {
+            margin-left: 0;
+            font-size: 16px !important;
+            font-weight: 500;
+            height: 50px;
+            font-size: 14px;
+            white-space: nowrap;
+            padding: 0px 20px;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+          }
+          img {
+            height: 15px !important;
+            width: 15px !important;
+          }
+        }
+      }
+      .pool {
+        position: fixed;
+        height: 100vh;
+        width: 100vw;
+        top: 0;
+        left: 0;
+        z-index: 2029;
+        backdrop-filter: blur(10px) !important;
+        // 浏览器兼容
+        -webkit-backdrop-filter: blur(10px) !important;
+        background: #00051729;
+      }
+    }
   }
 
   .nav {
     display: flex;
-    width: 960px;
+    // width: 960px;
     .nav-item {
       height: 70px;
       font-size: 14px;
@@ -334,6 +464,7 @@ nav {
       }
       .alive-light {
         font-size: 20px;
+        width: 140px;
         margin-left: 8px;
         white-space: nowrap;
         background-image: -webkit-linear-gradient(
@@ -363,13 +494,13 @@ nav {
     }
 
     .nav-btn {
+      min-width: 100px;
       height: 70px;
       margin-left: 70px;
       display: flex;
       align-items: center;
 
-
-      .connection-btn ,
+      .connection-btn,
       .connection-btn-nav {
         height: 35px;
         line-height: 35px;
@@ -385,7 +516,9 @@ nav {
           white-space: nowrap;
         }
       }
-
+      .connection-btn {
+        min-width: 95px;
+      }
       .connection-btn-nav {
         display: flex;
         align-items: flex-start;
@@ -404,15 +537,24 @@ nav {
           font-style: normal;
           font-weight: 500;
         }
-
-        .log_out{
-          position: absolute;
-          right: 4.5%;
-          top: 25%;
-        }
       }
     }
-
+  }
+}
+.log_out {
+  margin-left: 0;
+  font-size: 16px !important;
+  height: 50px;
+  font-size: 14px;
+  white-space: nowrap;
+  padding: 0px 20px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  img {
+    width: 22px;
+    max-height: 22px;
   }
 }
 
