@@ -340,7 +340,11 @@ export default {
               </div>
             </Card>
           </div>
-          <div class="partner_cross_box_body" v-if="navValue == 3">
+          <div
+            class="partner_cross_box_body"
+            style="height: auto"
+            v-if="navValue == 3"
+          >
             <Card>
               <div class="partner_cross_middle">
                 <div class="partner_cross_input">
@@ -348,7 +352,7 @@ export default {
                     class="partner_cross_input_text"
                     type="number"
                     v-model="num"
-                    placeholder="   请输入数量"
+                    placeholder="请输入数量"
                   />
                 </div>
                 <el-dropdown trigger="click">
@@ -625,77 +629,47 @@ export default {
           }
         }
         .partner_cross_box_body {
-          box-sizing: border-box;
-
-          position: absolute;
-          width: 1180px;
-          height: 120px;
-          top: 160px;
-
-          background: rgba(255, 255, 255, 0.2);
-          backdrop-filter: blur(50px);
-          /* Note: backdrop-filter has minimal browser support */
-
+          margin-top: 20px;
           border-radius: 24px;
           .partner_cross_middle {
-            height: 60px;
             display: flex;
             gap: 25px;
             border-radius: 24px;
             align-items: center;
             .partner_cross_input {
-              width: 629px;
-              height: 67px;
+              height: 40px;
 
               /* border line */
 
-              background: linear-gradient(
-                98.28deg,
-                rgba(102, 163, 155, 0.3) 10.61%,
-                rgba(97, 112, 252, 0.297) 54.84%,
-                rgba(158, 99, 205, 0.298469) 100%
-              );
-              background-blend-mode: overlay;
               /* InnerShadow-Box */
-              box-shadow: 2px 2px 3px 0px rgba(101, 0, 118, 0.25) inset;
 
-              border-radius: 24px;
-
-              order: 0;
-              flex-grow: 0;
-              .partner_cross_input_text {
-                position: fixed;
-                width: 629px;
-                height: 67px;
+              input {
+                height: 40px;
                 border-radius: 24px;
                 background: none;
-                font-family: 'PingFang SC';
-                font-style: normal;
                 font-weight: 400;
-                font-size: 24px;
-                gap: normal;
+                font-size: 16px;
                 line-height: 16px;
-                /* identical to box height, or 80% */
-
                 display: flex;
                 align-items: center;
-
-                /* Font-Light-Inactive */
-
-                color: rgba(255, 255, 255, 0.8);
-
-                opacity: 0.8;
+                padding: 0 20px;
+                color: rgb(252, 252, 252);
+                &::placeholder {
+                  color: #ffffff50;
+                }
               }
             }
             .partner_cross_select {
               /* Kinsta */
-
+              display: flex;
+              align-items: center;
+              justify-content: space-around;
               box-sizing: border-box;
 
               width: 167px;
-              height: 67px;
+              height: 40px;
 
-              background: rgba(255, 255, 255, 0.2);
+              background: rgba(144, 79, 79, 0.2);
               backdrop-filter: blur(50px);
               /* Note: backdrop-filter has minimal browser support */
 
@@ -707,12 +681,6 @@ export default {
               order: 1;
               flex-grow: 0;
               .partner_cross_select_text {
-                position: absolute;
-                width: 120px;
-                height: 12px;
-                left: 24px;
-                top: 26px;
-
                 font-family: 'PingFang SC';
                 font-style: normal;
                 font-weight: 400;
@@ -726,11 +694,8 @@ export default {
                 color: #ffffff;
               }
               .partner_cross_select_tri {
-                position: absolute;
                 width: 22.08px;
                 height: 22.08px;
-                left: 135px;
-                top: 24px;
 
                 /* Font-Fill-Bright */
 
@@ -743,8 +708,6 @@ export default {
 
               box-sizing: border-box;
 
-              position: fixed;
-
               /* button-fill */
               background: linear-gradient(
                 98.28deg,
@@ -756,35 +719,19 @@ export default {
 
               /* 开始质押 */
 
-              position: absolute;
               width: 167px;
-              height: 67px;
-              left: 840px;
-              top: 6px;
+              height: 40px;
               border-radius: 12px;
 
               /* Inside auto layout */
-
-              flex: none;
-              order: 1;
-              flex-grow: 0;
+              line-height: 40px;
+              text-align: center;
               .partner_cross_button_text {
-                position: absolute;
-                width: 120px;
-                height: 12px;
-                left: 31px;
-                top: 26px;
-
                 font-family: 'PingFang SC';
                 font-style: normal;
                 font-weight: 400;
                 font-size: 18px;
-                line-height: 16px;
                 /* identical to box height, or 80% */
-
-                display: flex;
-                align-items: center;
-
                 color: #ffffff;
               }
             }
