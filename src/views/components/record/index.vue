@@ -5,27 +5,32 @@ import Card from '@/components/card/index.vue'
 import Clipboard from 'vue-clipboard3'
 import { ElMessage } from 'element-plus'
 import { formatDateY } from '@/utils/time'
-import {onMounted, ref} from "vue";
-import {myInvestmentRep, myInvitee, inviteeInfoRep,getThisInviteeInfo} from "@/api/invitee";
-import {covenantInfo} from "@/api/benefit";
+import { onMounted, ref } from 'vue'
+import {
+  myInvestmentRep,
+  myInvitee,
+  inviteeInfoRep,
+  getThisInviteeInfo
+} from '@/api/invitee'
+import { covenantInfo } from '@/api/benefit'
 const { toClipboard } = Clipboard() // 复制
-const inviteeUid = ref("0")
+const inviteeUid = ref('0')
 const inviteeRes = ref({
-  uid: "",
+  uid: '',
   level: 0,
   accumulated_pledge_count: 0,
   investment_count: 0,
-  investment_address: "",
+  investment_address: '',
   accumulated_benefit: 0,
-  investment_users: [],
-} as myInvestmentRep);
+  investment_users: []
+} as myInvestmentRep)
 const inviteeInfoRes = ref({
-  uid: "",
+  uid: '',
   level: 0,
   pledge_count: 0,
   create_time: 0,
-  covenant_flows: [],
-} as inviteeInfoRep);
+  covenant_flows: []
+} as inviteeInfoRep)
 const copy = async () => {
   try {
     const res = await toClipboard(inviteeRes.value.investment_address)
@@ -34,14 +39,14 @@ const copy = async () => {
     ElMessage.error('复制失败')
   }
 }
-async function getInviteeInfo(uid: string){
+async function getInviteeInfo(uid: string) {
   try {
     let data = {
       uid: uid
     }
     console.log(uid)
     inviteeUid.value = uid
-   const res = await getThisInviteeInfo(data)
+    const res = await getThisInviteeInfo(data)
     inviteeInfoRes.value.uid = res.data.json.uid
     inviteeInfoRes.value.level = res.data.json.level
     inviteeInfoRes.value.pledge_count = res.data.json.pledge_count
@@ -49,8 +54,8 @@ async function getInviteeInfo(uid: string){
     inviteeInfoRes.value.covenant_flows = res.data.json.covenant_flows
     console.log(res.data)
   } catch (err) {
-    console.log("queryMyCovenantFlow err-------------------");
-    console.log(err);
+    console.log('queryMyCovenantFlow err-------------------')
+    console.log(err)
   }
 }
 async function dataInit() {
@@ -65,24 +70,24 @@ async function dataInit() {
     // config.headers = {
     //   'Content-Type': 'application/x-www-form-urlencoded',
     // };
-    const res = await myInvitee();
+    const res = await myInvitee()
     inviteeRes.value.uid = res.data.json.uid
     inviteeRes.value.level = res.data.json.level
-    inviteeRes.value.accumulated_pledge_count = res.data.json.accumulated_pledge_count
+    inviteeRes.value.accumulated_pledge_count =
+      res.data.json.accumulated_pledge_count
     inviteeRes.value.investment_count = res.data.json.investment_count
     inviteeRes.value.investment_address = res.data.json.investment_address
     inviteeRes.value.accumulated_benefit = res.data.json.accumulated_benefit
     inviteeRes.value.investment_users = res.data.json.investment_users
     console.log(res.data)
-
   } catch (err) {
-    console.log("queryMyCovenantFlow err-------------------");
-    console.log(err);
+    console.log('queryMyCovenantFlow err-------------------')
+    console.log(err)
   }
 }
 onMounted(() => {
-  dataInit();
-});
+  dataInit()
+})
 </script>
 <script lang="ts">
 export default {
@@ -94,73 +99,120 @@ export default {
     <!-- 居中 -->
     <div class="container">
       <div class="card">
-        <Card bradius="24px">
+        <Card>
           <div class="card_title">
             <div class="card_left">
               <div class="card_left_dj">
-                <div>{{ $t('record.level') }}: <span>V{{ inviteeRes.level}}</span></div>
+                <div>
+                  {{ $t('record.level') }}: <span>V{{ inviteeRes.level }}</span>
+                </div>
                 <div style="margin-top: 11px">
-                  {{ $t('record.uid') }}: &nbsp;<span>{{ inviteeRes.uid.slice(0, 3)}}**{{ inviteeRes.uid.slice(5, 12)  }}</span>
+                  {{ $t('record.uid') }}: &nbsp;<span
+                    >{{ inviteeRes.uid.slice(0, 3) }}**{{
+                      inviteeRes.uid.slice(5, 12)
+                    }}</span
+                  >
                 </div>
               </div>
             </div>
             <div class="card_right">
               <div class="card_right_rh">
-                <div>{{ $t('record.noi') }}: <span>{{ inviteeRes.investment_count}}人</span></div>
+                <div>
+                  {{ $t('record.noi') }}:
+                  <span>{{ inviteeRes.investment_count }}人</span>
+                </div>
                 <div style="margin-top: 11px">
-                  {{ $t('record.anop') }}: &nbsp<span>{{ inviteeRes.accumulated_pledge_count}}</span>
+                  {{ $t('record.anop') }}: &nbsp<span>{{
+                    inviteeRes.accumulated_pledge_count
+                  }}</span>
                 </div>
               </div>
             </div>
           </div>
         </Card>
 
-        <Card bradius="24px" padding="0px" style="margin-top: 20px">
+        <Card padding="0px" style="margin-top: 20px">
           <div class="address">
             <div class="address_text">
-              <span>{{ $t('record.invitationAddress') }}:</span> <span>{{ inviteeRes.investment_address}} </span>
-              <el-button class="address_text_btu" @click="copy" round>
-                {{ $t('record.copy') }} <img
+              <span style="min-width: 86px"
+                >{{ $t('record.invitationAddress') }}:</span
+              >
+              <span class="addres">{{ inviteeRes.investment_address }} </span>
+              <div class="address_text_btu" @click="copy" round>
+                <!-- {{ $t('record.copy') }} -->
+                <img
+                  width="16"
+                  height="16"
                   src="../../../assets/images/VectorMini.png"
                   alt=""
-              /></el-button>
+                />
+              </div>
             </div>
           </div>
         </Card>
-        <div class="title" v-if="inviteeUid == '0'"><span class="alive-light">{{ $t('record.invitationList') }}</span></div>
-        <div class="title" v-if="inviteeUid != '0'"><span class="alive-light">{{ $t('record.invitationInfo') }}</span></div>
+        <div class="title" v-if="inviteeUid == '0'">
+          <span class="alive-light">{{ $t('record.invitationList') }}</span>
+        </div>
+        <div class="title" v-if="inviteeUid != '0'">
+          <span class="alive-light">{{ $t('record.invitationInfo') }}</span>
+        </div>
         <Card bradius="24px">
           <div class="list" v-if="inviteeUid == '0'">
             <table class="table">
               <tbody>
-                <tr v-for="(item, index) in inviteeRes.investment_users" :key="index">
-                  <td>UID:&nbsp;&nbsp;&nbsp;{{ item.uid.slice(0, 3)}}**{{ item.uid.slice(5, 12)  }}</td>
-                  <td style="text-align: center">{{ $t('record.nowLevel') }}:&nbsp;&nbsp;V{{ item.level}}</td>
+                <tr
+                  v-for="(item, index) in inviteeRes.investment_users"
+                  :key="index"
+                >
+                  <td>
+                    UID:&nbsp;&nbsp;&nbsp;{{ item.uid.slice(0, 3) }}**{{
+                      item.uid.slice(5, 12)
+                    }}
+                  </td>
+                  <td style="text-align: center">
+                    {{ $t('record.nowLevel') }}:&nbsp;&nbsp;V{{ item.level }}
+                  </td>
                   <td style="text-align: right">
-                    {{ $t('record.nop') }}&nbsp;&nbsp;{{ item.pledge_count}}次
+                    {{ $t('record.nop') }}&nbsp;&nbsp;{{ item.pledge_count }}次
                   </td>
 
-                  <i style="float: right; margin-right: 10px; line-height: 40px" @click="getInviteeInfo(item.uid)">
-                    <img src="../../../assets/images/Vector1.png" alt=""
-                  />
+                  <i
+                    style="float: right; margin-right: 10px; line-height: 40px"
+                    @click="getInviteeInfo(item.uid)"
+                  >
+                    <img src="../../../assets/images/Vector1.png" alt="" />
                   </i>
                 </tr>
               </tbody>
             </table>
           </div>
           <div class="list" v-if="inviteeUid != '0'">
-            <i style="float: left; margin-left: 10px; line-height: 20px" @click="inviteeUid = '0'">
-              <img src="../../../assets/images/Vector2.png" alt=""
-              />
+            <i
+              style="float: left; margin-left: 10px; line-height: 20px"
+              @click="inviteeUid = '0'"
+            >
+              <img src="../../../assets/images/Vector2.png" alt="" />
             </i>
             <div class="detail_info">
-              <td class="td1">UID:&nbsp;&nbsp;&nbsp;{{ inviteeUid.slice(0, 3)}}**{{ inviteeUid.slice(5, 12)  }}</td>
-                <td style="text-align: center" class="td2">{{ $t('record.nowLevel') }}:&nbsp;&nbsp;V{{ inviteeInfoRes.level}}</td>
-                <td style="text-align: right" class="td3">
-                {{ $t('record.nop') }}&nbsp;&nbsp;{{ inviteeInfoRes.pledge_count}}次
+              <td class="td1">
+                UID:&nbsp;&nbsp;&nbsp;{{ inviteeUid.slice(0, 3) }}**{{
+                  inviteeUid.slice(5, 12)
+                }}
+              </td>
+              <td style="text-align: center" class="td2">
+                {{ $t('record.nowLevel') }}:&nbsp;&nbsp;V{{
+                  inviteeInfoRes.level
+                }}
+              </td>
+              <td style="text-align: right" class="td3">
+                {{ $t('record.nop') }}&nbsp;&nbsp;{{
+                  inviteeInfoRes.pledge_count
+                }}次
               </td>
               <td style="text-align: right" class="td4">
-                {{ $t('record.inviteTime') }}&nbsp;&nbsp;{{ formatDateY(inviteeInfoRes.create_time)}}
+                {{ $t('record.inviteTime') }}&nbsp;&nbsp;{{
+                  formatDateY(inviteeInfoRes.create_time)
+                }}
               </td>
             </div>
           </div>
@@ -175,14 +227,15 @@ export default {
   // background-color: @xtxColor;
   width: 100%;
   height: 100%;
-  padding-top: 100px;
+  padding-top: 70px;
 
   .container {
     position: relative;
+    margin-top: 50px;
     z-index: 1; //三级
     max-width: 1390px;
     width: 100%;
-    height: calc(100vh - 100px);
+    // height: calc(100vh - 100px);
     color: aliceblue;
     display: flex;
     justify-content: center;
@@ -193,15 +246,17 @@ export default {
       .card_title {
         width: 100%;
         height: 118px;
-
+        display: flex;
         .card_left {
           width: 50%;
           height: 100%;
-          float: left;
           // border: rgb(208, 255, 0) solid 1px;
           .card_left_dj {
-            margin-top: 20px;
-            margin-left: 35px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             font-family: 'PingFang SC';
             font-style: normal;
             font-weight: 500;
@@ -213,12 +268,14 @@ export default {
         .card_right {
           width: 50%;
           height: 100%;
-          float: left;
           // border: rgb(208, 255, 0) solid 1px;
 
           .card_right_rh {
-            margin-top: 20px;
-            margin-left: 35px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             font-family: 'PingFang SC';
             font-style: normal;
             font-weight: 500;
@@ -234,31 +291,45 @@ export default {
         height: 47px;
         display: flex;
         align-items: center;
+
         .address_text {
           // margin-top: 11px;
-          margin-left: 35px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          // margin-left: 35px;
           width: 100%;
-          height: 24px;
           font-family: 'PingFang SC';
           font-weight: 400;
           font-size: 20px;
           line-height: 24px;
+          padding: 0 15px;
+          .addres {
+            //超出省略号
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
         }
         .address_text_btu {
-          width: 182px;
-          height: 47px;
+          margin-left: auto;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 10px;
           font-size: 18px;
-          margin-top: -12px;
+          border-radius: 10px;
+          // margin-top: -12px;
           // margin-right: 35px;
 
-          font-style: normal;
+          // font-style: normal;
           background: linear-gradient(
             98.28deg,
             #66a39b 10.61%,
             rgba(97, 112, 252, 0.99) 54.84%,
             rgba(158, 99, 205, 0.994896) 100%
           );
-          float: right;
+          // float: right;
         }
       }
       .title {
@@ -272,10 +343,10 @@ export default {
           margin-left: 8px;
           white-space: nowrap;
           background-image: -webkit-linear-gradient(
-              98.28deg,
-              #adfff5 10.61%,
-              rgba(155, 165, 255, 0.99) 54.84%,
-              rgba(216, 166, 255, 0.994896) 100%
+            98.28deg,
+            #adfff5 10.61%,
+            rgba(155, 165, 255, 0.99) 54.84%,
+            rgba(216, 166, 255, 0.994896) 100%
           );
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
@@ -290,15 +361,15 @@ export default {
           position: absolute;
           width: 1176px;
           height: 50px;
-          left: calc(50% - 1176px/2 - 0.5px);
-          top: calc(50% - 40px/2 - 148.5px);
+          left: calc(50% - 1176px / 2 - 0.5px);
+          top: calc(50% - 40px / 2 - 148.5px);
 
           background: rgba(255, 255, 255, 0.2);
           backdrop-filter: blur(50px);
           /* Note: backdrop-filter has minimal browser support */
 
           border-radius: 24px;
-          .td1{
+          .td1 {
             position: absolute;
             width: 154px;
             height: 22px;
@@ -311,11 +382,11 @@ export default {
             font-size: 16px;
             line-height: 22px;
 
-            color: #FFFFFF;
+            color: #ffffff;
 
             opacity: 0.8;
           }
-          .td2{
+          .td2 {
             position: absolute;
             width: 150px;
             height: 22px;
@@ -328,24 +399,24 @@ export default {
             font-size: 16px;
             line-height: 22px;
 
-            color: #FFFFFF;
+            color: #ffffff;
           }
-          .td3{
-                       position: absolute;
-                       width: 350px;
-                       height: 22px;
-                       left: 300px;
-                       top: 11px;
+          .td3 {
+            position: absolute;
+            width: 350px;
+            height: 22px;
+            left: 300px;
+            top: 11px;
 
-                       font-family: 'PingFang SC';
-                       font-style: normal;
-                       font-weight: 400;
-                       font-size: 16px;
-                       line-height: 22px;
+            font-family: 'PingFang SC';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 22px;
 
-                       color: #FFFFFF;
-           }
-          .td4{
+            color: #ffffff;
+          }
+          .td4 {
             position: absolute;
             width: 383px;
             height: 22px;
@@ -358,7 +429,7 @@ export default {
             font-size: 16px;
             line-height: 22px;
 
-            color: #FFFFFF;
+            color: #ffffff;
           }
         }
         .table {

@@ -1,29 +1,34 @@
 <script setup lang="ts">
 import Card from '@/components/card/index.vue'
-import {onMounted, ref} from 'vue'
+import { onMounted, ref } from 'vue'
 import { formatDateY } from '@/utils/time'
-import {myNgt, myTransactionsRep, transactionInfo} from "@/api/flow";
-import {depositNgt, withdrawNgt, withdrawNgtReq,depositNgtReq} from "@/api/wallet";
-import Clipboard from "vue-clipboard3";
-import {ElMessage} from "element-plus";
-import MainStore from "@/store";
+import { myNgt, myTransactionsRep, transactionInfo } from '@/api/flow'
+import {
+  depositNgt,
+  withdrawNgt,
+  withdrawNgtReq,
+  depositNgtReq
+} from '@/api/wallet'
+import Clipboard from 'vue-clipboard3'
+import { ElMessage } from 'element-plus'
+import MainStore from '@/store'
 const { toClipboard } = Clipboard()
 const State = MainStore() //获取store
-let chainValue =  ref("")
+let chainValue = ref('')
 const navValue = ref(0)
 const navList = ['全部', '充值', '提现']
 const txsRes = ref({
   benefit_info: {
     balance: 0,
     last_day_benefit: 0,
-    accumulated_benefit: 0,
+    accumulated_benefit: 0
   },
-  transactions: []as transactionInfo[],
-} as myTransactionsRep);
+  transactions: [] as transactionInfo[]
+} as myTransactionsRep)
 
 const num = ref(0)
-let depositList = ref({transactions: []as transactionInfo[]} )
-let withdrawList = ref({transactions: []as transactionInfo[]} )
+let depositList = ref({ transactions: [] as transactionInfo[] })
+let withdrawList = ref({ transactions: [] as transactionInfo[] })
 async function dataInit() {
   try {
     // config.headers = { 'Access-Control-Allow-Origin': '*' };
@@ -36,25 +41,24 @@ async function dataInit() {
     // config.headers = {
     //   'Content-Type': 'application/x-www-form-urlencoded',
     // };
-    const res = await myNgt();
+    const res = await myNgt()
     console.log(res.data)
-    txsRes.value.benefit_info = res.data.json.benefit_info;
-    txsRes.value.transactions = res.data.json.transactions;
+    txsRes.value.benefit_info = res.data.json.benefit_info
+    txsRes.value.transactions = res.data.json.transactions
     for (let i = 0; i < res.data.json.transactions.length; i++) {
-      if (res.data.json.transactions[i].transaction_type == "1"){
+      if (res.data.json.transactions[i].transaction_type == '1') {
         depositList.value.transactions.push(res.data.json.transactions[i])
       }
-      if (res.data.json.transactions[i].transaction_type == "2"){
+      if (res.data.json.transactions[i].transaction_type == '2') {
         withdrawList.value.transactions.push(res.data.json.transactions[i])
       }
     }
-
   } catch (err) {
-    console.log("query myNgt err-------------------");
-    console.log(err);
+    console.log('query myNgt err-------------------')
+    console.log(err)
   }
 }
-const copy = async (hash:string) => {
+const copy = async (hash: string) => {
   try {
     const res = await toClipboard(hash)
     ElMessage.success('复制成功')
@@ -65,22 +69,25 @@ const copy = async (hash:string) => {
 
 const deposit = async () => {
   try {
-    if (chainValue.value == ""){
+    if (chainValue.value == '') {
       ElMessage.error('请选择公链')
       return
     }
-    if (num.value == 0){
+    if (num.value == 0) {
       ElMessage.error('请输入数量')
       return
     }
     let req = {
-      num:num.value,address:State.account,hash:"0x63c48fe0c1f4b60f6ae90b86ea91051b06fb8b371068db84c0ad68a54e9a466c",chain:chainValue.value
-    }as depositNgtReq
-    const res = await  depositNgt(req)
-    if (res.data.code == 0){
+      num: num.value,
+      address: State.account,
+      hash: '0x63c48fe0c1f4b60f6ae90b86ea91051b06fb8b371068db84c0ad68a54e9a466c',
+      chain: chainValue.value
+    } as depositNgtReq
+    const res = await depositNgt(req)
+    if (res.data.code == 0) {
       ElMessage.success('充值成功')
       return
-    }else{
+    } else {
       ElMessage.error('充值失败')
       return
     }
@@ -91,22 +98,24 @@ const deposit = async () => {
 }
 const withdraw = async () => {
   try {
-    if (chainValue.value == ""){
+    if (chainValue.value == '') {
       ElMessage.error('请选择公链')
       return
     }
-    if (num.value == 0){
+    if (num.value == 0) {
       ElMessage.error('请输入数量')
       return
     }
     let req = {
-      num:num.value,address:State.account,chain:chainValue.value
-    }as depositNgtReq
-    const res = await  depositNgt(req)
-    if (res.data.code == 0){
+      num: num.value,
+      address: State.account,
+      chain: chainValue.value
+    } as depositNgtReq
+    const res = await depositNgt(req)
+    if (res.data.code == 0) {
       ElMessage.success('充值成功')
       return
-    }else{
+    } else {
       ElMessage.error('充值失败')
       return
     }
@@ -116,8 +125,8 @@ const withdraw = async () => {
   }
 }
 onMounted(() => {
-  dataInit();
-});
+  dataInit()
+})
 </script>
 <script lang="ts">
 export default {
@@ -133,24 +142,30 @@ export default {
         <Card>
           <div class="partner_one_box">
             <div class="partner_one_box_item">
-              <div class="partner_one_box_item_top alive-light">{{ $t('explorer.balance') }}</div>
+              <div class="partner_one_box_item_top alive-light">
+                {{ $t('explorer.balance') }}
+              </div>
               <div class="partner_one_box_item_bom alive-light">
                 {{ txsRes.benefit_info.balance }} <span>NGT</span>
               </div>
             </div>
             <div class="partner_one_box_item">
-              <div class="partner_one_box_item_top alive-light">{{ $t('explorer.yesterdayIncome') }}</div>
+              <div class="partner_one_box_item_top alive-light">
+                {{ $t('explorer.yesterdayIncome') }}
+              </div>
               <div class="partner_one_box_item_bom alive-light">
                 {{ txsRes.benefit_info.last_day_benefit }} <span>NGT</span>
               </div>
             </div>
             <div class="partner_one_box_item">
-              <div class="partner_one_box_item_top alive-light">{{ $t('explorer.accumulateIncome') }}</div>
+              <div class="partner_one_box_item_top alive-light">
+                {{ $t('explorer.accumulateIncome') }}
+              </div>
               <div class="partner_one_box_item_bom alive-light">
                 {{ txsRes.benefit_info.accumulated_benefit }} <span>NGT</span>
               </div>
             </div>
-            <div class="partner_one_box_item">
+            <div class="partner_one_box_item" style="margin-top: 10px">
               <div class="partner_one_box_item_btn">
                 <span @click="navValue = 3">{{ $t('partner.navList2') }}</span>
                 <span @click="navValue = 4">{{ $t('partner.navList3') }}</span>
@@ -174,42 +189,56 @@ export default {
               :key="index"
               @click="navValue = index"
             >
-              <span class="alive-light" v-if="index == 0">{{ $t('partner.navList1') }}</span>
-              <span class="alive-light" v-if="index == 1">{{ $t('partner.navList2') }}</span>
-              <span class="alive-light" v-if="index == 2">{{ $t('partner.navList3') }}</span>
+              <span class="alive-light" v-if="index == 0">{{
+                $t('partner.navList1')
+              }}</span>
+              <span class="alive-light" v-if="index == 1">{{
+                $t('partner.navList2')
+              }}</span>
+              <span class="alive-light" v-if="index == 2">{{
+                $t('partner.navList3')
+              }}</span>
             </div>
           </div>
           <div class="partner_two_box_body" v-if="navValue == 0">
             <Card v-for="(item, index) in txsRes.transactions" :key="index">
               <div class="box_body_item_top">
-                <span v-if="item.transaction_type == '1'">{{ $t('partner.navList2') }}</span>
-                <span v-if="item.transaction_type == '2'">{{ $t('partner.navList3') }}</span>
+                <span v-if="item.transaction_type == '1'">{{
+                  $t('partner.navList2')
+                }}</span>
+                <span v-if="item.transaction_type == '2'">{{
+                  $t('partner.navList3')
+                }}</span>
                 <span>{{ item.num }}NGT</span>
-                <span >{{  item.chain }}</span>
-                <span v-if="item.status == '1'" class="alive-light">{{ $t('partner.confirming') }}</span>
-                <span v-if="item.status == '2'" class="alive-light">{{ $t('partner.confirmed') }}</span>
+                <span>{{ item.chain }}</span>
+                <span v-if="item.status == '1'" class="alive-light">{{
+                  $t('partner.confirming')
+                }}</span>
+                <span v-if="item.status == '2'" class="alive-light">{{
+                  $t('partner.confirmed')
+                }}</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.address') }}</span>
-                  <span>{{  item.address }}</span>
+                  <span>{{ item.address }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.hash') }}</span>
-                  <span>{{ item.hash.slice(0, 32)  }}********
-                  <el-button class="copyBtn" @click="copy(item.hash)" round><img
-                      src="../../../assets/images/VectorMini.png"
-                      alt=""
-                  /></el-button>
+                  <span
+                    >{{ item.hash.slice(0, 32) }}********
+                    <el-button class="copyBtn" @click="copy(item.hash)" round
+                      ><img src="../../../assets/images/VectorMini.png" alt=""
+                    /></el-button>
                   </span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.applicationTime') }}</span>
-                  <span>{{ formatDateY(item.ask_for_time)}}</span>
+                  <span>{{ formatDateY(item.ask_for_time) }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.timeOfReceipt') }}</span>
-                  <span>{{ formatDateY(item.achieve_time)}}</span>
+                  <span>{{ formatDateY(item.achieve_time) }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.commission') }}</span>
@@ -219,35 +248,42 @@ export default {
             </Card>
           </div>
           <div class="partner_two_box_body" v-if="navValue == 1">
-            <Card v-for="(item, index) in depositList.transactions" :key="index">
+            <Card
+              v-for="(item, index) in depositList.transactions"
+              :key="index"
+            >
               <div class="box_body_item_top">
                 <span>{{ $t('partner.navList2') }}</span>
                 <span>{{ item.num }}NGT</span>
-                <span >{{  item.chain }}</span>
-                <span v-if="item.status == '1'" class="alive-light">{{ $t('partner.confirming') }}</span>
-                <span v-if="item.status == '2'" class="alive-light">{{ $t('partner.confirmed') }}</span>
+                <span>{{ item.chain }}</span>
+                <span v-if="item.status == '1'" class="alive-light">{{
+                  $t('partner.confirming')
+                }}</span>
+                <span v-if="item.status == '2'" class="alive-light">{{
+                  $t('partner.confirmed')
+                }}</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.address') }}</span>
-                  <span>{{  item.address }}</span>
+                  <span>{{ item.address }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.hash') }}</span>
-                  <span>{{ item.hash.slice(0, 32)  }}********
-                  <el-button class="copyBtn" @click="copy(item.hash)" round><img
-                      src="../../../assets/images/VectorMini.png"
-                      alt=""
-                  /></el-button>
+                  <span
+                    >{{ item.hash.slice(0, 32) }}********
+                    <el-button class="copyBtn" @click="copy(item.hash)" round
+                      ><img src="../../../assets/images/VectorMini.png" alt=""
+                    /></el-button>
                   </span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.applicationTime') }}</span>
-                  <span>{{ formatDateY(item.ask_for_time)}}</span>
+                  <span>{{ formatDateY(item.ask_for_time) }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.timeOfReceipt') }}</span>
-                  <span>{{ formatDateY(item.achieve_time)}}</span>
+                  <span>{{ formatDateY(item.achieve_time) }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.commission') }}</span>
@@ -257,35 +293,42 @@ export default {
             </Card>
           </div>
           <div class="partner_two_box_body" v-if="navValue == 2">
-            <Card v-for="(item, index) in withdrawList.transactions" :key="index">
+            <Card
+              v-for="(item, index) in withdrawList.transactions"
+              :key="index"
+            >
               <div class="box_body_item_top">
                 <span>{{ $t('partner.navList3') }}</span>
                 <span>{{ item.num }}NGT</span>
-                <span >{{  item.chain }}</span>
-                <span v-if="item.status == '1'" class="alive-light">{{ $t('partner.confirming') }}</span>
-                <span v-if="item.status == '2'" class="alive-light">{{ $t('partner.confirmed') }}</span>
+                <span>{{ item.chain }}</span>
+                <span v-if="item.status == '1'" class="alive-light">{{
+                  $t('partner.confirming')
+                }}</span>
+                <span v-if="item.status == '2'" class="alive-light">{{
+                  $t('partner.confirmed')
+                }}</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.address') }}</span>
-                  <span>{{  item.address }}</span>
+                  <span>{{ item.address }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.hash') }}</span>
-                  <span>{{ item.hash.slice(0, 32)  }}********
-                  <el-button class="copyBtn" @click="copy(item.hash)" round><img
-                      src="../../../assets/images/VectorMini.png"
-                      alt=""
-                  /></el-button>
+                  <span
+                    >{{ item.hash.slice(0, 32) }}********
+                    <el-button class="copyBtn" @click="copy(item.hash)" round
+                      ><img src="../../../assets/images/VectorMini.png" alt=""
+                    /></el-button>
                   </span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.applicationTime') }}</span>
-                  <span>{{ formatDateY(item.ask_for_time)}}</span>
+                  <span>{{ formatDateY(item.ask_for_time) }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.timeOfReceipt') }}</span>
-                  <span>{{ formatDateY(item.achieve_time)}}</span>
+                  <span>{{ formatDateY(item.achieve_time) }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.commission') }}</span>
@@ -295,77 +338,98 @@ export default {
             </Card>
           </div>
           <div class="partner_cross_box_body" v-if="navValue == 3">
-            <Card >
-              <div class="partner_cross_middle">
-                  <div class="partner_cross_input">
-                    <input class = "partner_cross_input_text" type="number" v-model="num" placeholder="   请输入数量" />
-                  </div>
-                <el-dropdown
-                    trigger="click"
-                >
-                  <div  class="partner_cross_select">
-                    <div
-                        class="partner_cross_select_text"
-                        v-if="chainValue!=''"
-                    >
-                      {{chainValue}}
-                    </div>
-                    <div
-                        class="partner_cross_select_text"
-                        v-if="chainValue==''"
-                    >
-                      {{ $t('plan.chainSelect') }}
-                    </div>
-                    <div class="partner_cross_select_tri"> <img src="../../../assets/images/select.png" /></div>
-                  </div>
-
-                    <template #dropdown>
-                      <el-dropdown-menu>
-                        <el-dropdown-item @click="chainValue = 'Polygon'" >Polygon</el-dropdown-item>
-                        <el-dropdown-item @click="chainValue = 'ETH'"> ETH </el-dropdown-item>
-                      </el-dropdown-menu>
-                    </template>
-                  </el-dropdown>
-                  <div class="partner_cross_button">
-                    <div class="partner_cross_button_text" @click="deposit()">{{ $t('partner.deposit') }}</div>
-                  </div>
-              </div>
-            </Card>
-          </div>
-          <div class="partner_cross_box_body" v-if="navValue == 4">
-            <Card >
+            <Card>
               <div class="partner_cross_middle">
                 <div class="partner_cross_input">
-                  <input class = "partner_cross_input_text" type="number" v-model="num" placeholder="   请输入数量" />
+                  <input
+                    class="partner_cross_input_text"
+                    type="number"
+                    v-model="num"
+                    placeholder="   请输入数量"
+                  />
                 </div>
-                <el-dropdown
-
-                    trigger="click"
-                >
-                  <div  class="partner_cross_select">
+                <el-dropdown trigger="click">
+                  <div class="partner_cross_select">
                     <div
-                        class="partner_cross_select_text"
-                        v-if="chainValue!=''"
+                      class="partner_cross_select_text"
+                      v-if="chainValue != ''"
                     >
-                      {{chainValue}}
+                      {{ chainValue }}
                     </div>
                     <div
-                        class="partner_cross_select_text"
-                        v-if="chainValue==''"
+                      class="partner_cross_select_text"
+                      v-if="chainValue == ''"
                     >
                       {{ $t('plan.chainSelect') }}
                     </div>
-                    <div class="partner_cross_select_tri"> <img src="../../../assets/images/select.png" /></div>
+                    <div class="partner_cross_select_tri">
+                      <img src="../../../assets/images/select.png" />
+                    </div>
                   </div>
+
                   <template #dropdown>
                     <el-dropdown-menu>
-                      <el-dropdown-item @click="chainValue = 'Polygon'">Polygon</el-dropdown-item>
-                      <el-dropdown-item @click="chainValue = 'ETH'">ETH</el-dropdown-item>
+                      <el-dropdown-item @click="chainValue = 'Polygon'"
+                        >Polygon</el-dropdown-item
+                      >
+                      <el-dropdown-item @click="chainValue = 'ETH'">
+                        ETH
+                      </el-dropdown-item>
                     </el-dropdown-menu>
                   </template>
                 </el-dropdown>
                 <div class="partner_cross_button">
-                  <div class="partner_cross_button_text" @click="withdraw">{{ $t('partner.withdraw') }}</div>
+                  <div class="partner_cross_button_text" @click="deposit()">
+                    {{ $t('partner.deposit') }}
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+          <div class="partner_cross_box_body" v-if="navValue == 4">
+            <Card>
+              <div class="partner_cross_middle">
+                <div class="partner_cross_input">
+                  <input
+                    class="partner_cross_input_text"
+                    type="number"
+                    v-model="num"
+                    placeholder="   请输入数量"
+                  />
+                </div>
+                <el-dropdown trigger="click">
+                  <div class="partner_cross_select">
+                    <div
+                      class="partner_cross_select_text"
+                      v-if="chainValue != ''"
+                    >
+                      {{ chainValue }}
+                    </div>
+                    <div
+                      class="partner_cross_select_text"
+                      v-if="chainValue == ''"
+                    >
+                      {{ $t('plan.chainSelect') }}
+                    </div>
+                    <div class="partner_cross_select_tri">
+                      <img src="../../../assets/images/select.png" />
+                    </div>
+                  </div>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item @click="chainValue = 'Polygon'"
+                        >Polygon</el-dropdown-item
+                      >
+                      <el-dropdown-item @click="chainValue = 'ETH'"
+                        >ETH</el-dropdown-item
+                      >
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+                <div class="partner_cross_button">
+                  <div class="partner_cross_button_text" @click="withdraw">
+                    {{ $t('partner.withdraw') }}
+                  </div>
                 </div>
               </div>
             </Card>
@@ -381,7 +445,11 @@ export default {
 <style scoped lang="less">
 .button {
   border: 1px solid;
-  border-image-source: linear-gradient(98.93deg, #AAFAC0 0%, rgba(198, 75, 255, 0) 100%);
+  border-image-source: linear-gradient(
+    98.93deg,
+    #aafac0 0%,
+    rgba(198, 75, 255, 0) 100%
+  );
 }
 
 .partner {
@@ -412,6 +480,7 @@ export default {
       .partner_one_box {
         display: flex;
         justify-content: space-around;
+        flex-wrap: wrap;
         padding: 20px 0;
         .partner_one_box_item {
           display: flex;
@@ -521,7 +590,7 @@ export default {
                   color: #ffffff50;
                 }
               }
-              .copyBtn{
+              .copyBtn {
                 width: 40px;
                 height: 40px;
               }
@@ -560,14 +629,17 @@ export default {
 
               /* border line */
 
-              background: linear-gradient(98.28deg, rgba(102, 163, 155, 0.3) 10.61%, rgba(97, 112, 252, 0.297) 54.84%, rgba(158, 99, 205, 0.298469) 100%);
+              background: linear-gradient(
+                98.28deg,
+                rgba(102, 163, 155, 0.3) 10.61%,
+                rgba(97, 112, 252, 0.297) 54.84%,
+                rgba(158, 99, 205, 0.298469) 100%
+              );
               background-blend-mode: overlay;
               /* InnerShadow-Box */
               box-shadow: 2px 2px 3px 0px rgba(101, 0, 118, 0.25) inset;
 
-
               border-radius: 24px;
-
 
               order: 0;
               flex-grow: 0;
@@ -595,9 +667,8 @@ export default {
                 opacity: 0.8;
               }
             }
-            .partner_cross_select{
+            .partner_cross_select {
               /* Kinsta */
-
 
               box-sizing: border-box;
 
@@ -615,7 +686,7 @@ export default {
               flex: none;
               order: 1;
               flex-grow: 0;
-              .partner_cross_select_text{
+              .partner_cross_select_text {
                 position: absolute;
                 width: 120px;
                 height: 12px;
@@ -632,9 +703,9 @@ export default {
                 display: flex;
                 align-items: center;
 
-                color: #FFFFFF;
+                color: #ffffff;
               }
-              .partner_cross_select_tri{
+              .partner_cross_select_tri {
                 position: absolute;
                 width: 22.08px;
                 height: 22.08px;
@@ -645,12 +716,9 @@ export default {
 
                 background: transparent;
                 border-radius: 2px;
-
-
               }
-
             }
-            .partner_cross_button{
+            .partner_cross_button {
               /* Kinsta */
 
               box-sizing: border-box;
@@ -658,16 +726,20 @@ export default {
               position: fixed;
 
               /* button-fill */
-              background: linear-gradient(98.28deg, #66A39B 10.61%, rgba(97, 112, 252, 0.99) 54.84%, rgba(158, 99, 205, 0.994896) 100%);
+              background: linear-gradient(
+                98.28deg,
+                #66a39b 10.61%,
+                rgba(97, 112, 252, 0.99) 54.84%,
+                rgba(158, 99, 205, 0.994896) 100%
+              );
               border-radius: 12px;
-
 
               /* 开始质押 */
 
               position: absolute;
               width: 167px;
               height: 67px;
-              left:840px;
+              left: 840px;
               top: 6px;
               border-radius: 12px;
 
@@ -676,7 +748,7 @@ export default {
               flex: none;
               order: 1;
               flex-grow: 0;
-              .partner_cross_button_text{
+              .partner_cross_button_text {
                 position: absolute;
                 width: 120px;
                 height: 12px;
@@ -693,14 +765,10 @@ export default {
                 display: flex;
                 align-items: center;
 
-                color: #FFFFFF;
+                color: #ffffff;
               }
-
-
             }
-
           }
-
         }
       }
     }
