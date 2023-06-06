@@ -4,42 +4,47 @@ import MainStore from '@/store'
 //import {login } from '@/api/user' //*获取计划列表
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n' //国际化
-import { fr } from 'element-plus/es/locale'
-import {ElMessage} from "element-plus";
-import {pledgeNftReq,pledgeNft} from "@/api/pledge";
+// import { fr } from 'element-plus/es/locale'
+import { ElMessage } from 'element-plus'
+import { pledgeNftReq, pledgeNft } from '@/api/pledge'
 const { t, locale } = useI18n() //国际化
 const State = MainStore() //获取store
-let chainValue =  ref("")
-let durationValue =  ref("")
+let chainValue = ref('')
+let durationValue = ref('')
 const imgData = [
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5711684853279_.pic.jpg',
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5701684853267_.pic.jpg',
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5691684853125_.pic.jpg'
 ]
-const id = ref("")
+const id = ref('')
 const pledgeNftById = async (id: string) => {
   try {
-    if (id == ""){
+    if (id == '') {
       ElMessage.error('请输入id')
       return
     }
-    if (durationValue.value == ""){
+    if (durationValue.value == '') {
       ElMessage.error('请选择时间')
       return
     }
-    if (chainValue.value == ""){
+    if (chainValue.value == '') {
       ElMessage.error('请选择公链')
       return
     }
-    const pledgeReq = {nft_id: id,duration:durationValue.value,hash:"0xtesttest0ctesttesttest"+id+"84c0ad"+id+"ste9testestc",chain:chainValue.value} as pledgeNftReq
-    const res = await pledgeNft(pledgeReq);
-   if (res.data.code == 0){
-     ElMessage.success('质押成功')
-     return
-   }else{
-     ElMessage.error('质押失败')
-     return
-   }
+    const pledgeReq = {
+      nft_id: id,
+      duration: durationValue.value,
+      hash: '0x63c48fe0c1f4b60f6ae90b86ea91051b06fb8b371068db84c0ad68a54e9a466c',
+      chain: chainValue.value
+    } as pledgeNftReq
+    const res = await pledgeNft(pledgeReq)
+    if (res.data.code == 0) {
+      ElMessage.success('质押成功')
+      return
+    } else {
+      ElMessage.error('质押失败')
+      return
+    }
   } catch (error) {
     ElMessage.error('质押失败')
   }
@@ -50,7 +55,6 @@ const pledgeNftById = async (id: string) => {
 //   const res = await login(data) //*使用sync await 异步获取数据
 //   console.log(res) //*打印数据
 // }
-
 </script>
 <script lang="ts">
 export default {
@@ -98,7 +102,11 @@ export default {
           </div>
           <div class="imgbgc">
             <div v-for="(item, index) in imgData" :key="index">
-              <img :src="item" alt="" :style="{ right: index * 260 + 'px' }" />
+              <img
+                :src="item"
+                alt=""
+                :style="{ right: (2 - index) * -50 + 'px' }"
+              />
             </div>
           </div>
         </div>
@@ -125,113 +133,151 @@ export default {
             <div class="three_middle_input border_my">
               <input type="text" v-model="id" :placeholder="$t('plan.input')" />
             </div>
-
-            <el-dropdown
-              class="three_middle_dropdown border_my"
-              trigger="click"
+            <div
+              style="
+                display: flex;
+                gap: 10px;
+                justify-content: space-between;
+                flex-wrap: wrap;
+              "
+              class="plan_box_my"
             >
-              <div
-                style="
-                  height: 100%;
-                  width: 100%;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                "
-                v-if="chainValue!=''"
+              <el-dropdown
+                class="three_middle_dropdown border_my"
+                trigger="click"
               >
-                {{chainValue}}
-              </div>
-              <div
+                <div
                   style="
-                  height: 100%;
-                  width: 100%;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                "
-                  v-if="chainValue==''"
-              >
-                {{ $t('plan.chainSelect') }}
-              </div>
-              <template #dropdown>
-                <el-dropdown-menu >
-                  <el-dropdown-item @click="chainValue = 'Polygon'">Polygon</el-dropdown-item>
-                  <el-dropdown-item @click="chainValue = 'ETH'"> ETH </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-
-            <el-dropdown
-              class="three_middle_dropdown border_my"
-              trigger="click"
-            >
-              <div
-                style="
-                  height: 100%;
-                  width: 100%;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                "
-                v-if="durationValue==''"
-              >
-                {{ $t('plan.pledgeDays') }}
-              </div>
-              <div
+                    height: 100%;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                  v-if="chainValue != ''"
+                >
+                  {{ chainValue }}
+                </div>
+                <div
                   style="
-                  height: 100%;
-                  width: 100%;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                "
-                  v-if="durationValue!=''"
-              >
-                {{durationValue}} {{ $t('plan.day') }}
-              </div>
-              <template #dropdown>
-                <el-dropdown-menu >
-                  <el-dropdown-item @click="durationValue = '1'">1 {{ $t('plan.day') }}</el-dropdown-item>
-                  <el-dropdown-item @click="durationValue = '30'">30 {{ $t('plan.day') }}</el-dropdown-item>
-                  <el-dropdown-item @click="durationValue = '60'">60 {{ $t('plan.day') }} </el-dropdown-item>
-                  <el-dropdown-item @click="durationValue = '90'">90 {{ $t('plan.day') }} </el-dropdown-item>
-                  <el-dropdown-item @click="durationValue = '120'">120 {{ $t('plan.day') }} </el-dropdown-item>
-                  <el-dropdown-item @click="durationValue = '180'">180 {{ $t('plan.day') }} </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
+                    height: 100%;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                  v-if="chainValue == ''"
+                >
+                  {{ $t('plan.chainSelect') }}
+                </div>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item @click="chainValue = 'Polygon'"
+                      >Polygon</el-dropdown-item
+                    >
+                    <el-dropdown-item @click="chainValue = 'ETH'">
+                      ETH
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
 
-            <div class="three_middle_dropdown border_my">
-              <div style="height: 30px" @click="pledgeNftById(id)"> {{ $t('plan.pledgeButton') }}</div>
+              <el-dropdown
+                class="three_middle_dropdown border_my"
+                trigger="click"
+              >
+                <div
+                  style="
+                    height: 100%;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                  v-if="durationValue == ''"
+                >
+                  {{ $t('plan.pledgeDays') }}
+                </div>
+                <div
+                  style="
+                    height: 100%;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                  v-if="durationValue != ''"
+                >
+                  {{ durationValue }} {{ $t('plan.day') }}
+                </div>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item @click="durationValue = '30'"
+                      >30 {{ $t('plan.day') }}</el-dropdown-item
+                    >
+                    <el-dropdown-item @click="durationValue = '60'"
+                      >60 {{ $t('plan.day') }}
+                    </el-dropdown-item>
+                    <el-dropdown-item @click="durationValue = '90'"
+                      >90 {{ $t('plan.day') }}
+                    </el-dropdown-item>
+                    <el-dropdown-item @click="durationValue = '120'"
+                      >120 {{ $t('plan.day') }}
+                    </el-dropdown-item>
+                    <el-dropdown-item @click="durationValue = '180'"
+                      >180 {{ $t('plan.day') }}
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+
+              <div class="three_middle_dropdown border_my">
+                <div @click="pledgeNftById(id)">
+                  {{ $t('plan.pledgeButton') }}
+                </div>
+              </div>
             </div>
           </div>
           <div class="three_bom">
-            <div class="three_bom_left_text alive-light"> {{ $t('plan.dayBenefit') }}：</div>
+            <div class="three_bom_left_text alive-light">
+              {{ $t('plan.dayBenefit') }}：
+            </div>
             <div class="three_bom_box">
               <div class="three_bom_box_itemt">
-                <div class="three_bom_box_itemt_text alive-light">{{ $t('plan.btTitle') }}</div>
+                <div class="three_bom_box_itemt_text alive-light">
+                  {{ $t('plan.btTitle') }}
+                </div>
                 <img
                   src="https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5721684853355_.pic.jpg"
                   alt=""
                 />
-                <div class="three_bom_box_itemt_desc">0.5% {{ $t('plan.per') }}</div>
+                <div class="three_bom_box_itemt_desc">
+                  0.5% {{ $t('plan.per') }}
+                </div>
               </div>
               <div class="three_bom_box_itemt">
-                <div class="three_bom_box_itemt_text alive-light">{{ $t('plan.wtTitle') }}</div>
+                <div class="three_bom_box_itemt_text alive-light">
+                  {{ $t('plan.wtTitle') }}
+                </div>
                 <img
                   src="https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5741684853386_.pic.jpg"
                   alt=""
                 />
-                <div class="three_bom_box_itemt_desc">0.6% {{ $t('plan.per') }}</div>
+                <div class="three_bom_box_itemt_desc">
+                  0.6% {{ $t('plan.per') }}
+                </div>
               </div>
               <div class="three_bom_box_itemt">
-                <div class="three_bom_box_itemt_text alive-light">{{ $t('plan.vbTitle') }}</div>
+                <div class="three_bom_box_itemt_text alive-light">
+                  {{ $t('plan.vbTitle') }}
+                </div>
                 <img
                   src="https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5731684853378_.pic.jpg"
                   alt=""
                 />
-                <div class="three_bom_box_itemt_desc">0.7% {{ $t('plan.per') }}</div>
+                <div class="three_bom_box_itemt_desc">
+                  0.7% {{ $t('plan.per') }}
+                </div>
               </div>
             </div>
           </div>
@@ -258,7 +304,9 @@ export default {
     align-items: center;
     .plan_one_body {
       position: relative;
-      height: 280px !important;
+      display: flex;
+      flex-wrap: wrap;
+      min-height: 280px !important;
       overflow: hidden;
       .plan_one_body_text_box {
         position: absolute;
@@ -286,19 +334,16 @@ export default {
         }
       }
       .imgbgc {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+        position: relative;
         display: flex;
         width: 100%;
-        height: 315px;
         justify-content: end;
         img {
-          position: absolute;
-          right: 0;
-          top: 0;
-          width: 315px !important;
-          height: 315px !important;
+          position: relative;
+          // right: 0;
+          // top: 0;
+          width: 315px;
+          height: 315px;
         }
       }
     }
@@ -307,12 +352,14 @@ export default {
         margin-bottom: 25px;
       }
       .three_middle {
-        height: 60px;
+        min-height: 60px;
         display: flex;
+        flex-wrap: wrap;
         gap: 15px;
         align-items: center;
         .three_middle_input {
-          height: 100%;
+          min-width: 400px;
+          height: 60px;
           flex: 2;
           padding: 0 10px;
           box-sizing: border-box;
@@ -329,10 +376,12 @@ export default {
           }
         }
         .three_middle_dropdown {
+          min-width: 190px;
+          max-width: 190px;
           display: flex;
           align-items: center;
           justify-content: center;
-          height: 100%;
+          height: 60px;
           text-align: center;
           font-weight: 400;
           font-size: 24px;
@@ -342,13 +391,15 @@ export default {
       .three_bom {
         display: flex;
         align-items: center;
-        height: 180px;
+        flex-wrap: wrap;
         margin-top: 40px;
+        padding-bottom: 20px;
         .three_bom_left_text {
           font-weight: 400;
           font-size: 20px;
         }
         .three_bom_box {
+          margin-top: 20px;
           display: flex;
           gap: 20px;
           .three_bom_box_itemt {

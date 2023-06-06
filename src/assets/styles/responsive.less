@@ -22,11 +22,79 @@
 /* >=1280px时 */
 @media (max-width:1280px) {}
 
-/* <=1280px时 */
-@media (max-width:1280px) {}
+/* <=1200px时 */
+@media (max-width:1200px) {
+    .plan_one_body_text_box {
+        position: static !important;
+        width: 100% !important;
+
+        .plan_one_body_text {
+            width: 100% !important;
+            text-align: center !important;
+        }
+    }
+
+    .nav-btn {
+        margin-left: 20px !important;
+    }
+
+    .imgbgc {
+        margin-top: 20px;
+
+        img {
+            right: 0 !important;
+            width: 32vw !important;
+            height: 32vw !important;
+        }
+    }
+
+    .logo {
+        width: 100% !important;
+    }
+
+    .partner_two_box_body {
+        grid-template-columns: repeat(1, 1fr) !important;
+    }
+}
 
 /* <=1080px时 */
-@media (max-width:1080px) {}
+@media (max-width:1066px) {
+    .nonel {
+        display: none !important;
+    }
+
+    .nav_more {
+        display: flex !important;
+    }
+
+    .plan_box_my {
+        width: 100% !important;
+    }
+
+    .nav-btn {
+        margin-left: 0px !important;
+    }
+
+    .nav-item {
+        display: none !important;
+
+        &:hover {
+            background: none !important;
+        }
+    }
+
+    .nav-item-popover-btn {
+        display: none;
+    }
+
+    .nav-item-popover {
+        display: flex !important;
+
+        &:hover {
+            background: none !important;
+        }
+    }
+}
 
 /* <=1024px时 */
 @media (max-width:1024px) {}
@@ -111,28 +179,43 @@
 
 /* <=768px时 */
 @media (max-width:768px) {
-    .nav-item {
-        display: none !important;
+    .box_body_item_bom__item {
+        display: flex;
+        flex-wrap: wrap;
 
-        &:hover {
-            background: none !important;
+        span {
+            font-size: 14px !important;
+
+            &:first-child {
+                width: 72px !important;
+                margin-right: 0 !important;
+                color: #f5fff8;
+            }
         }
     }
 
-    .nav-item-popover {
-        display: flex !important;
-
-        &:hover {
-            background: none !important;
-        }
+    .partner_two_box {
+        padding: 10px 0 !important;
     }
 
-    .nav-item-popover-btn {
-        display: none;
-    }
 
     .logo-name {
         font-size: 20px !important;
+    }
+
+    .three_middle_input {
+        height: 40px !important;
+        min-width: 280px !important;
+
+        input {
+            font-size: 16px !important;
+        }
+    }
+
+    .three_middle_dropdown {
+        font-size: 16px !important;
+        min-width: 130px !important;
+        height: 40px !important;
     }
 }
 
@@ -140,7 +223,21 @@
 @media (max-width: 845px) {}
 
 /* <=700px时 */
-@media (max-width:700px) {}
+@media (max-width:700px) {
+    .partner_two_box_nav {
+        gap: 10px !important;
+    }
+
+    .partner_two_box_nav_btn {
+        width: 66px !important;
+        height: 30px !important;
+        line-height: 28px !important;
+
+        span {
+            font-size: 16px !important;
+        }
+    }
+}
 
 /* <=558px时 */
 @media (max-width:558px) {
@@ -150,6 +247,37 @@
 
     .Vwi6NjIkX4kQ3Rux {
         display: block !important;
+    }
+
+    .three_bom {
+        img {
+            height: 100px !important;
+        }
+    }
+
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        height: 80px !important;
+    }
+
+    .topnav {
+        height: 80px !important;
+    }
+
+    .logo {
+        height: 30px !important;
+    }
+
+    .nav {
+        height: 35px !important;
+        width: 100% !important;
+        display: flex;
+        justify-content: end;
+    }
+
+    .nav-btn {
+        height: 35px !important;
     }
 }
 
@@ -167,12 +295,18 @@
         padding: 0 !important;
 
         img {
-            min-height: 70px !important;
-            min-width: 70px !important;
+            // min-height: 70px !important;
+            // min-width: 70px !important;
         }
     }
 
     .container {
         padding: 10px !important;
+    }
+}
+
+@media (max-width:452px) {
+    .plan_box_my {
+        justify-content: center !important;
     }
 }
