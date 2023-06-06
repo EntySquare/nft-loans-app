@@ -51,6 +51,10 @@
     .logo {
         width: 100% !important;
     }
+
+    .partner_two_box_body {
+        grid-template-columns: repeat(1, 1fr) !important;
+    }
 }
 
 /* <=1080px时 */
@@ -175,9 +179,24 @@
 
 /* <=768px时 */
 @media (max-width:768px) {
+    .box_body_item_bom__item {
+        display: flex;
+        flex-wrap: wrap;
 
+        span {
+            font-size: 14px !important;
 
+            &:first-child {
+                width: 72px !important;
+                margin-right: 0 !important;
+                color: #f5fff8;
+            }
+        }
+    }
 
+    .partner_two_box {
+        padding: 10px 0 !important;
+    }
 
 
     .logo-name {
@@ -204,7 +223,21 @@
 @media (max-width: 845px) {}
 
 /* <=700px时 */
-@media (max-width:700px) {}
+@media (max-width:700px) {
+    .partner_two_box_nav {
+        gap: 10px !important;
+    }
+
+    .partner_two_box_nav_btn {
+        width: 66px !important;
+        height: 30px !important;
+        line-height: 28px !important;
+
+        span {
+            font-size: 16px !important;
+        }
+    }
+}
 
 /* <=558px时 */
 @media (max-width:558px) {
