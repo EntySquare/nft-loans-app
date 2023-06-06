@@ -101,6 +101,11 @@
 
 /* <=960px时 */
 @media (max-width:960px) {
+    .covenant_detail_bom_item {
+        flex-direction: column !important;
+        align-items: self-start !important;
+        gap: 10px !important;
+    }
 
     // partner 页面
     .partner {
@@ -179,6 +184,11 @@
 
 /* <=768px时 */
 @media (max-width:768px) {
+    .detail_info {
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+    }
 
     .box_body_item_bom__item {
         display: flex;
@@ -221,7 +231,15 @@
 }
 
 /* <=800px时 */
-@media (max-width: 845px) {}
+@media (max-width: 845px) {
+
+    .covenant_detail_top_body {
+        display: grid !important;
+        gap: 10px;
+        grid-template-columns: repeat(2, 1fr) !important;
+        text-align: center;
+    }
+}
 
 /* <=700px时 */
 @media (max-width:700px) {
@@ -249,6 +267,17 @@
 
 /* <=558px时 */
 @media (max-width:558px) {
+    tbody tr {
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+
+    tbody td {
+        width: 100% !important;
+        text-align: center !important;
+    }
+
     .ivEMfk9ulAFRBn22 {
         display: none !important;
     }

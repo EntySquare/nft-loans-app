@@ -221,16 +221,19 @@ export default {
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.address') }}</span>
-                  <span>{{ item.address }}</span>
+                  <span class="addres">{{ item.address }}</span>
                 </div>
-                <div class="box_body_item_bom__item">
+                <div
+                  class="box_body_item_bom__item"
+                  style="display: flex; align-items: center"
+                >
                   <span>{{ $t('partner.hash') }}</span>
-                  <span
+                  <span class="addres"
                     >{{ item.hash.slice(0, 32) }}********
-                    <el-button class="copyBtn" @click="copy(item.hash)" round
-                      ><img src="../../../assets/images/VectorMini.png" alt=""
-                    /></el-button>
                   </span>
+                  <div class="copyBtn" @click="copy(item.hash)">
+                    <img src="../../../assets/images/VectorMini.png" alt="" />
+                  </div>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.applicationTime') }}</span>
@@ -266,15 +269,15 @@ export default {
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.address') }}</span>
-                  <span>{{ item.address }}</span>
+                  <span class="addres">{{ item.address }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.hash') }}</span>
-                  <span
+                  <span class="addres"
                     >{{ item.hash.slice(0, 32) }}********
-                    <el-button class="copyBtn" @click="copy(item.hash)" round
-                      ><img src="../../../assets/images/VectorMini.png" alt=""
-                    /></el-button>
+                    <div class="copyBtn" @click="copy(item.hash)">
+                      <img src="../../../assets/images/VectorMini.png" alt="" />
+                    </div>
                   </span>
                 </div>
                 <div class="box_body_item_bom__item">
@@ -311,15 +314,15 @@ export default {
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.address') }}</span>
-                  <span>{{ item.address }}</span>
+                  <span class="addres">{{ item.address }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.hash') }}</span>
-                  <span
+                  <span class="addres"
                     >{{ item.hash.slice(0, 32) }}********
-                    <el-button class="copyBtn" @click="copy(item.hash)" round
-                      ><img src="../../../assets/images/VectorMini.png" alt=""
-                    /></el-button>
+                    <div class="copyBtn" @click="copy(item.hash)">
+                      <img src="../../../assets/images/VectorMini.png" alt="" />
+                    </div>
                   </span>
                 </div>
                 <div class="box_body_item_bom__item">
@@ -560,6 +563,13 @@ export default {
             }
           }
         }
+        .addres {
+          //超出省略号
+          width: 200px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
         .partner_two_box_body {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
@@ -591,8 +601,18 @@ export default {
                 }
               }
               .copyBtn {
-                width: 40px;
-                height: 40px;
+                width: 30px;
+                height: 30px;
+                background: #ffffff1a;
+                border-radius: 50%;
+                border: 1px solid #ffffff1a;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                &:hover {
+                  background: #ffffff3d;
+                }
               }
             }
           }

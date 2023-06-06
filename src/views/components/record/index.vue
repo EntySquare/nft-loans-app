@@ -156,9 +156,9 @@ export default {
         <div class="title" v-if="inviteeUid != '0'">
           <span class="alive-light">{{ $t('record.invitationInfo') }}</span>
         </div>
-        <Card bradius="24px">
+        <Card>
           <div class="list" v-if="inviteeUid == '0'">
-            <table class="table">
+            <div class="table">
               <tbody>
                 <tr
                   v-for="(item, index) in inviteeRes.investment_users"
@@ -174,46 +174,52 @@ export default {
                   </td>
                   <td style="text-align: right">
                     {{ $t('record.nop') }}&nbsp;&nbsp;{{ item.pledge_count }}次
+                    <i
+                      style="margin-right: 10px; line-height: 40px"
+                      @click="getInviteeInfo(item.uid)"
+                    >
+                      <img src="../../../assets/images/Vector1.png" alt="" />
+                    </i>
                   </td>
-
-                  <i
-                    style="float: right; margin-right: 10px; line-height: 40px"
-                    @click="getInviteeInfo(item.uid)"
-                  >
-                    <img src="../../../assets/images/Vector1.png" alt="" />
-                  </i>
                 </tr>
               </tbody>
-            </table>
+            </div>
           </div>
-          <div class="list" v-if="inviteeUid != '0'">
-            <i
-              style="float: left; margin-left: 10px; line-height: 20px"
-              @click="inviteeUid = '0'"
-            >
-              <img src="../../../assets/images/Vector2.png" alt="" />
-            </i>
+          <div
+            style="display: flex; flex-direction: column; align-items: center"
+            class="list"
+            v-else
+          >
+            <div style="text-align: left; width: 100%">
+              <img
+                width="30"
+                style="margin: 10px; cursor: pointer"
+                @click="inviteeUid = '0'"
+                src="../../../assets/images/Vector2.png"
+                alt=""
+              />
+            </div>
             <div class="detail_info">
-              <td class="td1">
+              <div class="td1">
                 UID:&nbsp;&nbsp;&nbsp;{{ inviteeUid.slice(0, 3) }}**{{
                   inviteeUid.slice(5, 12)
                 }}
-              </td>
-              <td style="text-align: center" class="td2">
+              </div>
+              <div style="text-align: center" class="td2">
                 {{ $t('record.nowLevel') }}:&nbsp;&nbsp;V{{
                   inviteeInfoRes.level
                 }}
-              </td>
-              <td style="text-align: right" class="td3">
+              </div>
+              <div style="text-align: right" class="td3">
                 {{ $t('record.nop') }}&nbsp;&nbsp;{{
                   inviteeInfoRes.pledge_count
                 }}次
-              </td>
-              <td style="text-align: right" class="td4">
+              </div>
+              <div style="text-align: right" class="td4">
                 {{ $t('record.inviteTime') }}&nbsp;&nbsp;{{
                   formatDateY(inviteeInfoRes.create_time)
                 }}
-              </td>
+              </div>
             </div>
           </div>
         </Card>
@@ -354,24 +360,21 @@ export default {
       }
       .list {
         width: 100%;
-        height: 550px;
         .detail_info {
+          // 文字不换行
+          white-space: nowrap;
           box-sizing: border-box;
-
-          position: absolute;
-          width: 1176px;
-          height: 50px;
-          left: calc(50% - 1176px / 2 - 0.5px);
-          top: calc(50% - 40px / 2 - 148.5px);
-
-          background: rgba(255, 255, 255, 0.2);
+          width: 100%;
           backdrop-filter: blur(50px);
-          /* Note: backdrop-filter has minimal browser support */
-
           border-radius: 24px;
+          overflow: hidden;
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          margin-top: 10px;
+          padding: 10px;
+          justify-content: space-between;
           .td1 {
-            position: absolute;
-            width: 154px;
             height: 22px;
             left: 25px;
             top: 11px;
@@ -387,8 +390,6 @@ export default {
             opacity: 0.8;
           }
           .td2 {
-            position: absolute;
-            width: 150px;
             height: 22px;
             left: 220px;
             top: 11px;
@@ -402,8 +403,6 @@ export default {
             color: #ffffff;
           }
           .td3 {
-            position: absolute;
-            width: 350px;
             height: 22px;
             left: 300px;
             top: 11px;
@@ -417,8 +416,6 @@ export default {
             color: #ffffff;
           }
           .td4 {
-            position: absolute;
-            width: 383px;
             height: 22px;
             right: 80.5px;
             top: 11px;
@@ -433,8 +430,8 @@ export default {
           }
         }
         .table {
-          margin-top: 28px;
-          margin-left: 32.59px;
+          // margin-top: 28px;
+          // margin-left: 32.59px;
           font-size: 16px;
 
           tbody {
@@ -445,13 +442,13 @@ export default {
           }
 
           tbody tr {
-            display: table;
-            width: 98%;
-            margin-top: 12px;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 12px;
             border: #66a39b solid 1px;
             table-layout: fixed;
             word-break: break-all;
-            height: 40px;
             border-radius: 24px;
             background-blend-mode: overlay;
             background: linear-gradient(
@@ -468,9 +465,10 @@ export default {
             background: rgba(255, 255, 255, 0.2);
           }
           tbody td {
-            position: relative;
-            left: 15px;
-
+            //文字不换行
+            white-space: nowrap;
+            padding: 0 10px;
+            min-width: 135px;
             color: #ffffff;
             font-family: 'PingFang SC';
             font-style: normal;

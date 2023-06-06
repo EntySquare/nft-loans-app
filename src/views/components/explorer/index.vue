@@ -196,12 +196,14 @@ export default {
                   <span>{{ item.pledge_id }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>{{ $t('explorer.hash') }}</span>
-                  <span
-                    >{{ item.hash.slice(0, 32) }}********
-                    <el-button class="copyBtn" @click="copy(item.hash)" round
-                      ><img src="../../../assets/images/VectorMini.png" alt=""
-                    /></el-button>
+                  <span style="display: flex; align-items: center">{{
+                    $t('explorer.hash')
+                  }}</span>
+                  <span style="display: flex; align-items: center"
+                    >{{ item.hash.slice(0, 28) }}...
+                    <div class="copyBtn" @click.stop="copy(item.hash)">
+                      <img src="../../../assets/images/VectorMini.png" alt="" />
+                    </div>
                   </span>
                 </div>
                 <div class="box_body_item_bom__item">
@@ -261,12 +263,14 @@ export default {
                   <span>{{ item.pledge_id }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>{{ $t('explorer.hash') }}</span>
-                  <span
-                    >{{ item.hash.slice(0, 32) }}********
-                    <el-button class="copyBtn" @click="copy(item.hash)" round
-                      ><img src="../../../assets/images/VectorMini.png" alt=""
-                    /></el-button>
+                  <span style="display: flex; align-items: center">{{
+                    $t('explorer.hash')
+                  }}</span>
+                  <span style="display: flex; align-items: center"
+                    >{{ item.hash.slice(0, 28) }}...
+                    <div class="copyBtn" @click.stop="copy(item.hash)">
+                      <img src="../../../assets/images/VectorMini.png" alt="" />
+                    </div>
                   </span>
                 </div>
                 <div class="box_body_item_bom__item">
@@ -326,12 +330,14 @@ export default {
                   <span>{{ item.pledge_id }}</span>
                 </div>
                 <div class="box_body_item_bom__item">
-                  <span>{{ $t('explorer.hash') }}</span>
-                  <span
-                    >{{ item.hash.slice(0, 32) }}********
-                    <el-button class="copyBtn" @click="copy(item.hash)" round
-                      ><img src="../../../assets/images/VectorMini.png" alt=""
-                    /></el-button>
+                  <span style="display: flex; align-items: center">{{
+                    $t('explorer.hash')
+                  }}</span>
+                  <span style="display: flex; align-items: center"
+                    >{{ item.hash.slice(0, 28) }}...
+                    <div class="copyBtn" @click.stop="copy(item.hash)">
+                      <img src="../../../assets/images/VectorMini.png" alt="" />
+                    </div>
                   </span>
                 </div>
                 <div class="box_body_item_bom__item">
@@ -366,136 +372,155 @@ export default {
               </div>
             </Card>
           </div>
-          <div class="partner_two_box_body" v-if="navValue == 3">
-            <div class="covenant_detail">
-              <i
-                style="float: left; margin-left: 10px; line-height: 50px"
-                @click="navValue = 0"
-              >
-                <img src="../../../assets/images/Vector2Mini.png" alt="" />
-              </i>
-              <div class="covenant_detail_top">
-                <covenant_detail_span1 class="detail_alive-light1">{{
-                  cdRes.covenant_info.chain_name
-                }}</covenant_detail_span1>
-                <covenant_detail_span1 class="detail_alive-light1"
-                  >{{ cdRes.covenant_info.duration
-                  }}{{ $t('explorer.day') }}</covenant_detail_span1
-                >
-                <covenant_detail_span1 class="detail_alive-light1"
-                  >{{ $t('explorer.dailyIncome')
-                  }}{{
-                    cdRes.covenant_info.interest_rate
-                  }}%</covenant_detail_span1
-                >
-
-                <covenant_detail_span2
-                  class="detail_alive-light2"
-                  v-if="cdRes.covenant_info.flag == '1'"
-                  >{{ $t('explorer.navList2') }}</covenant_detail_span2
-                >
-                <covenant_detail_span2
-                  class="detail_alive-light2"
-                  v-if="cdRes.covenant_info.flag == '2'"
-                  >{{ $t('explorer.navList3') }}</covenant_detail_span2
-                >
-                <covenant_detail_span2 class="detail_alive-light2"
-                  >{{
-                    cdRes.covenant_info.accumulated_benefit
-                  }}
-                  NGT</covenant_detail_span2
-                >
-                <covenant_detail_span2 class="detail_alive-light2">{{
-                  $t('explorer.orderIncome')
-                }}</covenant_detail_span2>
-                <div class="covenant_detail_bom">
-                  <div class="covenant_detail_bom_item">
-                    <covenant_detail_bom_span
-                      ><detail_title1
-                        >{{ $t('explorer.nftName') }}:</detail_title1
-                      ><detail_inner1>{{
-                        cdRes.covenant_info.nft_name
-                      }}</detail_inner1></covenant_detail_bom_span
+          <div
+            class="partner_two_box_body"
+            style="display: flex"
+            v-if="navValue == 3"
+          >
+            <Card>
+              <div class="covenant_detail">
+                <i @click="navValue = 0">
+                  <img src="../../../assets/images/Vector2Mini.png" alt="" />
+                </i>
+                <div class="covenant_detail_top">
+                  <div
+                    class="covenant_detail_top_body"
+                    style="
+                      display: flex;
+                      justify-content: space-around;
+                      margin: 20px 0;
+                    "
+                  >
+                    <covenant_detail_span1 class="detail_alive-light1">{{
+                      cdRes.covenant_info.chain_name
+                    }}</covenant_detail_span1>
+                    <covenant_detail_span1 class="detail_alive-light1"
+                      >{{ cdRes.covenant_info.duration
+                      }}{{ $t('explorer.day') }}</covenant_detail_span1
                     >
-                    <covenant_detail_bom_span>
-                      <detail_title2>{{ $t('explorer.nftID') }}:</detail_title2
-                      ><detail_inner2>{{
-                        cdRes.covenant_info.pledge_id
-                      }}</detail_inner2></covenant_detail_bom_span
+                    <covenant_detail_span1 class="detail_alive-light1"
+                      >{{ $t('explorer.dailyIncome')
+                      }}{{
+                        cdRes.covenant_info.interest_rate
+                      }}%</covenant_detail_span1
                     >
-                    <covenant_detail_bom_span
-                      ><detail_title3>{{ $t('explorer.hash') }}:</detail_title3
-                      ><detail_inner3
-                        >{{
-                          cdRes.covenant_info.hash.slice(0, 32)
-                        }}********<el-button
-                          class="copyBtn"
-                          @click="copy(cdRes.covenant_info.hash)"
-                          round
-                          ><img
-                            src="../../../assets/images/VectorMini.png"
-                            alt="" /></el-button
-                      ></detail_inner3>
-                    </covenant_detail_bom_span>
+                    <covenant_detail_span2
+                      class="detail_alive-light2"
+                      v-if="cdRes.covenant_info.flag == '1'"
+                      >{{ $t('explorer.navList2') }}</covenant_detail_span2
+                    >
+                    <covenant_detail_span2
+                      class="detail_alive-light2"
+                      v-if="cdRes.covenant_info.flag == '2'"
+                      >{{ $t('explorer.navList3') }}</covenant_detail_span2
+                    >
+                    <covenant_detail_span2 class="detail_alive-light2"
+                      >{{
+                        cdRes.covenant_info.accumulated_benefit
+                      }}
+                      NGT</covenant_detail_span2
+                    >
+                    <covenant_detail_span2 class="detail_alive-light2">{{
+                      $t('explorer.orderIncome')
+                    }}</covenant_detail_span2>
                   </div>
-                  <div class="covenant_detail_bom_item">
-                    <covenant_detail_bom_span
-                      ><detail_title4
-                        >{{ $t('explorer.expirationTime') }}:</detail_title4
-                      ><detail_inner4>{{
-                        formatDateY(cdRes.covenant_info.expire_time)
-                      }}</detail_inner4></covenant_detail_bom_span
-                    >
-                    <covenant_detail_bom_span
-                      ><detail_title5
-                        >{{ $t('explorer.pledgeTime') }}:</detail_title5
-                      ><detail_inner5>{{
-                        formatDateY(cdRes.covenant_info.start_time)
-                      }}</detail_inner5></covenant_detail_bom_span
-                    >
-                    <covenant_detail_bom_span
-                      ><detail_title6
-                        >{{ $t('explorer.pledgeFee') }}:</detail_title6
-                      ><detail_inner6
-                        >{{ cdRes.covenant_info.pledge_fee }} NGT</detail_inner6
-                      ></covenant_detail_bom_span
-                    >
-                    <covenant_detail_bom_span
-                      ><detail_title7
-                        >{{ $t('explorer.releaseFee') }}:</detail_title7
-                      ><detail_inner7
-                        >{{
-                          cdRes.covenant_info.release_fee
-                        }}
-                        NGT</detail_inner7
-                      ></covenant_detail_bom_span
-                    >
-                  </div>
-                </div>
-                <div class="detail_list">
-                  <div class="alive-light">{{ $t('explorer.incomeList') }}</div>
-                </div>
-                <div class="list">
-                  <table class="table">
-                    <tbody>
-                      <tr
-                        v-for="(item, index) in cdRes.benefit_flows"
-                        :key="index"
+                  <div class="covenant_detail_bom">
+                    <div class="covenant_detail_bom_item">
+                      <covenant_detail_bom_span
+                        ><detail_title1
+                          >{{ $t('explorer.nftName') }}:</detail_title1
+                        ><detail_inner1>{{
+                          cdRes.covenant_info.nft_name
+                        }}</detail_inner1></covenant_detail_bom_span
                       >
-                        <td>{{ formatDateY(item.time) }}</td>
-                        <td style="text-align: center">{{ item.num }}NGT</td>
-                        <td style="text-align: right" v-if="item.flag == '1'">
-                          已发放
-                        </td>
-                        <td style="text-align: right" v-if="item.flag == '0'">
-                          未发放
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                      <covenant_detail_bom_span>
+                        <detail_title2
+                          >{{ $t('explorer.nftID') }}:</detail_title2
+                        ><detail_inner2>{{
+                          cdRes.covenant_info.pledge_id
+                        }}</detail_inner2></covenant_detail_bom_span
+                      >
+                      <covenant_detail_bom_span
+                        ><detail_title3
+                          >{{ $t('explorer.hash') }}:</detail_title3
+                        ><detail_inner3
+                          style="display: flex; align-items: center"
+                          >{{ cdRes.covenant_info.hash.slice(0, 28) }}...
+                          <div
+                            class="copyBtn"
+                            @click="copy(cdRes.covenant_info.hash)"
+                          >
+                            <img
+                              src="../../../assets/images/VectorMini.png"
+                              alt=""
+                            /></div
+                        ></detail_inner3>
+                      </covenant_detail_bom_span>
+                    </div>
+                    <div class="covenant_detail_bom_item">
+                      <covenant_detail_bom_span
+                        ><detail_title4
+                          >{{ $t('explorer.expirationTime') }}:</detail_title4
+                        ><detail_inner4>{{
+                          formatDateY(cdRes.covenant_info.expire_time)
+                        }}</detail_inner4></covenant_detail_bom_span
+                      >
+                      <covenant_detail_bom_span
+                        ><detail_title5
+                          >{{ $t('explorer.pledgeTime') }}:</detail_title5
+                        ><detail_inner5>{{
+                          formatDateY(cdRes.covenant_info.start_time)
+                        }}</detail_inner5></covenant_detail_bom_span
+                      >
+                      <covenant_detail_bom_span
+                        ><detail_title6
+                          >{{ $t('explorer.pledgeFee') }}:</detail_title6
+                        ><detail_inner6
+                          >{{
+                            cdRes.covenant_info.pledge_fee
+                          }}
+                          NGT</detail_inner6
+                        ></covenant_detail_bom_span
+                      >
+                      <covenant_detail_bom_span
+                        ><detail_title7
+                          >{{ $t('explorer.releaseFee') }}:</detail_title7
+                        ><detail_inner7
+                          >{{
+                            cdRes.covenant_info.release_fee
+                          }}
+                          NGT</detail_inner7
+                        ></covenant_detail_bom_span
+                      >
+                    </div>
+                  </div>
+                  <div class="detail_list">
+                    <div class="alive-light">
+                      {{ $t('explorer.incomeList') }}
+                    </div>
+                  </div>
+                  <div class="list">
+                    <table class="table">
+                      <tbody>
+                        <tr
+                          v-for="(item, index) in cdRes.benefit_flows"
+                          :key="index"
+                        >
+                          <td>{{ formatDateY(item.time) }}</td>
+                          <td style="text-align: center">{{ item.num }}NGT</td>
+                          <td style="text-align: right" v-if="item.flag == '1'">
+                            已发放
+                          </td>
+                          <td style="text-align: right" v-if="item.flag == '0'">
+                            未发放
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Card>
           </div>
         </div>
         <!-- 质押订单--end -->
@@ -619,25 +644,32 @@ export default {
                 }
               }
               .copyBtn {
-                width: 40px;
-                height: 40px;
+                width: 30px;
+                height: 30px;
+                background: #ffffff1a;
+                border-radius: 50%;
+                border: 1px solid #ffffff1a;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-left: 5px;
+                cursor: pointer;
+                &:hover {
+                  background: #ffffff3d;
+                }
               }
             }
           }
           .covenant_detail {
             box-sizing: border-box;
-
-            position: absolute;
             width: 100%;
-            height: 670px;
-            left: 0%;
-            top: 85%;
+            padding: 10px;
 
             /* Order-Fill */
 
-            background: rgba(255, 255, 255, 0.2);
+            // background: rgba(255, 255, 255, 0.2);
             background-blend-mode: overlay;
-            backdrop-filter: blur(50px);
+            // backdrop-filter: blur(50px);
             /* Note: backdrop-filter has minimal browser support */
 
             border-radius: 24px;
@@ -650,15 +682,13 @@ export default {
                 font-size: 22px;
               }
               .detail_alive-light1 {
-                float: left;
-                width: 115px;
-                height: 150px;
+                // height: 150px;
                 margin-left: 0px;
                 font-family: 'PingFang SC';
                 font-style: normal;
                 font-weight: 400;
                 font-size: 20px;
-                line-height: 130px;
+                // line-height: 130px;
                 /* identical to box height */
 
                 /* Font-Fill-Bright */
@@ -678,15 +708,13 @@ export default {
                 flex-grow: 0;
               }
               .detail_alive-light2 {
-                float: right;
-                width: 100px;
-                height: 150px;
+                // height: 150px;
                 margin-right: 1px;
                 font-family: 'PingFang SC';
                 font-style: normal;
                 font-weight: 400;
                 font-size: 20px;
-                line-height: 130px;
+                // line-height: 130px;
                 /* identical to box height */
 
                 /* Font-Fill-Bright */
@@ -707,20 +735,21 @@ export default {
               }
             }
             .covenant_detail_bom {
-              position: absolute;
+              display: flex;
+              flex-direction: column;
               width: 100%;
-              height: 70px;
-              top: 110px;
               .covenant_detail_bom_item {
-                left: 10px;
+                display: flex;
+                justify-content: space-between;
+                padding: 20px;
                 covenant_detail_bom_span {
-                  margin-left: 40px;
+                  display: flex;
+                  flex-wrap: wrap;
+                  gap: 10px;
+                  //文字不换行
+                  white-space: nowrap;
                   detail_title1 {
-                    position: absolute;
-                    width: 100px;
-                    height: 28px;
                     display: flex;
-                    left: 20px;
                     font-family: 'PingFang SC';
                     font-style: normal;
                     font-weight: 400;
@@ -730,11 +759,7 @@ export default {
                     color: #ffffff;
                   }
                   detail_title2 {
-                    position: absolute;
-                    width: 120px;
-                    height: 28px;
                     display: flex;
-                    left: 260px;
                     font-family: 'PingFang SC';
                     font-style: normal;
                     font-weight: 400;
@@ -744,11 +769,8 @@ export default {
                     color: #ffffff;
                   }
                   detail_title3 {
-                    position: absolute;
-                    width: 120px;
-                    height: 28px;
                     display: flex;
-                    left: 470px;
+
                     font-family: 'PingFang SC';
                     font-style: normal;
                     font-weight: 400;
@@ -758,12 +780,8 @@ export default {
                     color: #ffffff;
                   }
                   detail_title4 {
-                    position: absolute;
-                    width: 100px;
-                    height: 28px;
                     display: flex;
-                    left: 20px;
-                    top: 45px;
+
                     font-family: 'PingFang SC';
                     font-style: normal;
                     font-weight: 400;
@@ -773,12 +791,8 @@ export default {
                     color: #ffffff;
                   }
                   detail_title5 {
-                    position: absolute;
-                    width: 100px;
-                    height: 28px;
                     display: flex;
-                    left: 280px;
-                    top: 45px;
+
                     font-family: 'PingFang SC';
                     font-style: normal;
                     font-weight: 400;
@@ -788,12 +802,8 @@ export default {
                     color: #ffffff;
                   }
                   detail_title6 {
-                    position: absolute;
-                    width: 100px;
-                    height: 28px;
                     display: flex;
-                    left: 560px;
-                    top: 45px;
+
                     font-family: 'PingFang SC';
                     font-style: normal;
                     font-weight: 400;
@@ -803,12 +813,8 @@ export default {
                     color: #ffffff;
                   }
                   detail_title7 {
-                    position: absolute;
-                    width: 100px;
-                    height: 28px;
                     display: flex;
-                    left: 780px;
-                    top: 45px;
+
                     font-family: 'PingFang SC';
                     font-style: normal;
                     font-weight: 400;
@@ -818,107 +824,93 @@ export default {
                     color: #ffffff;
                   }
                   detail_inner1 {
-                    position: absolute;
-                    width: 100px;
-                    height: 28px;
-                    left: 120px;
                     font-family: 'PingFang SC';
                     font-style: normal;
-                    font-weight: 200;
+
                     font-size: 16px;
                     line-height: 28px;
                     /* identical to box height */
-                    color: #ffffff;
+                    color: #ffffffaa;
+                    margin-left: 2px;
                   }
 
                   detail_inner2 {
-                    position: absolute;
-                    width: 200px;
-                    height: 28px;
-                    left: 340px;
                     font-family: 'PingFang SC';
                     font-style: normal;
-                    font-weight: 200;
+
                     font-size: 16px;
                     line-height: 28px;
                     /* identical to box height */
-                    color: #ffffff;
+                    color: #ffffffaa;
+                    margin-left: 2px;
                   }
 
                   detail_inner3 {
-                    position: absolute;
-                    width: 2000px;
-                    height: 28px;
-                    left: 590px;
                     font-family: 'PingFang SC';
                     font-style: normal;
-                    font-weight: 200;
+
                     font-size: 16px;
                     line-height: 28px;
                     /* identical to box height */
-                    color: #ffffff;
+                    color: #ffffffaa;
+                    margin-left: 2px;
                   }
                   detail_inner4 {
-                    position: absolute;
-                    width: 1020px;
-                    height: 28px;
-                    left: 110px;
-                    top: 45px;
                     font-family: 'PingFang SC';
                     font-style: normal;
-                    font-weight: 200;
+
                     font-size: 16px;
                     line-height: 28px;
                     /* identical to box height */
-                    color: #ffffff;
+                    color: #ffffffaa;
+                    margin-left: 2px;
                   }
                   detail_inner5 {
-                    position: absolute;
-                    width: 1020px;
-                    height: 28px;
-                    left: 370px;
-                    top: 45px;
                     font-family: 'PingFang SC';
                     font-style: normal;
-                    font-weight: 200;
+
                     font-size: 16px;
                     line-height: 28px;
                     /* identical to box height */
-                    color: #ffffff;
+                    color: #ffffffaa;
+                    margin-left: 2px;
                   }
                   detail_inner6 {
-                    position: absolute;
-                    width: 600px;
-                    height: 28px;
-                    left: 650px;
-                    top: 45px;
                     font-family: 'PingFang SC';
                     font-style: normal;
-                    font-weight: 200;
+
                     font-size: 16px;
                     line-height: 28px;
                     /* identical to box height */
-                    color: #ffffff;
+                    color: #ffffffaa;
+                    margin-left: 2px;
                   }
                   detail_inner7 {
-                    position: absolute;
-                    width: 600px;
-                    height: 28px;
-                    left: 870px;
-                    top: 45px;
                     font-family: 'PingFang SC';
                     font-style: normal;
-                    font-weight: 200;
+
                     font-size: 16px;
                     line-height: 28px;
                     /* identical to box height */
-                    color: #ffffff;
+                    color: #ffffffaa;
+                    margin-left: 2px;
                   }
                 }
 
                 .copyBtn {
-                  width: 40px;
-                  height: 40px;
+                  width: 30px;
+                  height: 30px;
+                  background: #ffffff1a;
+                  border-radius: 50%;
+                  border: 1px solid #ffffff1a;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  margin-left: 5px;
+                  cursor: pointer;
+                  &:hover {
+                    background: #ffffff3d;
+                  }
                 }
               }
             }
@@ -945,12 +937,6 @@ export default {
       }
     }
     .detail_list {
-      position: absolute;
-      width: 240px;
-      height: 28px;
-      left: 15px;
-      top: 220px;
-
       font-family: 'PingFang SC';
       font-style: normal;
       font-weight: 300;
@@ -972,28 +958,26 @@ export default {
     }
     .list {
       width: 100%;
-      height: 650px;
 
       .table {
-        width: 60%;
-        margin-left: 20%;
+        width: 100%;
         font-size: 16px;
 
         tbody {
           display: block;
           overflow-x: hidden;
           overflow-y: auto;
-          height: 500px;
         }
 
         tbody tr {
-          display: table;
-          width: 98%;
-          margin-top: 82px;
+          display: flex;
+          justify-content: space-between;
+          padding: 0 20px;
+          width: 100%;
+          margin-top: 12px;
           border: #66a39b solid 1px;
           table-layout: fixed;
           word-break: break-all;
-          height: 40px;
           border-radius: 20px;
           background-blend-mode: overlay;
           background: linear-gradient(
@@ -1012,7 +996,6 @@ export default {
         tbody td {
           position: relative;
           left: 0px;
-
           color: #ffffff;
           font-family: 'PingFang SC';
           font-style: normal;
