@@ -87,5 +87,13 @@ export default {
         invitationList:'邀请列表',
         invitationInfo:'邀请详情',
         inviteTime:'邀请成功时间'
+    },
+    footer:{
+        myBenefit: '我的收益',
+        myNgt: '我的NGT',
+        personalCenter: '个人中心',
+        aboutUs: '关于我们',
+        serve: '服务条款',
+        agreements: '相关协议'
     }
 }

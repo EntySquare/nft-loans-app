@@ -8,14 +8,14 @@ export default { name: 'AppFooter' }
     <div class="container">
       <div class="item_top">
         <div>
-          <div class="item_top_text">我的收益</div>
-          <div class="item_top_text">我的NGT</div>
-          <div class="item_top_text">个人中心</div>
+          <div class="item_top_text">{{ $t('footer.myBenefit') }}</div>
+          <div class="item_top_text">{{ $t('footer.myNgt') }}</div>
+          <div class="item_top_text">{{ $t('footer.personalCenter') }}</div>
         </div>
         <div>
-          <div class="item_top_text">关于我们</div>
-          <div class="item_top_text">服务条款</div>
-          <div class="item_top_text">相关协议</div>
+          <div class="item_top_text">{{ $t('footer.aboutUs') }}</div>
+          <div class="item_top_text">{{ $t('footer.serve') }}</div>
+          <div class="item_top_text">{{ $t('footer.agreements') }}</div>
         </div>
       </div>
       <div class="item_bom">

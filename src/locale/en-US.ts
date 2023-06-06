@@ -88,5 +88,13 @@ export default {
         invitationList:'Invitee list',
         invitationInfo:'Invitee information',
         inviteTime:'Invitation success time'
+    },
+    footer:{
+        myBenefit: 'My Benefits',
+        myNgt: 'My Wallet',
+        personalCenter: 'Personal Center',
+        aboutUs: 'About Us',
+        serve: 'TOS',
+        agreements: 'Agreements'
     }
 }
