@@ -178,8 +178,8 @@ export default {
         <div class="alive-light" style="font-size: 20px; margin-top: 20px">
           {{ $t('partner.znzz') }}
         </div>
-        <Card class="partner_two_box">
-          <div class="partner_two_box_nav">
+        <Card class="partner_two_box" v-if="navValue < 3">
+          <div class="partner_two_box_nav"  >
             <div
               :class="[
                 'partner_two_box_nav_btn',
@@ -189,7 +189,7 @@ export default {
               :key="index"
               @click="navValue = index"
             >
-              <span class="alive-light" v-if="index == 0">{{
+              <span  class="alive-light" v-if="index == 0">{{
                 $t('partner.navList1')
               }}</span>
               <span class="alive-light" v-if="index == 1">{{
@@ -213,10 +213,10 @@ export default {
                 <span>{{ item.chain }}</span>
                 <span v-if="item.status == '1'" class="alive-light">{{
                   $t('partner.confirming')
-                }}</span>
-                <span v-if="item.status == '2'" class="alive-light">{{
+                }} </span>
+                <span v-if="item.status == '2'" class="alive-light" >{{
                   $t('partner.confirmed')
-                }}</span>
+                }} <img src="../../../assets/images/finish.png" /></span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
@@ -264,7 +264,7 @@ export default {
                 }}</span>
                 <span v-if="item.status == '2'" class="alive-light">{{
                   $t('partner.confirmed')
-                }}</span>
+                }}<img src="../../../assets/images/finish.png" /></span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
@@ -309,7 +309,7 @@ export default {
                 }}</span>
                 <span v-if="item.status == '2'" class="alive-light">{{
                   $t('partner.confirmed')
-                }}</span>
+                }}<img src="../../../assets/images/finish.png" /></span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
@@ -340,108 +340,107 @@ export default {
               </div>
             </Card>
           </div>
-          <div
-            class="partner_cross_box_body"
-            style="height: auto"
+        </Card>
+        <div
+            class="partner_dw_box_body"
             v-if="navValue == 3"
-          >
-            <Card>
-              <div class="partner_cross_middle">
-                <div class="partner_cross_input">
-                  <input
+        >
+          <Card>
+            <div class="partner_cross_middle">
+              <div class="partner_cross_input">
+                <input
                     class="partner_cross_input_text"
                     type="number"
                     v-model="num"
                     placeholder="请输入数量"
-                  />
-                </div>
-                <el-dropdown trigger="click">
-                  <div class="partner_cross_select">
-                    <div
+                />
+              </div>
+              <el-dropdown trigger="click">
+                <div class="partner_cross_select">
+                  <div
                       class="partner_cross_select_text"
                       v-if="chainValue != ''"
-                    >
-                      {{ chainValue }}
-                    </div>
-                    <div
+                  >
+                    {{ chainValue }}
+                  </div>
+                  <div
                       class="partner_cross_select_text"
                       v-if="chainValue == ''"
-                    >
-                      {{ $t('plan.chainSelect') }}
-                    </div>
-                    <div class="partner_cross_select_tri">
-                      <img src="../../../assets/images/select.png" />
-                    </div>
+                  >
+                    {{ $t('plan.chainSelect') }}
                   </div>
-
-                  <template #dropdown>
-                    <el-dropdown-menu>
-                      <el-dropdown-item @click="chainValue = 'Polygon'"
-                        >Polygon</el-dropdown-item
-                      >
-                      <el-dropdown-item @click="chainValue = 'ETH'">
-                        ETH
-                      </el-dropdown-item>
-                    </el-dropdown-menu>
-                  </template>
-                </el-dropdown>
-                <div class="partner_cross_button">
-                  <div class="partner_cross_button_text" @click="deposit()">
-                    {{ $t('partner.deposit') }}
+                  <div class="partner_cross_select_tri">
+                    <img src="../../../assets/images/select.png" />
                   </div>
                 </div>
+
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item @click="chainValue = 'Polygon'"
+                    >Polygon</el-dropdown-item
+                    >
+                    <el-dropdown-item @click="chainValue = 'ETH'">
+                      ETH
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+              <div class="partner_cross_button">
+                <div class="partner_cross_button_text" @click="deposit()">
+                  {{ $t('partner.deposit') }}
+                </div>
               </div>
-            </Card>
-          </div>
-          <div class="partner_cross_box_body" v-if="navValue == 4">
-            <Card>
-              <div class="partner_cross_middle">
-                <div class="partner_cross_input">
-                  <input
+            </div>
+          </Card>
+        </div>
+        <div class="partner_dw_box_body" v-if="navValue == 4">
+          <Card>
+            <div class="partner_cross_middle">
+              <div class="partner_cross_input">
+                <input
                     class="partner_cross_input_text"
                     type="number"
                     v-model="num"
                     placeholder="   请输入数量"
-                  />
-                </div>
-                <el-dropdown trigger="click">
-                  <div class="partner_cross_select">
-                    <div
+                />
+              </div>
+              <el-dropdown trigger="click">
+                <div class="partner_cross_select">
+                  <div
                       class="partner_cross_select_text"
                       v-if="chainValue != ''"
-                    >
-                      {{ chainValue }}
-                    </div>
-                    <div
+                  >
+                    {{ chainValue }}
+                  </div>
+                  <div
                       class="partner_cross_select_text"
                       v-if="chainValue == ''"
-                    >
-                      {{ $t('plan.chainSelect') }}
-                    </div>
-                    <div class="partner_cross_select_tri">
-                      <img src="../../../assets/images/select.png" />
-                    </div>
+                  >
+                    {{ $t('plan.chainSelect') }}
                   </div>
-                  <template #dropdown>
-                    <el-dropdown-menu>
-                      <el-dropdown-item @click="chainValue = 'Polygon'"
-                        >Polygon</el-dropdown-item
-                      >
-                      <el-dropdown-item @click="chainValue = 'ETH'"
-                        >ETH</el-dropdown-item
-                      >
-                    </el-dropdown-menu>
-                  </template>
-                </el-dropdown>
-                <div class="partner_cross_button">
-                  <div class="partner_cross_button_text" @click="withdraw">
-                    {{ $t('partner.withdraw') }}
+                  <div class="partner_cross_select_tri">
+                    <img src="../../../assets/images/select.png" />
                   </div>
                 </div>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item @click="chainValue = 'Polygon'"
+                    >Polygon</el-dropdown-item
+                    >
+                    <el-dropdown-item @click="chainValue = 'ETH'"
+                    >ETH</el-dropdown-item
+                    >
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+              <div class="partner_cross_button">
+                <div class="partner_cross_button_text" @click="withdraw">
+                  {{ $t('partner.withdraw') }}
+                </div>
               </div>
-            </Card>
-          </div>
-        </Card>
+            </div>
+          </Card>
+        </div>
         <!-- 质押订单--end -->
       </div>
     </div>
@@ -524,6 +523,132 @@ export default {
             font-size: 32px;
             span {
               font-size: 20px;
+            }
+          }
+        }
+      }
+      .partner_dw_box_body {
+        box-sizing: border-box;
+
+        position: absolute;
+        width: 1235px;
+        height: 410px;
+        left: 0px;
+        top: 280px;
+
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(50px);
+        /* Note: backdrop-filter has minimal browser support */
+
+        border-radius: 24px;
+        .partner_cross_middle {
+          display: flex;
+          gap: 25px;
+          border-radius: 24px;
+          margin-top: auto;
+
+          .partner_cross_input {
+            height: 40px;
+            width: 495px;
+            /* border line */
+
+            /* InnerShadow-Box */
+
+            input {
+              width: 495px;
+              height: 40px;
+              border-radius: 24px;
+              background: none;
+              font-weight: 400;
+              font-size: 16px;
+              line-height: 16px;
+              display: flex;
+              align-items: center;
+              padding: 0 20px;
+              color: rgb(252, 252, 252);
+
+              &::placeholder {
+                color: #ffffff50;
+              }
+            }
+          }
+
+          .partner_cross_select {
+            /* Kinsta */
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            box-sizing: border-box;
+
+            width: 167px;
+            height: 40px;
+
+            background: rgba(144, 79, 79, 0.2);
+            backdrop-filter: blur(50px);
+            /* Note: backdrop-filter has minimal browser support */
+
+            border-radius: 12px;
+
+            /* Inside auto layout */
+
+            flex: none;
+            order: 1;
+            flex-grow: 0;
+
+            .partner_cross_select_text {
+              font-family: 'PingFang SC';
+              font-style: normal;
+              font-weight: 400;
+              font-size: 18px;
+              line-height: 16px;
+              /* identical to box height, or 80% */
+
+              display: flex;
+              align-items: center;
+
+              color: #ffffff;
+            }
+
+            .partner_cross_select_tri {
+              width: 22.08px;
+              height: 22.08px;
+
+              /* Font-Fill-Bright */
+
+              background: transparent;
+              border-radius: 2px;
+            }
+          }
+          .partner_cross_button {
+            /* Kinsta */
+
+            box-sizing: border-box;
+
+            /* button-fill */
+            background: linear-gradient(
+                98.28deg,
+                #66a39b 10.61%,
+                rgba(97, 112, 252, 0.99) 54.84%,
+                rgba(158, 99, 205, 0.994896) 100%
+            );
+            border-radius: 12px;
+
+            /* 开始质押 */
+
+            width: 167px;
+            height: 40px;
+            border-radius: 12px;
+
+            /* Inside auto layout */
+            line-height: 40px;
+            text-align: center;
+            .partner_cross_button_text {
+              font-family: 'PingFang SC';
+              font-style: normal;
+              font-weight: 400;
+              font-size: 18px;
+              /* identical to box height, or 80% */
+              color: #ffffff;
             }
           }
         }
@@ -628,6 +753,7 @@ export default {
             }
           }
         }
+
         .partner_cross_box_body {
           margin-top: 20px;
           border-radius: 24px;

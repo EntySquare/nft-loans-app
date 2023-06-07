@@ -184,7 +184,7 @@ export default {
                   >{{ $t('explorer.dailyIncome')
                   }}{{ item.interest_rate }}%</span
                 >
-                <span class="alive-light">{{ $t('explorer.navList1') }}</span>
+                <span class="alive-light">{{ $t('explorer.navList1') }} <img src="../../../assets/images/wait.png" /></span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
@@ -251,7 +251,7 @@ export default {
                   >{{ $t('explorer.dailyIncome')
                   }}{{ item.interest_rate }}%</span
                 >
-                <span class="alive-light">{{ $t('explorer.navList2') }}</span>
+                <span class="alive-light">{{ $t('explorer.navList2') }} <img src="../../../assets/images/wait.png" /></span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
@@ -318,7 +318,7 @@ export default {
                   >{{ $t('explorer.dailyIncome')
                   }}{{ item.interest_rate }}%</span
                 >
-                <span class="alive-light">{{ $t('explorer.navList3') }}</span>
+                <span class="alive-light">{{ $t('explorer.navList3') }} <img src="../../../assets/images/wait.png" /></span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
@@ -407,12 +407,12 @@ export default {
                     <covenant_detail_span2
                       class="detail_alive-light2"
                       v-if="cdRes.covenant_info.flag == '1'"
-                      >{{ $t('explorer.navList2') }}</covenant_detail_span2
+                      >{{ $t('explorer.navList2') }} <img src="../../../assets/images/wait.png" /></covenant_detail_span2
                     >
                     <covenant_detail_span2
                       class="detail_alive-light2"
                       v-if="cdRes.covenant_info.flag == '2'"
-                      >{{ $t('explorer.navList3') }}</covenant_detail_span2
+                      >{{ $t('explorer.navList3') }} <img src="../../../assets/images/wait.png" /></covenant_detail_span2
                     >
                     <covenant_detail_span2 class="detail_alive-light2"
                       >{{

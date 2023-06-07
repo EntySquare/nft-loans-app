@@ -212,6 +212,9 @@ export default {
                 </div>
                 <template #dropdown>
                   <el-dropdown-menu>
+                    <el-dropdown-item @click="durationValue = '1'"
+                    >1 {{ $t('plan.day') }}</el-dropdown-item
+                    >
                     <el-dropdown-item @click="durationValue = '30'"
                       >30 {{ $t('plan.day') }}</el-dropdown-item
                     >
