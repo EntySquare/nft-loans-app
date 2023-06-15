@@ -23,15 +23,15 @@ export interface pledgeNftReq {
 
 
 // 获取计划详情
-export function pledgeNft(data:pledgeNftReq) {
+export function pledgeNft(data:any) {
     const token = getToken()
     return request({
-        url: '/app/nft/pledgeNft', // 请求地址
+        url: '/app/pledgeNft', // 请求地址
         method: 'post', // 请求类型 get/post
+        data,
         headers: {
             'token': token,
             // Add more headers as needed
-        },
-        data
+        }
     })
 }

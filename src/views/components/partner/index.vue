@@ -346,6 +346,9 @@ export default {
             v-if="navValue == 3"
         >
           <Card>
+            <i @click="navValue = 0">
+              <img src="../../../assets/images/Vector2Mini.png" alt="" />
+            </i>
             <div class="partner_cross_middle">
               <div class="partner_cross_input">
                 <input
@@ -395,7 +398,11 @@ export default {
         </div>
         <div class="partner_dw_box_body" v-if="navValue == 4">
           <Card>
+            <i @click="navValue = 0">
+              <img src="../../../assets/images/Vector2Mini.png" alt="" />
+            </i>
             <div class="partner_cross_middle">
+
               <div class="partner_cross_input">
                 <input
                     class="partner_cross_input_text"
@@ -550,6 +557,8 @@ export default {
           .partner_cross_input {
             height: 40px;
             width: 495px;
+            margin-left: 35px;
+            margin-top: 10px;
             /* border line */
 
             /* InnerShadow-Box */
@@ -582,7 +591,7 @@ export default {
 
             width: 167px;
             height: 40px;
-
+            margin-top: 10px;
             background: rgba(144, 79, 79, 0.2);
             backdrop-filter: blur(50px);
             /* Note: backdrop-filter has minimal browser support */
@@ -621,7 +630,7 @@ export default {
           }
           .partner_cross_button {
             /* Kinsta */
-
+            margin-top: 10px;
             box-sizing: border-box;
 
             /* button-fill */

@@ -28,27 +28,28 @@ export interface depositNgtReq {
 
 
 
-export function withdrawNgt(data:withdrawNgtReq) {
+export function withdrawNgt(data:any) {
     const token = getToken()
     return request({
-        url: '/app/wallet/withdraw', // 请求地址
+        url: '/app/withdraw', // 请求地址
         method: 'post', // 请求类型 get/post
+        data,
         headers: {
             'token': token,
             // Add more headers as needed
-        },
-        data
+        }
     })
 }
-export function depositNgt(data:depositNgtReq) {
+export function depositNgt(data:any) {
     const token = getToken()
     return request({
-        url: '/app/wallet/deposit', // 请求地址
+        url: '/app/deposit', // 请求地址
         method: 'post', // 请求类型 get/post
+        data,
         headers: {
             'token': token,
             // Add more headers as needed
-        },
-        data
+        }
+
     })
 }

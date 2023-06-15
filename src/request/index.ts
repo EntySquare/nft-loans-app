@@ -11,7 +11,6 @@ import axios from 'axios'
 const baseUrl = 'https://api.metagalaxylands.com';
 let request = axios.create({
     baseURL: baseUrl,
-
     timeout: 5000
 })
 // 设置请求拦截器

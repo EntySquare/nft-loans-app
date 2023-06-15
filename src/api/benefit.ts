@@ -22,7 +22,7 @@ export interface covenantInfo {
 }
 export interface benefitFlowInfo {
     time: number
-    num: number;
+    num: string;
     flag: string;
 }
 export interface myCovenantFlowRep {
