@@ -7,7 +7,8 @@ import {
   covenantInfo,
   myBenefitFlowRep,
   myCovenantFlow,
-  myCovenantFlowRep
+  myCovenantFlowRep,
+  cancelCovenant
 } from '@/api/benefit'
 import Card from '@/components/card/index.vue'
 import { onMounted, ref } from 'vue'
@@ -80,10 +81,11 @@ async function dataInit() {
     console.log(err)
   }
 }
-const  cancelCovenant = async (id: number) => {
+const  cancelOrder = async (id: number) => {
   try {
     console.log(id)
     const res = await cancelCovenant(id)
+    console.log(res)
   } catch (error) {
     console.log('cancelCovenant err-------------------')
     console.log(error)
@@ -222,7 +224,7 @@ export default {
                 </div>
               </div>
               <div class="box_body_item_bom_two">
-                <span class="alive-light" @click="cancelCovenant(item.covenant_id)">{{
+                <span class="alive-light" @click.stop="cancelOrder(item.covenant_id)">{{
                   $t('explorer.cancelOrder')
                 }}</span>
                 <div>
@@ -280,7 +282,7 @@ export default {
                 </div>
               </div>
               <div class="box_body_item_bom_two">
-                <span class="alive-light">{{
+                <span class="alive-light" @click.stop="cancelOrder(item.covenant_id)">{{
                   $t('explorer.cancelOrder')
                 }}</span>
                 <div>
@@ -338,7 +340,7 @@ export default {
                 </div>
               </div>
               <div class="box_body_item_bom_two">
-                <span class="alive-light">{{
+                <span class="alive-light" @click.stop="cancelOrder(item.covenant_id)">{{
                   $t('explorer.cancelOrder')
                 }}</span>
                 <div>
