@@ -117,12 +117,12 @@ const withdraw = async () => {
       address: State.account,
       chain: chainValue.value
     } as depositNgtReq
-    const res = await depositNgt(req)
+    const res = await withdrawNgt(req)
     if (res.data.code == 0) {
-      ElMessage.success('充值成功')
+      ElMessage.success('提现成功')
       return
     } else {
-      ElMessage.error('充值失败')
+      ElMessage.error('提现失败')
       return
     }
   } catch (error) {
