@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import Card from '@/components/card/index.vue'
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, ref } from 'vue'
 import { formatDateY } from '@/utils/time'
+import { getToken } from "@/utils/auth"; // 引入封装好的 axios 请求
 import { myNgt, myTransactionsRep, transactionInfo } from '@/api/flow'
 import {
   depositNgt,
@@ -15,6 +16,7 @@ import { ElMessage } from 'element-plus'
 import MainStore from '@/store'
 const { toClipboard } = Clipboard()
 const State = MainStore() //获取store
+let timmer: any = null
 let chainValue = ref('')
 const navValue = ref(0)
 const navList = ['全部', '充值', '提现']
@@ -130,8 +132,16 @@ const withdraw = async () => {
     return
   }
 }
-onMounted(() => {
+dataInit()
+timmer = setInterval(() => {
+  if (State.account == '') return
   dataInit()
+}, 10000)
+onBeforeUnmount(() => {
+  const one = setInterval(() => { }, 1000)
+  for (let i = 0; i < +one; i++) {
+    clearInterval(i)
+  }
 })
 </script>
 <script lang="ts">

@@ -11,7 +11,7 @@ import {
   cancelCovenant
 } from '@/api/benefit'
 import Card from '@/components/card/index.vue'
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, ref } from 'vue'
 import { formatDateY } from '@/utils/time'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import Clipboard from 'vue-clipboard3'
@@ -19,7 +19,6 @@ import MainStore from '@/store'
 import { refDefault } from '@vueuse/shared'
 import {useI18n} from "vue-i18n";
 const State = MainStore() //获取store中的数据
-const { account } = State
 const { toClipboard } = Clipboard()
 const navValue = ref(0)
 const navList = ['全部', '质押中', '已完成']
@@ -140,12 +139,16 @@ const copy = async (hash: string) => {
     ElMessage.error('复制失败')
   }
 }
-onMounted(() => {
-  // timmer = setInterval(() => {
-  //   console.log('account:', account)
-  //   if (account != '') return
-  // }, 10000)
-  dataInit()
+dataInit()
+timmer = setInterval(() => {
+    if (State.account == '') return
+    dataInit()
+}, 10000)
+onBeforeUnmount(() => {
+  const one = setInterval(() => { }, 1000)
+  for (let i = 0; i < +one; i++) {
+    clearInterval(i)
+  }
 })
 </script>
 <script lang="ts">
