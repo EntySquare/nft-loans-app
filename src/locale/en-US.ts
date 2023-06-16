@@ -97,5 +97,13 @@ export default {
         aboutUs: 'About Us',
         serve: 'TOS',
         agreements: 'Agreements'
+    },
+    messageBox:{
+        cancelOrderWarning: 'Reminder: From the day of cancellation, no income will be distributed. After 7 days (including the day of cancellation), the pledged NFT will be released to your account.',
+        confirmButtonText:'confirm',
+        cancelButtonText:'cancel',
+        successMessage:'cancel success',
+        failMessage:'cancel failed'
     }
+
 }

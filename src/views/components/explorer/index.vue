@@ -13,16 +13,18 @@ import {
 import Card from '@/components/card/index.vue'
 import { onMounted, ref } from 'vue'
 import { formatDateY } from '@/utils/time'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import Clipboard from 'vue-clipboard3'
 import MainStore from '@/store'
 import { refDefault } from '@vueuse/shared'
+import {useI18n} from "vue-i18n";
 const State = MainStore() //获取store中的数据
 const { account } = State
 const { toClipboard } = Clipboard()
 const navValue = ref(0)
 const navList = ['全部', '质押中', '已完成']
 let timmer: any = null
+const { t, locale } = useI18n() //国际化
 const cfRes = ref({
   benefit_info: {
     balance: 0,
@@ -82,14 +84,41 @@ async function dataInit() {
   }
 }
 const  cancelOrder = async (id: number) => {
-  try {
-    console.log(id)
-    const res = await cancelCovenant(id)
-    console.log(res)
-  } catch (error) {
-    console.log('cancelCovenant err-------------------')
-    console.log(error)
-  }
+
+    ElMessageBox.confirm(
+        t('messageBox.cancelOrderWarning'),
+        'Warning',
+        {
+          confirmButtonText: t('messageBox.confirmButtonText'),
+          cancelButtonText: t('messageBox.cancelButtonText'),
+          type: 'warning',
+        }
+    )
+        .then(async() => {
+          try {
+          console.log(id)
+          const res = await cancelCovenant(id)
+          console.log(res)
+            ElMessage({
+              type: 'success',
+              message: t('messageBox.successMessage'),
+            })
+            await dataInit()
+          } catch (error) {
+            console.log('cancelCovenant err-------------------')
+            console.log(error)
+            ElMessage({
+              type: 'info',
+              message: t('messageBox.failMessage'),
+            })
+          }
+
+        })
+
+
+
+
+
 }
 const covenantDetail = async (item: covenantInfo) => {
   try {

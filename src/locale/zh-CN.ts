@@ -96,5 +96,12 @@ export default {
         aboutUs: '关于我们',
         serve: '服务条款',
         agreements: '相关协议'
+    },
+    messageBox:{
+        cancelOrderWarning: '提示:提示:取消当天开始不再发放收益，7天后（包含取消当日）质押的NFT将会释放到您的账户。',
+        confirmButtonText:'确认',
+        cancelButtonText:'取消',
+        successMessage:'取消成功',
+        failMessage:'取消失败'
     }
 }
