@@ -80,6 +80,15 @@ async function dataInit() {
     console.log(err)
   }
 }
+const  cancelCovenant = async (id: number) => {
+  try {
+    console.log(id)
+    const res = await cancelCovenant(id)
+  } catch (error) {
+    console.log('cancelCovenant err-------------------')
+    console.log(error)
+  }
+}
 const covenantDetail = async (item: covenantInfo) => {
   try {
     navValue.value = 3
@@ -213,7 +222,7 @@ export default {
                 </div>
               </div>
               <div class="box_body_item_bom_two">
-                <span class="alive-light">{{
+                <span class="alive-light" @click="cancelCovenant(item.covenant_id)">{{
                   $t('explorer.cancelOrder')
                 }}</span>
                 <div>

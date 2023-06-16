@@ -74,3 +74,16 @@ export function checkHash(hash: string) {
         data
     })
 }
+export function cancelCovenant(id: number) {
+    const token = getToken()
+    const data = { covenant_id: id }
+    return request({
+        url: '/app/cancelCovenant', // 请求地址
+        method: 'post', // 请求类型 get/post
+        headers: {
+            'token': token,
+            // Add more headers as needed
+        },
+        data
+    })
+}
