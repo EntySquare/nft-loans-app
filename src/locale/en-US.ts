@@ -8,6 +8,7 @@ export default {
         logoName: 'MetaGalaxy',
         plan: 'Plan',
         home: 'HomePage',
+        partner: 'NFT transaction',
         benefit: 'My Benefits',
         wallet: 'My NGT Wallet',
         invitee: 'Invitee',

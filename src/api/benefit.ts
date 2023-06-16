@@ -34,7 +34,7 @@ export interface myBenefitFlowRep {
     benefit_flows: benefitFlowInfo[];
 }
 // 获取计划详情
-export function myCovenantFlow() {
+export function myCovenantFlow(data:any) {
     const token = getToken()
     console.log('token:', token)
     return request({
@@ -44,6 +44,7 @@ export function myCovenantFlow() {
             'token': token,
             // Add more headers as needed
         },
+        data
     })
 }
 
@@ -52,6 +53,19 @@ export function covenantFlowDetail(hash: string) {
     const data = { hash: hash }
     return request({
         url: '/app/getCovenantDetail', // 请求地址
+        method: 'post', // 请求类型 get/post
+        headers: {
+            'token': token,
+            // Add more headers as needed
+        },
+        data
+    })
+}
+export function checkHash(hash: string) {
+    const token = getToken()
+    const data = { hash }
+    return request({
+        url: '/app/checkHash', // 请求地址
         method: 'post', // 请求类型 get/post
         headers: {
             'token': token,

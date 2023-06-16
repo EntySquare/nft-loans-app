@@ -53,3 +53,17 @@ export function depositNgt(data:any) {
 
     })
 }
+
+export function checkHash(hash: string) {
+    const token = getToken()
+    const data = { hash }
+    return request({
+        url: '/app/checkHash', // 请求地址
+        method: 'post', // 请求类型 get/post
+        headers: {
+            'token': token,
+            // Add more headers as needed
+        },
+        data
+    })
+}

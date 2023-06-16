@@ -17,6 +17,7 @@ const changeLang = (lang: string) => {
   localStorage.setItem('upaclang', lang)
 }
 const dropdown = ref(false) //下拉菜单
+const dropdown2 = ref(false) //下拉菜单
 const setLang = () => {
   if (locale.value === 'en') {
     changeLang('zh')
@@ -146,38 +147,41 @@ export default { name: 'AppTopnav' }
     <div class="logo">
       <div style="display: flex; align-items: center">
         <img class="nav-item" src="../../../assets/logo.png" alt="logo" />
-        <span class="alive-light">{{ $t('nav.logoName') }}</span>
+      <span class="alive-light">{{ $t('nav.logoName') }}</span>
+    </div>
+      <div class="nftboxnone" style="margin-left: auto;" @click="dropdown2 = !dropdown2">
+        <div class="alive-light" style="font-size: 16px;"> {{ $t('nav.partner') }}</div>
+        <div class="pool2" style="background: transparent;" v-show="dropdown2"></div>
+        <div v-show="dropdown2" class="Dropdownbox" style="top: 40px;padding: 0;">
+          <div class="nftLinkBox">
+            <a class="Dropdownbox_item"
+              href="https://newgalaxy.io/nft-details/0x3bda5e439af86bbe6b82d8e9ea0b8de99776b66a/9999"
+              target="_blank">玄武</a>
+            <a class="Dropdownbox_item"
+              href="https://newgalaxy.io/nft-details/0x3bda5e439af86bbe6b82d8e9ea0b8de99776b66a/20" target="_blank">朱雀</a>
+            <a class="Dropdownbox_item"
+              href="https://newgalaxy.io/nft-details/0x3bda5e439af86bbe6b82d8e9ea0b8de99776b66a/998"
+              target="_blank">白虎</a>
+          </div>
+        </div>
       </div>
       <div class="nav_more" @click="dropdown = !dropdown">
         <i v-for="(item, index) in 3" :key="index"></i>
-        <div v-show="dropdown" class="Dropdownbox">
+        <div v-show="dropdown" class="Dropdownbox" style="right: 0;">
           <div class="Dropdownbox_item">
-            <RouterLink
-              class="nav_item_s alive-light"
-              :to="`/Plan/${State.referrer}`"
-              >{{ $t('nav.home') }}</RouterLink
-            >
+            <RouterLink class="nav_item_s alive-light" :to="`/Plan/${State.referrer}`">{{ $t('nav.home') }}</RouterLink>
           </div>
           <div class="Dropdownbox_item">
-            <RouterLink
-              class="nav_item_s alive-light"
-              :to="`/Explorer/${State.referrer}`"
-              >{{ $t('nav.benefit') }}</RouterLink
-            >
+            <RouterLink class="nav_item_s alive-light" :to="`/Explorer/${State.referrer}`">{{ $t('nav.benefit') }}
+            </RouterLink>
           </div>
           <div class="Dropdownbox_item">
-            <RouterLink
-              class="nav_item_s alive-light"
-              :to="`/Partners/${State.referrer}`"
-              >{{ $t('nav.wallet') }}</RouterLink
-            >
+            <RouterLink class="nav_item_s alive-light" :to="`/Partners/${State.referrer}`">{{ $t('nav.wallet') }}
+            </RouterLink>
           </div>
           <div class="Dropdownbox_item">
-            <RouterLink
-              class="nav_item_s alive-light"
-              :to="`/record/${State.referrer}`"
-              >{{ $t('nav.invitee') }}</RouterLink
-            >
+            <RouterLink class="nav_item_s alive-light" :to="`/record/${State.referrer}`">{{ $t('nav.invitee') }}
+            </RouterLink>
           </div>
           <div class="Dropdownbox_item">
             <div @click="setLang" class="nav_item_s alive-light">
@@ -186,11 +190,7 @@ export default { name: 'AppTopnav' }
               <div v-else></div>
             </div>
           </div>
-          <div
-            class="log_out Dropdownbox_item"
-            @click="DisConnection"
-            v-if="State.account"
-          >
+          <div class="log_out Dropdownbox_item" @click="DisConnection" v-if="State.account">
             <img src="../../../assets/log_out.png" />
             登出
           </div>
@@ -199,12 +199,24 @@ export default { name: 'AppTopnav' }
       </div>
     </div>
     <div class="nav">
-      <RouterLink
-        v-if="!State.homeState"
-        class="nav-item"
-        :to="`/Plan/${State.referrer}`"
-        >{{ $t('nav.home') }}</RouterLink
-      >
+      <RouterLink v-if="!State.homeState" class="nav-item" :to="`/Plan/${State.referrer}`">{{ $t('nav.home') }}
+      </RouterLink>
+      <div class="nav-item" @click="dropdown2 = !dropdown2">
+        {{ $t('nav.partner') }}
+        <div class="pool2" style="background: transparent;" v-show="dropdown2"></div>
+        <div v-show="dropdown2" class="Dropdownbox" style="top: 70px;padding: 0;">
+          <div class="nftLinkBox">
+            <a class="Dropdownbox_item"
+              href="https://newgalaxy.io/nft-details/0x3bda5e439af86bbe6b82d8e9ea0b8de99776b66a/9999"
+              target="_blank">玄武</a>
+            <a class="Dropdownbox_item"
+              href="https://newgalaxy.io/nft-details/0x3bda5e439af86bbe6b82d8e9ea0b8de99776b66a/20" target="_blank">朱雀</a>
+            <a class="Dropdownbox_item"
+              href="https://newgalaxy.io/nft-details/0x3bda5e439af86bbe6b82d8e9ea0b8de99776b66a/998"
+              target="_blank">白虎</a>
+          </div>
+        </div>
+      </div>
       <RouterLink class="nav-item" :to="`/Explorer/${State.referrer}`">{{
         $t('nav.benefit')
       }}</RouterLink>
@@ -217,13 +229,8 @@ export default { name: 'AppTopnav' }
       <!-- 弹框 -->
       <a href="" id="download"></a>
       <el-popover ref="popoverRef" trigger="click" persistent>
-        <vue-qr
-          @click="download.click()"
-          :text="State.Invitationlink"
-          :callback="test"
-          :bindElement="createShow"
-          :size="512"
-        ></vue-qr>
+        <vue-qr @click="download.click()" :text="State.Invitationlink" :callback="test" :bindElement="createShow"
+          :size="512"></vue-qr>
         <div class="nav-item-popover-text" @click="copy">
           <div>{{ $t('nav.copeone') }}</div>
           <div>{{ $t('nav.copetwo') }}</div>
@@ -244,13 +251,7 @@ export default { name: 'AppTopnav' }
       <!-- 国际化 -->
       <div class="nav-btn">
         <div v-if="!State.account">
-          <loading
-            :height="35"
-            :width="20"
-            transition="none"
-            color="#44c9b0"
-            :active="State.isLd && !State.account"
-          >
+          <loading :height="35" :width="20" transition="none" color="#44c9b0" :active="State.isLd && !State.account">
             <template #before>
               <div class="loading">
                 {{ State.isLd ? $t('nav.loading') : '' }}
@@ -258,36 +259,28 @@ export default { name: 'AppTopnav' }
             </template>
           </loading>
         </div>
-        <div
-          v-if="!State.isLd || State.account"
-          @click="Connection"
-          :class="[
-            'connection-btn',
-            State.account ? 'connection-btn-nav' : 'hover'
-          ]"
-        >
+        <div v-if="!State.isLd || State.account" @click="Connection" :class="[
+          'connection-btn',
+          State.account ? 'connection-btn-nav' : 'hover'
+        ]">
           <div class="balance">
             {{ State.account ? `${State.formatBalance(State.balance)}` : '' }}
 
             {{
               State.account
-                ? `| ${State.formatChainBalance(State.balanceChain.toString())}`
-                : ''
+              ? `| ${State.formatChainBalance(State.balanceChain.toString())}`
+              : ''
             }}
           </div>
           <span>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{
               State.account
-                ? State.replaceStr(State.account)
-                : $t('nav.connect')
+              ? State.replaceStr(State.account)
+              : $t('nav.connect')
             }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </span>
         </div>
-        <div
-          class="log_out nonel"
-          v-if="State.account"
-          style="margin-left: 10px"
-        >
+        <div class="log_out nonel" v-if="State.account" style="margin-left: 10px">
           <img src="../../../assets/log_out.png" @click="DisConnection" />
         </div>
       </div>
@@ -297,8 +290,8 @@ export default { name: 'AppTopnav' }
   <div class="container">
     <!-- <Spline claid="ivEMfk9ulAFRBn22" @spline-loaded="loaded" :scene="splineLink" /> -->
     <!-- <Spline v-if="!show1" claid="ivEMfk9ulAFRBn22" @spline-loaded="loaded"
-      scene="https://prod.spline.design/CafFU2sx4yUXj15i/scene.splinecode" />
-    <Spline v-else scene="https://prod.spline.design/Vwi6NjIkX4kQ3Rux/scene.splinecode" /> -->
+                                                                                                                                                                                            scene="https://prod.spline.design/CafFU2sx4yUXj15i/scene.splinecode" />
+                                                                                                                                                                                          <Spline v-else scene="https://prod.spline.design/Vwi6NjIkX4kQ3Rux/scene.splinecode" /> -->
 
     <!--    <div class="" style="background: #1dc779;width: 100%;height: 100%;min-height: ">-->
 
@@ -325,6 +318,34 @@ export default { name: 'AppTopnav' }
 </template>
 
 <style scoped lang="less">
+.nftboxnone {
+  display: none;
+}
+
+.nftLinkBox {
+  display: flex;
+  flex-direction: column;
+
+  a {
+    margin-left: 0;
+    font-size: 16px !important;
+    font-weight: 500;
+    height: 50px;
+    font-size: 14px;
+    white-space: nowrap;
+    padding: 0px 20px;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: #272745db;
+    }
+  }
+}
+
 .topnav {
   position: fixed;
   z-index: 2; //最高级
@@ -368,6 +389,7 @@ nav {
       height: 50px;
       width: 50px;
     }
+
     .nav_more {
       position: relative;
       // display: flex;
@@ -377,72 +399,92 @@ nav {
       padding: 20px;
       gap: 2px;
       margin-right: 10px;
+
       i {
         height: 5px !important;
         width: 5px !important;
         background: #bea7fa;
         border-radius: 50%;
+
         &:nth-child(1) {
           background: #b7e0f6;
         }
+
         &:nth-child(2) {
           background: #9ca3f8;
         }
       }
-      .Dropdownbox {
-        position: relative;
-        z-index: 2030;
-        transition: all 0.3s ease-in-out;
-        position: absolute;
-        top: 30px;
-        right: 0;
-        backdrop-filter: blur(100px) !important;
-        -webkit-backdrop-filter: blur(100px) !important;
-        background: rgba(255, 255, 255, 0.229);
-        border-radius: 10px;
-        padding: 10px;
-        border: 1px solid #08aabc;
-        .Dropdownbox_item {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          white-space: nowrap;
-          .nav_item_s {
-            margin-left: 0;
-            font-size: 16px !important;
-            font-weight: 500;
-            height: 50px;
-            font-size: 14px;
-            white-space: nowrap;
-            padding: 0px 20px;
-            color: #fff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-          }
-          img {
-            height: 15px !important;
-            width: 15px !important;
-          }
-        }
+
+    }
+  }
+
+  .Dropdownbox {
+    position: relative;
+    z-index: 2030;
+    transition: all 0.3s ease-in-out;
+    position: absolute;
+    top: 30px;
+    // right: 0;
+    backdrop-filter: blur(100px) !important;
+    -webkit-backdrop-filter: blur(100px) !important;
+    background: rgba(255, 255, 255, 0.229);
+    border-radius: 10px;
+    padding: 10px;
+    overflow: hidden;
+    border: 1px solid #08aabc;
+
+    .Dropdownbox_item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+
+      .nav_item_s {
+        margin-left: 0;
+        font-size: 16px !important;
+        font-weight: 500;
+        height: 50px;
+        font-size: 14px;
+        white-space: nowrap;
+        padding: 0px 20px;
+        color: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
       }
-      .pool {
-        position: fixed;
-        height: 100vh;
-        width: 100vw;
-        top: 0;
-        left: 0;
-        z-index: 2029;
-        backdrop-filter: blur(10px) !important;
-        // 浏览器兼容
-        -webkit-backdrop-filter: blur(10px) !important;
-        background: #00051729;
+
+      img {
+        height: 15px !important;
+        width: 15px !important;
       }
     }
   }
 
+  .pool {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    z-index: 2029;
+    backdrop-filter: blur(10px) !important;
+    // 浏览器兼容
+    -webkit-backdrop-filter: blur(10px) !important;
+    background: #00051729;
+  }
+
+  .pool2 {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    z-index: 2029;
+  }
+
   .nav {
     display: flex;
+
     // width: 960px;
     .nav-item {
       height: 70px;
@@ -462,17 +504,16 @@ nav {
       &:hover {
         background: -webkit-linear-gradient(0deg, #3b535a45, #534dfb45);
       }
+
       .alive-light {
         font-size: 20px;
         width: 140px;
         margin-left: 8px;
         white-space: nowrap;
-        background-image: -webkit-linear-gradient(
-          98.28deg,
-          #adfff5 10.61%,
-          rgba(155, 165, 255, 0.99) 54.84%,
-          rgba(216, 166, 255, 0.994896) 100%
-        );
+        background-image: -webkit-linear-gradient(98.28deg,
+            #adfff5 10.61%,
+            rgba(155, 165, 255, 0.99) 54.84%,
+            rgba(216, 166, 255, 0.994896) 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
@@ -516,9 +557,11 @@ nav {
           white-space: nowrap;
         }
       }
+
       .connection-btn {
         min-width: 95px;
       }
+
       .connection-btn-nav {
         display: flex;
         align-items: flex-start;
@@ -541,6 +584,7 @@ nav {
     }
   }
 }
+
 .log_out {
   margin-left: 0;
   font-size: 16px !important;
@@ -552,6 +596,7 @@ nav {
   cursor: pointer;
   display: flex;
   align-items: center;
+
   img {
     width: 22px;
     max-height: 22px;
@@ -661,11 +706,9 @@ nav {
 //--------------------------------------------------------
 
 #webgl-canvas {
-  background: radial-gradient(
-    circle farthest-corner at center top,
-    #071021,
-    #19324a
-  );
+  background: radial-gradient(circle farthest-corner at center top,
+      #071021,
+      #19324a);
 }
 
 html,
@@ -674,8 +717,7 @@ body {
   max-width: 100%;
   margin: 0;
   overflow: hidden;
-  background: rgba(0, 10, 20, 1) url(https://i.imgur.com/r838U7u.jpg) center
-    no-repeat;
+  background: rgba(0, 10, 20, 1) url(https://i.imgur.com/r838U7u.jpg) center no-repeat;
   background-size: cover;
   image-rendering: pixelated;
   font-family: sans-serif;

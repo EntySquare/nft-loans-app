@@ -7,7 +7,8 @@ import {
   depositNgt,
   withdrawNgt,
   withdrawNgtReq,
-  depositNgtReq
+  depositNgtReq,
+  checkHash
 } from '@/api/wallet'
 import Clipboard from 'vue-clipboard3'
 import { ElMessage } from 'element-plus'
@@ -68,6 +69,7 @@ const copy = async (hash: string) => {
 }
 
 const deposit = async () => {
+  console.log('1:', 1)
   try {
     if (chainValue.value == '') {
       ElMessage.error('请选择公链')
@@ -77,26 +79,30 @@ const deposit = async () => {
       ElMessage.error('请输入数量')
       return
     }
-    let req = {
-      num: num.value,
-      address: State.account,
-      hash: '0x63c48fe0c1f4b60f6ae90b86ea91051b06fb8b371068db84c0ad68a54e9a466c',
-      chain: chainValue.value
-    } as depositNgtReq
-    const res = await depositNgt(req)
-    if (res.data.code == 0) {
-      ElMessage.success('充值成功')
-      return
-    } else {
-      ElMessage.error('充值失败')
-      return
-    }
+    // let req = {
+    //   num: num.value,
+    //   address: State.account,
+    //   hash: '0x63c48fe0c1f4b60f6ae90b86ea91051b06fb8b371068db84c0ad68a54e9a466c',
+    //   chain: chainValue.value
+    // } as depositNgtReq
+    State.transferUSDT('0xA5dDBf7bFf725456349b652D92411D1B8f7bc3EF', num.value, (hash) => {
+      checkHash(hash)
+    })
+    // const res = await depositNgt(req)
+    // if (res.data.code == 0) {
+    //   ElMessage.success('充值成功')
+    //   return
+    // } else {
+    //   ElMessage.error('充值失败')
+    //   return
+    // }
   } catch (error) {
     ElMessage.error('充值失败')
     return
   }
 }
 const withdraw = async () => {
+  console.log('1:', 1)
   try {
     if (chainValue.value == '') {
       ElMessage.error('请选择公链')
@@ -178,18 +184,13 @@ export default {
         <div class="alive-light" style="font-size: 20px; margin-top: 20px">
           {{ $t('partner.znzz') }}
         </div>
-        <Card class="partner_two_box" v-if="navValue < 3">
-          <div class="partner_two_box_nav"  >
-            <div
-              :class="[
-                'partner_two_box_nav_btn',
-                navValue == index ? 'active' : ''
-              ]"
-              v-for="(item, index) in navList"
-              :key="index"
-              @click="navValue = index"
-            >
-              <span  class="alive-light" v-if="index == 0">{{
+        <Card class="partner_two_box">
+          <div class="partner_two_box_nav">
+            <div :class="[
+              'partner_two_box_nav_btn',
+              navValue == index ? 'active' : ''
+            ]" v-for="(item, index) in navList" :key="index" @click="navValue = index">
+              <span class="alive-light" v-if="index == 0">{{
                 $t('partner.navList1')
               }}</span>
               <span class="alive-light" v-if="index == 1">{{
@@ -213,23 +214,19 @@ export default {
                 <span>{{ item.chain }}</span>
                 <span v-if="item.status == '1'" class="alive-light">{{
                   $t('partner.confirming')
-                }} </span>
-                <span v-if="item.status == '2'" class="alive-light" >{{
+                }}</span>
+                <span v-if="item.status == '2'" class="alive-light">{{
                   $t('partner.confirmed')
-                }} <img src="../../../assets/images/finish.png" /></span>
+                }}</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.address') }}</span>
                   <span class="addres">{{ item.address }}</span>
                 </div>
-                <div
-                  class="box_body_item_bom__item"
-                  style="display: flex; align-items: center"
-                >
+                <div class="box_body_item_bom__item" style="display: flex; align-items: center">
                   <span>{{ $t('partner.hash') }}</span>
-                  <span class="addres"
-                    >{{ item.hash.slice(0, 32) }}********
+                  <span class="addres">{{ item.hash.slice(0, 32) }}********
                   </span>
                   <div class="copyBtn" @click="copy(item.hash)">
                     <img src="../../../assets/images/VectorMini.png" alt="" />
@@ -251,10 +248,7 @@ export default {
             </Card>
           </div>
           <div class="partner_two_box_body" v-if="navValue == 1">
-            <Card
-              v-for="(item, index) in depositList.transactions"
-              :key="index"
-            >
+            <Card v-for="(item, index) in depositList.transactions" :key="index">
               <div class="box_body_item_top">
                 <span>{{ $t('partner.navList2') }}</span>
                 <span>{{ item.num }}NGT</span>
@@ -264,7 +258,7 @@ export default {
                 }}</span>
                 <span v-if="item.status == '2'" class="alive-light">{{
                   $t('partner.confirmed')
-                }}<img src="../../../assets/images/finish.png" /></span>
+                }}</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
@@ -273,8 +267,7 @@ export default {
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.hash') }}</span>
-                  <span class="addres"
-                    >{{ item.hash.slice(0, 32) }}********
+                  <span class="addres">{{ item.hash.slice(0, 32) }}********
                     <div class="copyBtn" @click="copy(item.hash)">
                       <img src="../../../assets/images/VectorMini.png" alt="" />
                     </div>
@@ -296,10 +289,7 @@ export default {
             </Card>
           </div>
           <div class="partner_two_box_body" v-if="navValue == 2">
-            <Card
-              v-for="(item, index) in withdrawList.transactions"
-              :key="index"
-            >
+            <Card v-for="(item, index) in withdrawList.transactions" :key="index">
               <div class="box_body_item_top">
                 <span>{{ $t('partner.navList3') }}</span>
                 <span>{{ item.num }}NGT</span>
@@ -309,7 +299,7 @@ export default {
                 }}</span>
                 <span v-if="item.status == '2'" class="alive-light">{{
                   $t('partner.confirmed')
-                }}<img src="../../../assets/images/finish.png" /></span>
+                }}</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
@@ -318,8 +308,7 @@ export default {
                 </div>
                 <div class="box_body_item_bom__item">
                   <span>{{ $t('partner.hash') }}</span>
-                  <span class="addres"
-                    >{{ item.hash.slice(0, 32) }}********
+                  <span class="addres">{{ item.hash.slice(0, 32) }}********
                     <div class="copyBtn" @click="copy(item.hash)">
                       <img src="../../../assets/images/VectorMini.png" alt="" />
                     </div>
@@ -340,114 +329,76 @@ export default {
               </div>
             </Card>
           </div>
+          <div class="partner_cross_box_body" style="height: auto" v-if="navValue == 3">
+            <Card>
+              <div class="partner_cross_middle">
+                <div class="partner_cross_input">
+                  <input class="partner_cross_input_text" type="number" v-model="num" placeholder="请输入数量" />
+                </div>
+                <el-dropdown trigger="click">
+                  <div class="partner_cross_select">
+                    <div class="partner_cross_select_text" v-if="chainValue != ''">
+                      {{ chainValue }}
+                    </div>
+                    <div class="partner_cross_select_text" v-if="chainValue == ''">
+                      {{ $t('plan.chainSelect') }}
+                    </div>
+                    <div class="partner_cross_select_tri">
+                      <img src="../../../assets/images/select.png" />
+                    </div>
+                  </div>
+
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item @click="chainValue = 'Polygon'">Polygon</el-dropdown-item>
+                      <el-dropdown-item @click="chainValue = 'ETH'">
+                        ETH
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+                <div class="partner_cross_button">
+                  <div class="partner_cross_button_text" @click="deposit">
+                    {{ $t('partner.deposit') }}
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+          <div class="partner_cross_box_body" v-if="navValue == 4">
+            <Card>
+              <div class="partner_cross_middle">
+                <div class="partner_cross_input">
+                  <input class="partner_cross_input_text" type="number" v-model="num" placeholder="   请输入数量" />
+                </div>
+                <el-dropdown trigger="click">
+                  <div class="partner_cross_select">
+                    <div class="partner_cross_select_text" v-if="chainValue != ''">
+                      {{ chainValue }}
+                    </div>
+                    <div class="partner_cross_select_text" v-if="chainValue == ''">
+                      {{ $t('plan.chainSelect') }}
+                    </div>
+                    <div class="partner_cross_select_tri">
+                      <img src="../../../assets/images/select.png" />
+                    </div>
+                  </div>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item @click="chainValue = 'Polygon'">Polygon</el-dropdown-item>
+                      <el-dropdown-item @click="chainValue = 'ETH'">ETH</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+                <div class="partner_cross_button">
+                  <div class="partner_cross_button_text" @click="withdraw">
+                    {{ $t('partner.withdraw') }}
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
         </Card>
-        <div
-            class="partner_dw_box_body"
-            v-if="navValue == 3"
-        >
-          <Card>
-            <i @click="navValue = 0">
-              <img src="../../../assets/images/Vector2Mini.png" alt="" />
-            </i>
-            <div class="partner_cross_middle">
-              <div class="partner_cross_input">
-                <input
-                    class="partner_cross_input_text"
-                    type="number"
-                    v-model="num"
-                    placeholder="请输入数量"
-                />
-              </div>
-              <el-dropdown trigger="click">
-                <div class="partner_cross_select">
-                  <div
-                      class="partner_cross_select_text"
-                      v-if="chainValue != ''"
-                  >
-                    {{ chainValue }}
-                  </div>
-                  <div
-                      class="partner_cross_select_text"
-                      v-if="chainValue == ''"
-                  >
-                    {{ $t('plan.chainSelect') }}
-                  </div>
-                  <div class="partner_cross_select_tri">
-                    <img src="../../../assets/images/select.png" />
-                  </div>
-                </div>
-
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item @click="chainValue = 'Polygon'"
-                    >Polygon</el-dropdown-item
-                    >
-                    <el-dropdown-item @click="chainValue = 'ETH'">
-                      ETH
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-              <div class="partner_cross_button">
-                <div class="partner_cross_button_text" @click="deposit()">
-                  {{ $t('partner.deposit') }}
-                </div>
-              </div>
-            </div>
-          </Card>
-        </div>
-        <div class="partner_dw_box_body" v-if="navValue == 4">
-          <Card>
-            <i @click="navValue = 0">
-              <img src="../../../assets/images/Vector2Mini.png" alt="" />
-            </i>
-            <div class="partner_cross_middle">
-
-              <div class="partner_cross_input">
-                <input
-                    class="partner_cross_input_text"
-                    type="number"
-                    v-model="num"
-                    placeholder="   请输入数量"
-                />
-              </div>
-              <el-dropdown trigger="click">
-                <div class="partner_cross_select">
-                  <div
-                      class="partner_cross_select_text"
-                      v-if="chainValue != ''"
-                  >
-                    {{ chainValue }}
-                  </div>
-                  <div
-                      class="partner_cross_select_text"
-                      v-if="chainValue == ''"
-                  >
-                    {{ $t('plan.chainSelect') }}
-                  </div>
-                  <div class="partner_cross_select_tri">
-                    <img src="../../../assets/images/select.png" />
-                  </div>
-                </div>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item @click="chainValue = 'Polygon'"
-                    >Polygon</el-dropdown-item
-                    >
-                    <el-dropdown-item @click="chainValue = 'ETH'"
-                    >ETH</el-dropdown-item
-                    >
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-              <div class="partner_cross_button">
-                <div class="partner_cross_button_text" @click="withdraw">
-                  {{ $t('partner.withdraw') }}
-                </div>
-              </div>
-            </div>
-          </Card>
-        </div>
         <!-- 质押订单--end -->
       </div>
     </div>
@@ -458,11 +409,9 @@ export default {
 <style scoped lang="less">
 .button {
   border: 1px solid;
-  border-image-source: linear-gradient(
-    98.93deg,
-    #aafac0 0%,
-    rgba(198, 75, 255, 0) 100%
-  );
+  border-image-source: linear-gradient(98.93deg,
+      #aafac0 0%,
+      rgba(198, 75, 255, 0) 100%);
 }
 
 .partner {
@@ -495,186 +444,69 @@ export default {
         justify-content: space-around;
         flex-wrap: wrap;
         padding: 20px 0;
+
         .partner_one_box_item {
           display: flex;
           flex-direction: column;
           justify-content: center;
           gap: 20px;
+
           .partner_one_box_item_top {
+            text-align: center;
             font-size: 20px;
           }
+
           .partner_one_box_item_btn {
             display: flex;
+            justify-content: center;
             gap: 20px;
+
             span {
               font-size: 20px;
               text-align: center;
               line-height: 50px;
               width: 120px;
               height: 50px;
-              background: linear-gradient(
-                  261.07deg,
+              background: linear-gradient(261.07deg,
                   rgba(255, 255, 255, 0.213) 0%,
-                  rgba(0, 0, 0, 0.12) 100%
-                ),
-                linear-gradient(
-                  98.93deg,
+                  rgba(0, 0, 0, 0.12) 100%),
+                linear-gradient(98.93deg,
                   rgba(23, 183, 69, 0.206) 0%,
-                  rgba(44, 62, 198, 0.485) 100%
-                );
+                  rgba(44, 62, 198, 0.485) 100%);
               border-radius: 50px;
               border: 1px solid #2299de5a;
             }
           }
+
           .partner_one_box_item_bom {
+            text-align: center;
             font-size: 32px;
+
             span {
               font-size: 20px;
             }
           }
         }
       }
-      .partner_dw_box_body {
-        box-sizing: border-box;
 
-        position: absolute;
-        width: 1235px;
-        height: 410px;
-        left: 0px;
-        top: 280px;
-
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(50px);
-        /* Note: backdrop-filter has minimal browser support */
-
-        border-radius: 24px;
-        .partner_cross_middle {
-          display: flex;
-          gap: 25px;
-          border-radius: 24px;
-          margin-top: auto;
-
-          .partner_cross_input {
-            height: 40px;
-            width: 495px;
-            margin-left: 35px;
-            margin-top: 10px;
-            /* border line */
-
-            /* InnerShadow-Box */
-
-            input {
-              width: 495px;
-              height: 40px;
-              border-radius: 24px;
-              background: none;
-              font-weight: 400;
-              font-size: 16px;
-              line-height: 16px;
-              display: flex;
-              align-items: center;
-              padding: 0 20px;
-              color: rgb(252, 252, 252);
-
-              &::placeholder {
-                color: #ffffff50;
-              }
-            }
-          }
-
-          .partner_cross_select {
-            /* Kinsta */
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            box-sizing: border-box;
-
-            width: 167px;
-            height: 40px;
-            margin-top: 10px;
-            background: rgba(144, 79, 79, 0.2);
-            backdrop-filter: blur(50px);
-            /* Note: backdrop-filter has minimal browser support */
-
-            border-radius: 12px;
-
-            /* Inside auto layout */
-
-            flex: none;
-            order: 1;
-            flex-grow: 0;
-
-            .partner_cross_select_text {
-              font-family: 'PingFang SC';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 18px;
-              line-height: 16px;
-              /* identical to box height, or 80% */
-
-              display: flex;
-              align-items: center;
-
-              color: #ffffff;
-            }
-
-            .partner_cross_select_tri {
-              width: 22.08px;
-              height: 22.08px;
-
-              /* Font-Fill-Bright */
-
-              background: transparent;
-              border-radius: 2px;
-            }
-          }
-          .partner_cross_button {
-            /* Kinsta */
-            margin-top: 10px;
-            box-sizing: border-box;
-
-            /* button-fill */
-            background: linear-gradient(
-                98.28deg,
-                #66a39b 10.61%,
-                rgba(97, 112, 252, 0.99) 54.84%,
-                rgba(158, 99, 205, 0.994896) 100%
-            );
-            border-radius: 12px;
-
-            /* 开始质押 */
-
-            width: 167px;
-            height: 40px;
-            border-radius: 12px;
-
-            /* Inside auto layout */
-            line-height: 40px;
-            text-align: center;
-            .partner_cross_button_text {
-              font-family: 'PingFang SC';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 18px;
-              /* identical to box height, or 80% */
-              color: #ffffff;
-            }
-          }
-        }
-      }
       .partner_two_box {
         margin-top: 20px;
+
         .partner_two_box_nav {
           line-height: 34px;
+
           div {
             font-size: 20px;
+
             span {
               font-size: 20px;
               margin-left: 0;
             }
           }
+
           display: flex;
           gap: 20px;
+
           .partner_two_box_nav_btn {
             width: 100px;
             height: 34px;
@@ -684,23 +516,22 @@ export default {
             border-radius: 15px;
             border: 1px solid #38de2266;
           }
+
           .active {
-            background: -webkit-linear-gradient(
-                261.07deg,
+            background: -webkit-linear-gradient(261.07deg,
                 #ffffff1b 0%,
-                rgba(0, 0, 0, 0) 100%
-              ),
-              linear-gradient(
-                98.93deg,
+                rgba(0, 0, 0, 0) 100%),
+              linear-gradient(98.93deg,
                 #aafac193 0%,
-                rgba(198, 75, 255, 0.71) 100%
-              ) !important;
+                rgba(198, 75, 255, 0.71) 100%) !important;
+
             span {
               -webkit-text-fill-color: white !important;
               -webkit-background-clip: none !important;
             }
           }
         }
+
         .addres {
           //超出省略号
           width: 200px;
@@ -708,36 +539,45 @@ export default {
           text-overflow: ellipsis;
           white-space: nowrap;
         }
+
         .partner_two_box_body {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
           gap: 20px;
           padding-top: 20px;
+
           .box_body_item_top {
             display: flex;
             justify-content: space-between;
+
             span {
               font-size: 16px;
             }
           }
+
           .box_body_item_bom {
             margin: 20px 0;
             display: flex;
             flex-direction: column;
             gap: 6px;
+
             .box_body_item_bom__item {
               display: flex;
+
               span {
                 font-size: 16px;
+
                 &:first-child {
                   width: 100px;
                   margin-right: 30px;
                   color: #f5fff8;
                 }
+
                 &:last-child {
                   color: #ffffff50;
                 }
               }
+
               .copyBtn {
                 width: 30px;
                 height: 30px;
@@ -748,15 +588,18 @@ export default {
                 justify-content: center;
                 align-items: center;
                 cursor: pointer;
+
                 &:hover {
                   background: #ffffff3d;
                 }
               }
             }
           }
+
           .box_body_item_bom_two {
             display: flex;
             justify-content: space-between;
+
             span {
               font-size: 16px;
             }
@@ -766,11 +609,13 @@ export default {
         .partner_cross_box_body {
           margin-top: 20px;
           border-radius: 24px;
+
           .partner_cross_middle {
             display: flex;
             gap: 25px;
             border-radius: 24px;
             align-items: center;
+
             .partner_cross_input {
               height: 40px;
 
@@ -789,11 +634,13 @@ export default {
                 align-items: center;
                 padding: 0 20px;
                 color: rgb(252, 252, 252);
+
                 &::placeholder {
                   color: #ffffff50;
                 }
               }
             }
+
             .partner_cross_select {
               /* Kinsta */
               display: flex;
@@ -815,6 +662,7 @@ export default {
               flex: none;
               order: 1;
               flex-grow: 0;
+
               .partner_cross_select_text {
                 font-family: 'PingFang SC';
                 font-style: normal;
@@ -828,6 +676,7 @@ export default {
 
                 color: #ffffff;
               }
+
               .partner_cross_select_tri {
                 width: 22.08px;
                 height: 22.08px;
@@ -838,18 +687,17 @@ export default {
                 border-radius: 2px;
               }
             }
+
             .partner_cross_button {
               /* Kinsta */
 
               box-sizing: border-box;
 
               /* button-fill */
-              background: linear-gradient(
-                98.28deg,
-                #66a39b 10.61%,
-                rgba(97, 112, 252, 0.99) 54.84%,
-                rgba(158, 99, 205, 0.994896) 100%
-              );
+              background: linear-gradient(98.28deg,
+                  #66a39b 10.61%,
+                  rgba(97, 112, 252, 0.99) 54.84%,
+                  rgba(158, 99, 205, 0.994896) 100%);
               border-radius: 12px;
 
               /* 开始质押 */
@@ -861,6 +709,7 @@ export default {
               /* Inside auto layout */
               line-height: 40px;
               text-align: center;
+
               .partner_cross_button_text {
                 font-family: 'PingFang SC';
                 font-style: normal;

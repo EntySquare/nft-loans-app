@@ -3,6 +3,8 @@ import Web3 from 'web3'; // 引入Web3
 import { AbiItem } from 'web3-utils';
 import { convertEtherUnits, EtherUnit } from "@/utils/etherUnit";
 import BN from "bn.js"; // 引入AbiItem
+import { log } from 'console';
+import { ca } from 'element-plus/es/locale';
 
 declare global { // 声明全局变量
     interface Window { // 声明window全局变量
@@ -18,7 +20,7 @@ const MATIC_CHAIN_ID = '0x89';
 const MATIC_CHAIN_ID_DECIMAL = '137';
 
 // USDT合约地址
-const usdtContractAddress = '0xc2132D05D31c914a87C6611C10748AEb04B58e8F';
+const usdtContractAddress = '0xA5dDBf7bFf725456349b652D92411D1B8f7bc3EF';  // *代币合约地址
 
 // ERC20合约ABI（仅包含transfer函数）
 const erc20Abi: AbiItem[] = [
@@ -83,12 +85,15 @@ const erc20Abi: AbiItem[] = [
         stateMutability: 'nonpayable',
         type: 'function',
     },
+    {"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"}
 ];
 
 
-const universeAbi = `[{"inputs":[{"internalType":"uint64","name":"id","type":"uint64"},{"internalType":"address","name":"sender","type":"address"},{"internalType":"uint64","name":"endTime","type":"uint64"},{"internalType":"uint64","name":"amount","type":"uint64"},{"internalType":"bytes","name":"signature","type":"bytes"}],"name":"buyOne","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"extractCreationReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"extractMaintenance","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"extractSafetyPool","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"extractShareRewardPool","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"newIncrement7Day","type":"uint256"}],"name":"updateIncrement7Day","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"newIncrementOne","type":"uint256"}],"name":"updateIncrementOne","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"newIncrementOneMax","type":"uint256"}],"name":"updateIncrementOneMax","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"}],"name":"withdrawal","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"}],"name":"withdrawalTest","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"endTime","type":"uint256"}],"name":"daysGetInterest","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getCreationReward","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getCreationTimeWarehouse","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getDataId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getIndexWarehouse","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getMaintenance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getMyUserBetRecords","outputs":[{"components":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"uint256","name":"round","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"bettingTime","type":"uint256"},{"internalType":"uint256","name":"extract","type":"uint256"},{"internalType":"uint256","name":"state","type":"uint256"},{"internalType":"address","name":"batAddress","type":"address"},{"internalType":"uint256","name":"incrementOne","type":"uint256"}],"internalType":"struct ConstantsAndVariables.Bet[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getProfitPool","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getReturnPool","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getSafetyPool","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getShareRewardPool","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userWallet","type":"address"}],"name":"getUserBalances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userWallet","type":"address"}],"name":"getUserBetRecords","outputs":[{"components":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"uint256","name":"round","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"bettingTime","type":"uint256"},{"internalType":"uint256","name":"extract","type":"uint256"},{"internalType":"uint256","name":"state","type":"uint256"},{"internalType":"address","name":"batAddress","type":"address"},{"internalType":"uint256","name":"incrementOne","type":"uint256"}],"internalType":"struct ConstantsAndVariables.Bet[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"poolIndex","type":"uint256"}],"name":"getWarehouseBets","outputs":[{"components":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"uint256","name":"round","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"bettingTime","type":"uint256"},{"internalType":"uint256","name":"extract","type":"uint256"},{"internalType":"uint256","name":"state","type":"uint256"},{"internalType":"address","name":"batAddress","type":"address"},{"internalType":"uint256","name":"incrementOne","type":"uint256"}],"internalType":"struct ConstantsAndVariables.Bet[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"}]`
+const universeAbi = `[{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"}]`
 // universe合约地址
-const universeContractAddress = '0xd7f8a069C1A4f93CA332e7356eE4124338B59bD8';
+// const universeContractAddress = '0xd7f8a069C1A4f93CA332e7356eE4124338B59bD8';
+// const universeContractAddress = '0xd7f8a069C1A4f93CA332e7356eE4124338B59bD8';
+const universeContractAddress = '0x9D97b071C73Ed8a05A3377Ce8e6AD30aa9088888';
 // const universeContractAddress = '0x2966cDAdF34F776e08cD29c617453a4CaA6fB501';
 
 export type UniverseData = {
@@ -157,6 +162,7 @@ async function connectWallet() { // 连接钱包
 
     // 转账
     const transferUSDT = async (recipient: string, amount: number, func: (hash: string) => void) => {
+        console.log('1:', 1)
         // 检查MetaMask是否已安装
         if (!window.ethereum) {
             console.error('请先安装MetaMask插件');
@@ -164,20 +170,51 @@ async function connectWallet() { // 连接钱包
         }
         try { // 发起USDT转账交易
             const usdtContract = new web3.eth.Contract(erc20Abi, usdtContractAddress); // 初始化USDT合约
-            const decimals = 6;  // 转换金额为最小单位（由于USDT是6位小数，因此需要使用10的6次方作为基数）
+            const decimals = 4;  // 转换金额为最小单位（由于USDT是6位小数，因此需要使用10的6次方作为基数）
             const amountInSmallestUnit = web3.utils.toBN(amount * Math.pow(10, decimals)); // 转换金额为最小单位
             const gasPrice = await web3.eth.getGasPrice(); // 获取当前gas价格
-
+            console.log('usdtContract.methods:', usdtContract.methods)
             const transaction = await usdtContract.methods // 调用USDT合约的transfer函数
                 .transfer(recipient, amountInSmallestUnit.toString()) // 调用transfer函数
                 .send({ from: address, gasPrice: gasPrice }).on('transactionHash', function (hash: any) { // 监听交易哈希
-                    func(hash); // 回调函数
+                    console.log('1:', 1)
+                    try {
+                        func(hash); // 回调函数
+                    }catch(e){
+                        
+                        func(hash); // 回调函数
+                    }
                 });
             console.log('USDT转账成功', transaction);
         } catch (error) {
             console.error('USDT转账失败', error);
         }
     };
+ 
+    const NFTaddress = '0x9D97b071C73Ed8a05A3377Ce8e6AD30aa9088888'     // * NGT 合约地址
+    //质押
+    const safeTransferFrom = async (Faddress: string,Taddress:string,id:string, func: (hash: any) => void) => {
+        // 检查MetaMask是否已安装
+        if (!window.ethereum) {
+            console.error('请先安装MetaMask插件');
+            return;
+        }
+        console.log('id:', id)
+        try { // 发起USDT转账交易
+            const universeContract = new web3.eth.Contract(JSON.parse(universeAbi), NFTaddress); // 初始化universe合约
+            const gasPrice = await web3.eth.getGasPrice(); // 获取当前gas价格
+            const transaction = await universeContract.methods // 调用USDT合约的transfer函数
+                .safeTransferFrom(Faddress,Taddress,id) // 调用transfer函数
+                .send({ from: address, gasPrice: gasPrice }).on('transactionHash', function (hash: any) { // 监听交易哈希
+                    func(hash); // 回调函数
+                });
+            console.log('质押成功', transaction);
+        } catch (error) {
+            console.error('质押失败', error);
+        }
+    };
+
+
 
     // 查询轮次下标
     const getUniverseApi = async (): Promise<UniverseData | any> => {
@@ -288,50 +325,50 @@ async function connectWallet() { // 连接钱包
         console.log("ret", ret);
     }
 
-    if (chainId !== MATIC_CHAIN_ID) { // 检查当前网络是否为Matic网络
-        try { // 切换到Matic网络
-            await ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: MATIC_CHAIN_ID }] }); // 切换到Matic网络
-        } catch (switchError: any) { // 捕获错误
-            if (switchError.code === 4902) { // 如果错误码为4902，则尝试添加Matic网络
-                try {
-                    const res = await ethereum.request({
-                        method: 'wallet_addEthereumChain', // 添加Matic网络
-                        params: [
-                            {
-                                chainId: MATIC_CHAIN_ID, // Matic网络ID
-                                chainName: 'Polygon (MATIC)', // Matic网络名称
-                                nativeCurrency: {
-                                    name: 'MATIC', // MATIC代币名称
-                                    symbol: 'MATIC', // MATIC代币符号
-                                    decimals: 18, // MATIC代币精度
-                                },
-                                rpcUrls: [
-                                    'https://rpc-mainnet.matic.network',
-                                    'https://rpc-mainnet.maticvigil.com',
-                                    'https://rpc-mainnet.matic.quiknode.pro',
-                                    'https://matic-mainnet.chainstacklabs.com',
-                                    'https://matic-mainnet-full-rpc.bwarelabs.com'
-                                ], // Matic网络RPC节点
-                                blockExplorerUrls: [
-                                    'https://polygonscan.com/',
-                                    'https://explorer-mainnet.maticvigil.com/',
-                                    'https://explorer.matic.network/'
-                                ], // Matic网络区块浏览器
-                            },
-                        ],
-                    });
-                    console.log('res:', res)
-                    console.log('Polygon Network added');
-                } catch (addError) {
-                    alert("添加网络失败! 为你跳转到chainlist.org, 请手动添加Matic网络") // 添加Matic网络失败
-                    window.open('https://chainlist.org/chain/137', '_blank'); // 打开Matic网络添加页面
-                    console.error('无法添加Matic网络:', addError); // 打印日志
-                }
-            } else {
-                console.error('无法切换到Matic网络:', switchError); // 打印日志
-            }
-        }
-    }
+    // if (chainId !== MATIC_CHAIN_ID) { // 检查当前网络是否为Matic网络
+    //     try { // 切换到Matic网络
+    //         await ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: MATIC_CHAIN_ID }] }); // 切换到Matic网络
+    //     } catch (switchError: any) { // 捕获错误
+    //         if (switchError.code === 4902) { // 如果错误码为4902，则尝试添加Matic网络
+    //             try {
+    //                 const res = await ethereum.request({
+    //                     method: 'wallet_addEthereumChain', // 添加Matic网络
+    //                     params: [
+    //                         {
+    //                             chainId: MATIC_CHAIN_ID, // Matic网络ID
+    //                             chainName: 'Polygon (MATIC)', // Matic网络名称
+    //                             nativeCurrency: {
+    //                                 name: 'MATIC', // MATIC代币名称
+    //                                 symbol: 'MATIC', // MATIC代币符号
+    //                                 decimals: 18, // MATIC代币精度
+    //                             },
+    //                             rpcUrls: [
+    //                                 'https://rpc-mainnet.matic.network',
+    //                                 'https://rpc-mainnet.maticvigil.com',
+    //                                 'https://rpc-mainnet.matic.quiknode.pro',
+    //                                 'https://matic-mainnet.chainstacklabs.com',
+    //                                 'https://matic-mainnet-full-rpc.bwarelabs.com'
+    //                             ], // Matic网络RPC节点
+    //                             blockExplorerUrls: [
+    //                                 'https://polygonscan.com/',
+    //                                 'https://explorer-mainnet.maticvigil.com/',
+    //                                 'https://explorer.matic.network/'
+    //                             ], // Matic网络区块浏览器
+    //                         },
+    //                     ],
+    //                 });
+    //                 console.log('res:', res)
+    //                 console.log('Polygon Network added');
+    //             } catch (addError) {
+    //                 alert("添加网络失败! 为你跳转到chainlist.org, 请手动添加Matic网络") // 添加Matic网络失败
+    //                 window.open('https://chainlist.org/chain/137', '_blank'); // 打开Matic网络添加页面
+    //                 console.error('无法添加Matic网络:', addError); // 打印日志
+    //             }
+    //         } else {
+    //             console.error('无法切换到Matic网络:', switchError); // 打印日志
+    //         }
+    //     }
+    // }
     let balance = 0;
     let balanceChain = "0";
     try {
@@ -347,7 +384,7 @@ async function connectWallet() { // 连接钱包
 
     }
 
-    return { web3, address, balance, balanceChain, transferUSDT, dataToSignfunc, getUniverseApi, universeWithdrawalApi, universeBuyOneApi }; // 返回web3、账户地址、账户余额、转账函数
+    return { web3, address, balance, balanceChain, transferUSDT, dataToSignfunc, getUniverseApi, universeWithdrawalApi, universeBuyOneApi,safeTransferFrom }; // 返回web3、账户地址、账户余额、转账函数
 }
 
 export default connectWallet;

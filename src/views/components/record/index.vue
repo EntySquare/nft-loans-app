@@ -107,11 +107,9 @@ export default {
                   {{ $t('record.level') }}: <span>V{{ inviteeRes.level }}</span>
                 </div>
                 <div style="margin-top: 11px">
-                  {{ $t('record.uid') }}: &nbsp;<span
-                    >{{ inviteeRes.uid.slice(0, 3) }}**{{
-                      inviteeRes.uid.slice(5, 12)
-                    }}</span
-                  >
+                  {{ $t('record.uid') }}: &nbsp;<span>{{ inviteeRes.uid.slice(0, 3) }}**{{
+                    inviteeRes.uid.slice(5, 12)
+                  }}</span>
                 </div>
               </div>
             </div>
@@ -134,18 +132,11 @@ export default {
         <Card padding="0px" style="margin-top: 20px">
           <div class="address">
             <div class="address_text">
-              <span style="min-width: 86px"
-                >{{ $t('record.invitationAddress') }}:</span
-              >
+              <span style="min-width: 86px">{{ $t('record.invitationAddress') }}:</span>
               <span class="addres">{{ inviteeRes.investment_address }} </span>
               <div class="address_text_btu" @click="copy" round>
                 <!-- {{ $t('record.copy') }} -->
-                <img
-                  width="16"
-                  height="16"
-                  src="../../../assets/images/VectorMini.png"
-                  alt=""
-                />
+                <img width="16" height="16" src="../../../assets/images/VectorMini.png" alt="" />
               </div>
             </div>
           </div>
@@ -160,10 +151,7 @@ export default {
           <div class="list" v-if="inviteeUid == '0'">
             <div class="table">
               <tbody>
-                <tr
-                  v-for="(item, index) in inviteeRes.investment_users"
-                  :key="index"
-                >
+                <tr v-for="(item, index) in inviteeRes.investment_users" :key="index">
                   <td>
                     UID:&nbsp;&nbsp;&nbsp;{{ item.uid.slice(0, 3) }}**{{
                       item.uid.slice(5, 12)
@@ -174,10 +162,7 @@ export default {
                   </td>
                   <td style="text-align: right">
                     {{ $t('record.nop') }}&nbsp;&nbsp;{{ item.pledge_count }}次
-                    <i
-                      style="margin-right: 10px; line-height: 40px"
-                      @click="getInviteeInfo(item.uid)"
-                    >
+                    <i style="margin-right: 10px; line-height: 40px" @click="getInviteeInfo(item.uid)">
                       <img src="../../../assets/images/Vector1.png" alt="" />
                     </i>
                   </td>
@@ -185,19 +170,10 @@ export default {
               </tbody>
             </div>
           </div>
-          <div
-            style="display: flex; flex-direction: column; align-items: center"
-            class="list"
-            v-else
-          >
+          <div style="display: flex; flex-direction: column; align-items: center" class="list" v-else>
             <div style="text-align: left; width: 100%">
-              <img
-                width="30"
-                style="margin: 10px; cursor: pointer"
-                @click="inviteeUid = '0'"
-                src="../../../assets/images/Vector2.png"
-                alt=""
-              />
+              <img width="30" style="margin: 10px; cursor: pointer" @click="inviteeUid = '0'"
+                src="../../../assets/images/Vector2.png" alt="" />
             </div>
             <div class="detail_info">
               <div class="td1">
@@ -246,16 +222,23 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+
     .card {
       width: 100%;
+
       // border: red solid 1px;
       .card_title {
         width: 100%;
-        height: 118px;
+        padding: 20px;
         display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+
         .card_left {
+          min-width: 350px;
           width: 50%;
           height: 100%;
+
           // border: rgb(208, 255, 0) solid 1px;
           .card_left_dj {
             height: 100%;
@@ -271,7 +254,9 @@ export default {
             color: #ffffff;
           }
         }
+
         .card_right {
+          min-width: 350px;
           width: 50%;
           height: 100%;
           // border: rgb(208, 255, 0) solid 1px;
@@ -310,6 +295,7 @@ export default {
           font-size: 20px;
           line-height: 24px;
           padding: 0 15px;
+
           .addres {
             //超出省略号
             overflow: hidden;
@@ -317,6 +303,7 @@ export default {
             white-space: nowrap;
           }
         }
+
         .address_text_btu {
           margin-left: auto;
           display: flex;
@@ -329,37 +316,37 @@ export default {
           // margin-right: 35px;
 
           // font-style: normal;
-          background: linear-gradient(
-            98.28deg,
-            #66a39b 10.61%,
-            rgba(97, 112, 252, 0.99) 54.84%,
-            rgba(158, 99, 205, 0.994896) 100%
-          );
+          background: linear-gradient(98.28deg,
+              #66a39b 10.61%,
+              rgba(97, 112, 252, 0.99) 54.84%,
+              rgba(158, 99, 205, 0.994896) 100%);
           // float: right;
         }
       }
+
       .title {
         width: 100%;
         height: 54px;
         // line-height: 28px;
         position: relative;
         top: 22px;
+
         .alive-light {
           font-size: 20px;
           margin-left: 8px;
           white-space: nowrap;
-          background-image: -webkit-linear-gradient(
-            98.28deg,
-            #adfff5 10.61%,
-            rgba(155, 165, 255, 0.99) 54.84%,
-            rgba(216, 166, 255, 0.994896) 100%
-          );
+          background-image: -webkit-linear-gradient(98.28deg,
+              #adfff5 10.61%,
+              rgba(155, 165, 255, 0.99) 54.84%,
+              rgba(216, 166, 255, 0.994896) 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
         }
       }
+
       .list {
         width: 100%;
+
         .detail_info {
           // 文字不换行
           white-space: nowrap;
@@ -374,6 +361,7 @@ export default {
           margin-top: 10px;
           padding: 10px;
           justify-content: space-between;
+
           .td1 {
             height: 22px;
             left: 25px;
@@ -389,6 +377,7 @@ export default {
 
             opacity: 0.8;
           }
+
           .td2 {
             height: 22px;
             left: 220px;
@@ -402,6 +391,7 @@ export default {
 
             color: #ffffff;
           }
+
           .td3 {
             height: 22px;
             left: 300px;
@@ -415,6 +405,7 @@ export default {
 
             color: #ffffff;
           }
+
           .td4 {
             height: 22px;
             right: 80.5px;
@@ -429,6 +420,7 @@ export default {
             color: #ffffff;
           }
         }
+
         .table {
           // margin-top: 28px;
           // margin-left: 32.59px;
@@ -451,19 +443,16 @@ export default {
             word-break: break-all;
             border-radius: 24px;
             background-blend-mode: overlay;
-            background: linear-gradient(
-              98.93deg,
-              #aafac0 0%,
-              rgba(198, 75, 255, 0) 100%
-            );
+            background: linear-gradient(98.93deg,
+                #aafac0 0%,
+                rgba(198, 75, 255, 0) 100%);
             background-blend-mode: overlay;
-            background: linear-gradient(
-              261.07deg,
-              #ffffff 0%,
-              rgba(0, 0, 0, 0) 100%
-            );
+            background: linear-gradient(261.07deg,
+                #ffffff 0%,
+                rgba(0, 0, 0, 0) 100%);
             background: rgba(255, 255, 255, 0.2);
           }
+
           tbody td {
             //文字不换行
             white-space: nowrap;
@@ -477,37 +466,36 @@ export default {
             line-height: 40px;
           }
         }
+
         /* 滚动条样式 */
         table tbody::-webkit-scrollbar {
           width: 10px;
         }
+
         table tbody::-webkit-scrollbar-thumb {
           background-color: #01f5f1;
           border-radius: 5px;
         }
+
         table tbody::-webkit-scrollbar-track {
-          background: linear-gradient(
-            98.28deg,
-            #66a39b 10.61%,
-            rgba(97, 112, 252, 0.99) 54.84%,
-            rgba(158, 99, 205, 0.994896) 100%
-          );
+          background: linear-gradient(98.28deg,
+              #66a39b 10.61%,
+              rgba(97, 112, 252, 0.99) 54.84%,
+              rgba(158, 99, 205, 0.994896) 100%);
         }
+
         table tbody::-webkit-scrollbar-thumb:hover {
-          background: linear-gradient(
-            98.28deg,
-            #66a39b 10.61%,
-            rgba(97, 112, 252, 0.99) 54.84%,
-            rgba(158, 99, 205, 0.994896) 100%
-          );
+          background: linear-gradient(98.28deg,
+              #66a39b 10.61%,
+              rgba(97, 112, 252, 0.99) 54.84%,
+              rgba(158, 99, 205, 0.994896) 100%);
         }
+
         table tbody::-webkit-scrollbar-thumb:active {
-          background: linear-gradient(
-            98.28deg,
-            #66a39b 10.61%,
-            rgba(97, 112, 252, 0.99) 54.84%,
-            rgba(158, 99, 205, 0.994896) 100%
-          );
+          background: linear-gradient(98.28deg,
+              #66a39b 10.61%,
+              rgba(97, 112, 252, 0.99) 54.84%,
+              rgba(158, 99, 205, 0.994896) 100%);
         }
       }
     }

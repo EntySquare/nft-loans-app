@@ -62,18 +62,19 @@ async function dataInit() {
     // config.headers = {
     //   'Content-Type': 'application/x-www-form-urlencoded',
     // };
-    const res = await myCovenantFlow()
-    console.log(res.data)
-    cfRes.value.benefit_info = res.data.json.benefit_info
-    cfRes.value.covenant_flows = res.data.json.covenant_flows
-    for (let i = 0; i < res.data.json.covenant_flows.length; i++) {
-      if (res.data.json.covenant_flows[i].flag == '1') {
-        coinList.value.covenant_flows.push(res.data.json.covenant_flows[i])
-      }
-      if (res.data.json.covenant_flows[i].flag == '2') {
-        cooutList.value.covenant_flows.push(res.data.json.covenant_flows[i])
-      }
-    }
+    // const res = await myCovenantFlow()
+    // console.log('res:', res)
+    // console.log(res.data)
+    // cfRes.value.benefit_info = res.data.json.benefit_info
+    // cfRes.value.covenant_flows = res.data.json.covenant_flows
+    // for (let i = 0; i < res.data.json.covenant_flows.length; i++) {
+    //   if (res.data.json.covenant_flows[i].flag == '1') {
+    //     coinList.value.covenant_flows.push(res.data.json.covenant_flows[i])
+    //   }
+    //   if (res.data.json.covenant_flows[i].flag == '2') {
+    //     cooutList.value.covenant_flows.push(res.data.json.covenant_flows[i])
+    //   }
+    // }
   } catch (err) {
     console.log('queryMyCovenantFlow err-------------------')
     console.log(err)
@@ -151,15 +152,10 @@ export default {
         <div class="partner_two_box">
           <div class="partner_two_box_nav">
             <div class="alive-light">{{ $t('explorer.pledgeOrder') }}</div>
-            <div
-              :class="[
-                'partner_two_box_nav_btn',
-                navValue == index ? 'active' : ''
-              ]"
-              v-for="(item, index) in navList"
-              :key="index"
-              @click="navValue = index"
-            >
+            <div :class="[
+              'partner_two_box_nav_btn',
+              navValue == index ? 'active' : ''
+            ]" v-for="(item, index) in navList" :key="index" @click="navValue = index">
               <span class="alive-light" v-if="index == 0">{{
                 $t('explorer.navList1')
               }}</span>
@@ -172,19 +168,13 @@ export default {
             </div>
           </div>
           <div class="partner_two_box_body" v-if="navValue == 0">
-            <Card
-              v-for="(item, index) in cfRes.covenant_flows"
-              :key="index"
-              @click="covenantDetail(item)"
-            >
+            <Card v-for="(item, index) in cfRes.covenant_flows" :key="index" @click="covenantDetail(item)">
               <div class="box_body_item_top">
                 <span>{{ item.chain_name }}</span>
                 <span>{{ item.duration }}{{ $t('explorer.day') }}</span>
-                <span
-                  >{{ $t('explorer.dailyIncome')
-                  }}{{ item.interest_rate }}%</span
-                >
-                <span class="alive-light">{{ $t('explorer.navList1') }} <img src="../../../assets/images/wait.png" /></span>
+                <span>{{ $t('explorer.dailyIncome')
+                }}{{ item.interest_rate }}%</span>
+                <span class="alive-light">{{ $t('explorer.navList1') }}</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
@@ -199,8 +189,7 @@ export default {
                   <span style="display: flex; align-items: center">{{
                     $t('explorer.hash')
                   }}</span>
-                  <span style="display: flex; align-items: center"
-                    >{{ item.hash.slice(0, 28) }}...
+                  <span style="display: flex; align-items: center">{{ item.hash.slice(0, 28) }}...
                     <div class="copyBtn" @click.stop="copy(item.hash)">
                       <img src="../../../assets/images/VectorMini.png" alt="" />
                     </div>
@@ -231,27 +220,19 @@ export default {
                   <span class="alive-light">{{
                     $t('explorer.orderIncome')
                   }}</span>
-                  <span class="alive-light"
-                    >{{ item.accumulated_benefit }} NGT</span
-                  >
+                  <span class="alive-light">{{ item.accumulated_benefit }} NGT</span>
                 </div>
               </div>
             </Card>
           </div>
           <div class="partner_two_box_body" v-if="navValue == 1">
-            <Card
-              v-for="(item, index) in coinList.covenant_flows"
-              :key="index"
-              @click="covenantDetail(item)"
-            >
+            <Card v-for="(item, index) in coinList.covenant_flows" :key="index" @click="covenantDetail(item)">
               <div class="box_body_item_top">
                 <span>{{ item.chain_name }}</span>
                 <span>{{ item.duration }}{{ $t('explorer.day') }}</span>
-                <span
-                  >{{ $t('explorer.dailyIncome')
-                  }}{{ item.interest_rate }}%</span
-                >
-                <span class="alive-light">{{ $t('explorer.navList2') }} <img src="../../../assets/images/wait.png" /></span>
+                <span>{{ $t('explorer.dailyIncome')
+                }}{{ item.interest_rate }}%</span>
+                <span class="alive-light">{{ $t('explorer.navList2') }}</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
@@ -266,8 +247,7 @@ export default {
                   <span style="display: flex; align-items: center">{{
                     $t('explorer.hash')
                   }}</span>
-                  <span style="display: flex; align-items: center"
-                    >{{ item.hash.slice(0, 28) }}...
+                  <span style="display: flex; align-items: center">{{ item.hash.slice(0, 28) }}...
                     <div class="copyBtn" @click.stop="copy(item.hash)">
                       <img src="../../../assets/images/VectorMini.png" alt="" />
                     </div>
@@ -298,27 +278,19 @@ export default {
                   <span class="alive-light">{{
                     $t('explorer.orderIncome')
                   }}</span>
-                  <span class="alive-light"
-                    >{{ item.accumulated_benefit }} NGT</span
-                  >
+                  <span class="alive-light">{{ item.accumulated_benefit }} NGT</span>
                 </div>
               </div>
             </Card>
           </div>
           <div class="partner_two_box_body" v-if="navValue == 2">
-            <Card
-              v-for="(item, index) in cooutList.covenant_flows"
-              :key="index"
-              @click="covenantDetail(item)"
-            >
+            <Card v-for="(item, index) in cooutList.covenant_flows" :key="index" @click="covenantDetail(item)">
               <div class="box_body_item_top">
                 <span>{{ item.chain_name }}</span>
                 <span>{{ item.duration }}{{ $t('explorer.day') }}</span>
-                <span
-                  >{{ $t('explorer.dailyIncome')
-                  }}{{ item.interest_rate }}%</span
-                >
-                <span class="alive-light">{{ $t('explorer.navList3') }} <img src="../../../assets/images/wait.png" /></span>
+                <span>{{ $t('explorer.dailyIncome')
+                }}{{ item.interest_rate }}%</span>
+                <span class="alive-light">{{ $t('explorer.navList3') }}</span>
               </div>
               <div class="box_body_item_bom">
                 <div class="box_body_item_bom__item">
@@ -333,8 +305,7 @@ export default {
                   <span style="display: flex; align-items: center">{{
                     $t('explorer.hash')
                   }}</span>
-                  <span style="display: flex; align-items: center"
-                    >{{ item.hash.slice(0, 28) }}...
+                  <span style="display: flex; align-items: center">{{ item.hash.slice(0, 28) }}...
                     <div class="copyBtn" @click.stop="copy(item.hash)">
                       <img src="../../../assets/images/VectorMini.png" alt="" />
                     </div>
@@ -365,133 +336,95 @@ export default {
                   <span class="alive-light">{{
                     $t('explorer.orderIncome')
                   }}</span>
-                  <span class="alive-light"
-                    >{{ item.accumulated_benefit }} NGT</span
-                  >
+                  <span class="alive-light">{{ item.accumulated_benefit }} NGT</span>
                 </div>
               </div>
             </Card>
           </div>
-          <div
-            class="partner_two_box_body"
-            style="display: flex"
-            v-if="navValue == 3"
-          >
+          <div class="partner_two_box_body" style="display: flex" v-if="navValue == 3">
             <Card>
               <div class="covenant_detail">
                 <i @click="navValue = 0">
                   <img src="../../../assets/images/Vector2Mini.png" alt="" />
                 </i>
                 <div class="covenant_detail_top">
-                  <div
-                    class="covenant_detail_top_body"
-                    style="
-                      display: flex;
-                      justify-content: space-around;
-                      margin: 20px 0;
-                    "
-                  >
+                  <div class="covenant_detail_top_body" style="
+                                display: flex;
+                                justify-content: space-around;
+                                margin: 20px 0;
+                              ">
                     <covenant_detail_span1 class="detail_alive-light1">{{
                       cdRes.covenant_info.chain_name
                     }}</covenant_detail_span1>
-                    <covenant_detail_span1 class="detail_alive-light1"
-                      >{{ cdRes.covenant_info.duration
-                      }}{{ $t('explorer.day') }}</covenant_detail_span1
-                    >
-                    <covenant_detail_span1 class="detail_alive-light1"
-                      >{{ $t('explorer.dailyIncome')
-                      }}{{
-                        cdRes.covenant_info.interest_rate
-                      }}%</covenant_detail_span1
-                    >
-                    <covenant_detail_span2
-                      class="detail_alive-light2"
-                      v-if="cdRes.covenant_info.flag == '1'"
-                      >{{ $t('explorer.navList2') }} <img src="../../../assets/images/wait.png" /></covenant_detail_span2
-                    >
-                    <covenant_detail_span2
-                      class="detail_alive-light2"
-                      v-if="cdRes.covenant_info.flag == '2'"
-                      >{{ $t('explorer.navList3') }} <img src="../../../assets/images/wait.png" /></covenant_detail_span2
-                    >
-                    <covenant_detail_span2 class="detail_alive-light2"
-                      >{{
-                        cdRes.covenant_info.accumulated_benefit
-                      }}
-                      NGT</covenant_detail_span2
-                    >
+                    <covenant_detail_span1 class="detail_alive-light1">{{ cdRes.covenant_info.duration
+                    }}{{ $t('explorer.day') }}</covenant_detail_span1>
+                    <covenant_detail_span1 class="detail_alive-light1">{{ $t('explorer.dailyIncome')
+                    }}{{
+  cdRes.covenant_info.interest_rate
+}}%</covenant_detail_span1>
+                    <covenant_detail_span2 class="detail_alive-light2" v-if="cdRes.covenant_info.flag == '1'">{{
+                      $t('explorer.navList2') }}</covenant_detail_span2>
+                    <covenant_detail_span2 class="detail_alive-light2" v-if="cdRes.covenant_info.flag == '2'">{{
+                      $t('explorer.navList3') }}</covenant_detail_span2>
+                    <covenant_detail_span2 class="detail_alive-light2">{{
+                      cdRes.covenant_info.accumulated_benefit
+                    }}
+                      NGT</covenant_detail_span2>
                     <covenant_detail_span2 class="detail_alive-light2">{{
                       $t('explorer.orderIncome')
                     }}</covenant_detail_span2>
                   </div>
                   <div class="covenant_detail_bom">
                     <div class="covenant_detail_bom_item">
-                      <covenant_detail_bom_span
-                        ><detail_title1
-                          >{{ $t('explorer.nftName') }}:</detail_title1
-                        ><detail_inner1>{{
-                          cdRes.covenant_info.nft_name
-                        }}</detail_inner1></covenant_detail_bom_span
-                      >
                       <covenant_detail_bom_span>
-                        <detail_title2
-                          >{{ $t('explorer.nftID') }}:</detail_title2
-                        ><detail_inner2>{{
+                        <detail_title1>{{ $t('explorer.nftName') }}:</detail_title1>
+                        <detail_inner1>{{
+                          cdRes.covenant_info.nft_name
+                        }}</detail_inner1>
+                      </covenant_detail_bom_span>
+                      <covenant_detail_bom_span>
+                        <detail_title2>{{ $t('explorer.nftID') }}:</detail_title2>
+                        <detail_inner2>{{
                           cdRes.covenant_info.pledge_id
-                        }}</detail_inner2></covenant_detail_bom_span
-                      >
-                      <covenant_detail_bom_span
-                        ><detail_title3
-                          >{{ $t('explorer.hash') }}:</detail_title3
-                        ><detail_inner3
-                          style="display: flex; align-items: center"
-                          >{{ cdRes.covenant_info.hash.slice(0, 28) }}...
-                          <div
-                            class="copyBtn"
-                            @click="copy(cdRes.covenant_info.hash)"
-                          >
-                            <img
-                              src="../../../assets/images/VectorMini.png"
-                              alt=""
-                            /></div
-                        ></detail_inner3>
+                        }}</detail_inner2>
+                      </covenant_detail_bom_span>
+                      <covenant_detail_bom_span>
+                        <detail_title3>{{ $t('explorer.hash') }}:</detail_title3>
+                        <detail_inner3 style="display: flex; align-items: center">{{ cdRes.covenant_info.hash.slice(0, 28)
+                        }}...
+                          <div class="copyBtn" @click="copy(cdRes.covenant_info.hash)">
+                            <img src="../../../assets/images/VectorMini.png" alt="" />
+                          </div>
+                        </detail_inner3>
                       </covenant_detail_bom_span>
                     </div>
                     <div class="covenant_detail_bom_item">
-                      <covenant_detail_bom_span
-                        ><detail_title4
-                          >{{ $t('explorer.expirationTime') }}:</detail_title4
-                        ><detail_inner4>{{
+                      <covenant_detail_bom_span>
+                        <detail_title4>{{ $t('explorer.expirationTime') }}:</detail_title4>
+                        <detail_inner4>{{
                           formatDateY(cdRes.covenant_info.expire_time)
-                        }}</detail_inner4></covenant_detail_bom_span
-                      >
-                      <covenant_detail_bom_span
-                        ><detail_title5
-                          >{{ $t('explorer.pledgeTime') }}:</detail_title5
-                        ><detail_inner5>{{
+                        }}</detail_inner4>
+                      </covenant_detail_bom_span>
+                      <covenant_detail_bom_span>
+                        <detail_title5>{{ $t('explorer.pledgeTime') }}:</detail_title5>
+                        <detail_inner5>{{
                           formatDateY(cdRes.covenant_info.start_time)
-                        }}</detail_inner5></covenant_detail_bom_span
-                      >
-                      <covenant_detail_bom_span
-                        ><detail_title6
-                          >{{ $t('explorer.pledgeFee') }}:</detail_title6
-                        ><detail_inner6
-                          >{{
-                            cdRes.covenant_info.pledge_fee
-                          }}
-                          NGT</detail_inner6
-                        ></covenant_detail_bom_span
-                      >
-                      <covenant_detail_bom_span
-                        ><detail_title7
-                          >{{ $t('explorer.releaseFee') }}:</detail_title7
-                        ><detail_inner7
-                          >{{
-                            cdRes.covenant_info.release_fee
-                          }}
-                          NGT</detail_inner7
-                        ></covenant_detail_bom_span
-                      >
+                        }}</detail_inner5>
+                      </covenant_detail_bom_span>
+                      <covenant_detail_bom_span>
+                        <detail_title6>{{ $t('explorer.pledgeFee') }}:</detail_title6>
+                        <detail_inner6>{{
+                          cdRes.covenant_info.pledge_fee
+                        }}
+                          NGT</detail_inner6>
+                      </covenant_detail_bom_span>
+                      <covenant_detail_bom_span>
+                        <detail_title7>{{ $t('explorer.releaseFee') }}:</detail_title7>
+                        <detail_inner7>{{
+                          cdRes.covenant_info.release_fee
+                        }}
+                          NGT</detail_inner7>
+                      </covenant_detail_bom_span>
                     </div>
                   </div>
                   <div class="detail_list">
@@ -502,10 +435,7 @@ export default {
                   <div class="list">
                     <table class="table">
                       <tbody>
-                        <tr
-                          v-for="(item, index) in cdRes.benefit_flows"
-                          :key="index"
-                        >
+                        <tr v-for="(item, index) in cdRes.benefit_flows" :key="index">
                           <td>{{ formatDateY(item.time) }}</td>
                           <td style="text-align: center">{{ item.num }}NGT</td>
                           <td style="text-align: right" v-if="item.flag == '1'">
@@ -558,35 +488,48 @@ export default {
       .partner_one_box {
         display: flex;
         justify-content: space-around;
+        flex-wrap: wrap;
         padding: 20px 0;
+
         .partner_one_box_item {
           display: flex;
           flex-direction: column;
           gap: 20px;
+
           .partner_one_box_item_top {
+            text-align: center;
             font-size: 20px;
           }
+
           .partner_one_box_item_bom {
+            text-align: center;
             font-size: 32px;
+
             span {
               font-size: 20px;
             }
           }
         }
       }
+
       .partner_two_box {
         padding: 30px;
+
         .partner_two_box_nav {
           line-height: 34px;
+
           div {
             font-size: 20px;
+
             span {
               font-size: 20px;
               margin-left: 0;
             }
           }
+
           display: flex;
           gap: 20px;
+
           .partner_two_box_nav_btn {
             width: 100px;
             height: 34px;
@@ -596,53 +539,60 @@ export default {
             border-radius: 15px;
             border: 1px solid #38de2266;
           }
+
           .active {
-            background: -webkit-linear-gradient(
-                261.07deg,
+            background: -webkit-linear-gradient(261.07deg,
                 #ffffff1b 0%,
-                rgba(0, 0, 0, 0) 100%
-              ),
-              linear-gradient(
-                98.93deg,
+                rgba(0, 0, 0, 0) 100%),
+              linear-gradient(98.93deg,
                 #aafac193 0%,
-                rgba(198, 75, 255, 0.71) 100%
-              ) !important;
+                rgba(198, 75, 255, 0.71) 100%) !important;
+
             span {
               -webkit-text-fill-color: white !important;
               -webkit-background-clip: none !important;
             }
           }
         }
+
         .partner_two_box_body {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
           gap: 20px;
           padding-top: 20px;
+
           .box_body_item_top {
             display: flex;
             justify-content: space-between;
+
             span {
               font-size: 16px;
             }
           }
+
           .box_body_item_bom {
             margin: 20px 0;
             display: flex;
             flex-direction: column;
             gap: 6px;
+
             .box_body_item_bom__item {
               display: flex;
+
               span {
                 font-size: 16px;
+
                 &:first-child {
                   width: 100px;
                   margin-right: 30px;
                   color: #f5fff8;
                 }
+
                 &:last-child {
                   color: #ffffff50;
                 }
               }
+
               .copyBtn {
                 width: 30px;
                 height: 30px;
@@ -654,12 +604,14 @@ export default {
                 align-items: center;
                 margin-left: 5px;
                 cursor: pointer;
+
                 &:hover {
                   background: #ffffff3d;
                 }
               }
             }
           }
+
           .covenant_detail {
             box-sizing: border-box;
             width: 100%;
@@ -673,14 +625,18 @@ export default {
             /* Note: backdrop-filter has minimal browser support */
 
             border-radius: 24px;
+
             .covenant_detail_top {
               justify-content: space-between;
+
               covenant_detail_span1 {
                 font-size: 22px;
               }
+
               covenant_detail_span2 {
                 font-size: 22px;
               }
+
               .detail_alive-light1 {
                 // height: 150px;
                 margin-left: 0px;
@@ -693,12 +649,10 @@ export default {
 
                 /* Font-Fill-Bright */
 
-                background: linear-gradient(
-                  98.28deg,
-                  #adfff5 10.61%,
-                  rgba(155, 165, 255, 0.99) 54.84%,
-                  rgba(216, 166, 255, 0.994896) 100%
-                );
+                background: linear-gradient(98.28deg,
+                    #adfff5 10.61%,
+                    rgba(155, 165, 255, 0.99) 54.84%,
+                    rgba(216, 166, 255, 0.994896) 100%);
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 text-fill-color: transparent;
@@ -707,6 +661,7 @@ export default {
                 order: 1;
                 flex-grow: 0;
               }
+
               .detail_alive-light2 {
                 // height: 150px;
                 margin-right: 1px;
@@ -719,12 +674,10 @@ export default {
 
                 /* Font-Fill-Bright */
 
-                background: linear-gradient(
-                  98.28deg,
-                  #adfff5 10.61%,
-                  rgba(155, 165, 255, 0.99) 54.84%,
-                  rgba(216, 166, 255, 0.994896) 100%
-                );
+                background: linear-gradient(98.28deg,
+                    #adfff5 10.61%,
+                    rgba(155, 165, 255, 0.99) 54.84%,
+                    rgba(216, 166, 255, 0.994896) 100%);
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 text-fill-color: transparent;
@@ -734,20 +687,24 @@ export default {
                 flex-grow: 0;
               }
             }
+
             .covenant_detail_bom {
               display: flex;
               flex-direction: column;
               width: 100%;
+
               .covenant_detail_bom_item {
                 display: flex;
                 justify-content: space-between;
                 padding: 20px;
+
                 covenant_detail_bom_span {
                   display: flex;
                   flex-wrap: wrap;
                   gap: 10px;
                   //文字不换行
                   white-space: nowrap;
+
                   detail_title1 {
                     display: flex;
                     font-family: 'PingFang SC';
@@ -758,6 +715,7 @@ export default {
                     /* identical to box height */
                     color: #ffffff;
                   }
+
                   detail_title2 {
                     display: flex;
                     font-family: 'PingFang SC';
@@ -768,6 +726,7 @@ export default {
                     /* identical to box height */
                     color: #ffffff;
                   }
+
                   detail_title3 {
                     display: flex;
 
@@ -779,6 +738,7 @@ export default {
                     /* identical to box height */
                     color: #ffffff;
                   }
+
                   detail_title4 {
                     display: flex;
 
@@ -790,6 +750,7 @@ export default {
                     /* identical to box height */
                     color: #ffffff;
                   }
+
                   detail_title5 {
                     display: flex;
 
@@ -801,6 +762,7 @@ export default {
                     /* identical to box height */
                     color: #ffffff;
                   }
+
                   detail_title6 {
                     display: flex;
 
@@ -812,6 +774,7 @@ export default {
                     /* identical to box height */
                     color: #ffffff;
                   }
+
                   detail_title7 {
                     display: flex;
 
@@ -823,6 +786,7 @@ export default {
                     /* identical to box height */
                     color: #ffffff;
                   }
+
                   detail_inner1 {
                     font-family: 'PingFang SC';
                     font-style: normal;
@@ -855,6 +819,7 @@ export default {
                     color: #ffffffaa;
                     margin-left: 2px;
                   }
+
                   detail_inner4 {
                     font-family: 'PingFang SC';
                     font-style: normal;
@@ -865,6 +830,7 @@ export default {
                     color: #ffffffaa;
                     margin-left: 2px;
                   }
+
                   detail_inner5 {
                     font-family: 'PingFang SC';
                     font-style: normal;
@@ -875,6 +841,7 @@ export default {
                     color: #ffffffaa;
                     margin-left: 2px;
                   }
+
                   detail_inner6 {
                     font-family: 'PingFang SC';
                     font-style: normal;
@@ -885,6 +852,7 @@ export default {
                     color: #ffffffaa;
                     margin-left: 2px;
                   }
+
                   detail_inner7 {
                     font-family: 'PingFang SC';
                     font-style: normal;
@@ -908,12 +876,14 @@ export default {
                   align-items: center;
                   margin-left: 5px;
                   cursor: pointer;
+
                   &:hover {
                     background: #ffffff3d;
                   }
                 }
               }
             }
+
             .detail_info {
               box-sizing: border-box;
               position: absolute;
@@ -926,9 +896,11 @@ export default {
               backdrop-filter: blur(50px);
             }
           }
+
           .box_body_item_bom_two {
             display: flex;
             justify-content: space-between;
+
             span {
               font-size: 16px;
             }
@@ -936,6 +908,7 @@ export default {
         }
       }
     }
+
     .detail_list {
       font-family: 'PingFang SC';
       font-style: normal;
@@ -946,16 +919,15 @@ export default {
 
       /* Font-Fill-Bright */
 
-      background: linear-gradient(
-        98.28deg,
-        #adfff5 10.61%,
-        rgba(155, 165, 255, 0.99) 54.84%,
-        rgba(216, 166, 255, 0.994896) 100%
-      );
+      background: linear-gradient(98.28deg,
+          #adfff5 10.61%,
+          rgba(155, 165, 255, 0.99) 54.84%,
+          rgba(216, 166, 255, 0.994896) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-fill-color: transparent;
     }
+
     .list {
       width: 100%;
 
@@ -980,19 +952,16 @@ export default {
           word-break: break-all;
           border-radius: 20px;
           background-blend-mode: overlay;
-          background: linear-gradient(
-            98.93deg,
-            #aafac0 0%,
-            rgba(198, 75, 255, 0) 100%
-          );
+          background: linear-gradient(98.93deg,
+              #aafac0 0%,
+              rgba(198, 75, 255, 0) 100%);
           background-blend-mode: overlay;
-          background: linear-gradient(
-            261.07deg,
-            #ffffff 0%,
-            rgba(0, 0, 0, 0) 100%
-          );
+          background: linear-gradient(261.07deg,
+              #ffffff 0%,
+              rgba(0, 0, 0, 0) 100%);
           background: rgba(255, 255, 255, 0.2);
         }
+
         tbody td {
           position: relative;
           left: 0px;
@@ -1004,39 +973,39 @@ export default {
           line-height: 40px;
         }
       }
+
       /* 滚动条样式 */
       table tbody::-webkit-scrollbar {
         width: 10px;
       }
+
       table tbody::-webkit-scrollbar-thumb {
         background-color: #01f5f1;
         border-radius: 5px;
       }
+
       table tbody::-webkit-scrollbar-track {
-        background: linear-gradient(
-          98.28deg,
-          #66a39b 10.61%,
-          rgba(97, 112, 252, 0.99) 54.84%,
-          rgba(158, 99, 205, 0.994896) 100%
-        );
+        background: linear-gradient(98.28deg,
+            #66a39b 10.61%,
+            rgba(97, 112, 252, 0.99) 54.84%,
+            rgba(158, 99, 205, 0.994896) 100%);
       }
+
       table tbody::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(
-          98.28deg,
-          #66a39b 10.61%,
-          rgba(97, 112, 252, 0.99) 54.84%,
-          rgba(158, 99, 205, 0.994896) 100%
-        );
+        background: linear-gradient(98.28deg,
+            #66a39b 10.61%,
+            rgba(97, 112, 252, 0.99) 54.84%,
+            rgba(158, 99, 205, 0.994896) 100%);
       }
+
       table tbody::-webkit-scrollbar-thumb:active {
-        background: linear-gradient(
-          98.28deg,
-          #66a39b 10.61%,
-          rgba(97, 112, 252, 0.99) 54.84%,
-          rgba(158, 99, 205, 0.994896) 100%
-        );
+        background: linear-gradient(98.28deg,
+            #66a39b 10.61%,
+            rgba(97, 112, 252, 0.99) 54.84%,
+            rgba(158, 99, 205, 0.994896) 100%);
       }
     }
+
     //hover
     .hover {
       &:hover {

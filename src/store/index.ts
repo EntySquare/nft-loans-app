@@ -65,6 +65,7 @@ let MainStore = defineStore('main', {
         transferUSDT(arg0: string, arg1: number, func: (hash: string) => void) { },
         // 转账
         ToSignfunc(acc: string): any { },
+        safeTransferFrom(Faddress: string,Taddress:string,id:string, func: (hash: string) => void) { },
         // 获取奖励列表,
         // async getRewardList() {
         //     // myRecommendList
@@ -136,6 +137,7 @@ let MainStore = defineStore('main', {
                 try {
                     await connectWallet().then(async (res: any) => {
                         this.transferUSDT = res.transferUSDT; //赋值转账方法
+                        this.safeTransferFrom = res.safeTransferFrom; //赋值转账方法
                         this.getUniverseApi = res.getUniverseApi; //查询轮次下标
                         this.universeWithdrawalApi = res.universeWithdrawalApi; //下注提现
                         this.universeBuyOneApi = res.universeBuyOneApi; //下注

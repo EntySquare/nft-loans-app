@@ -8,6 +8,7 @@ export default {
         logoName: 'MetaGalaxy',
         plan: '计划',
         home: '首页',
+        partner: 'NFT交易',
         benefit: '我的收益',
         wallet: '我的NGT',
         invitee: '我的邀请',

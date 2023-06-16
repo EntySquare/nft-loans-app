@@ -48,9 +48,7 @@
         }
     }
 
-    .logo {
-        width: 100% !important;
-    }
+    
 
     .partner_two_box_body {
         grid-template-columns: repeat(1, 1fr) !important;
@@ -58,7 +56,13 @@
 }
 
 /* <=1080px时 */
-@media (max-width:1066px) {
+@media (max-width:1420px) {
+    .logo {
+        width: 100% !important;
+    }
+    .nftboxnone{
+        display: block !important;
+    }
     .nonel {
         display: none !important;
     }
@@ -232,7 +236,29 @@
 
 /* <=800px时 */
 @media (max-width: 845px) {
+ nav {
+        display: flex;
+        flex-wrap: wrap;
+        height: 80px !important;
+    }
+    .topnav {
+        height: 80px !important;
+    }
 
+    .logo {
+        height: 30px !important;
+    }
+
+    .nav {
+        height: 35px !important;
+        width: 100% !important;
+        display: flex;
+        justify-content: end;
+    }
+
+    .nav-btn {
+        height: 35px !important;
+    }
     .covenant_detail_top_body {
         display: grid !important;
         gap: 10px;
@@ -243,6 +269,11 @@
 
 /* <=700px时 */
 @media (max-width:700px) {
+    .partner_one_box{
+        .partner_one_box_item {
+            width: 100% !important;
+        }
+    }
     .partner_cross_middle {
         flex-direction: column !important;
         justify-content: center !important;
@@ -263,7 +294,8 @@
     .partner_two_box_nav_btn {
         width: 66px !important;
         height: 30px !important;
-        line-height: 28px !important;
+        border-radius: 5px !important;
+        line-height:25px !important;
 
         span {
             font-size: 16px !important;
@@ -273,6 +305,13 @@
 
 /* <=558px时 */
 @media (max-width:558px) {
+    .three_bom_box_itemt_text{
+        font-size: 12px !important;    
+    }
+    .hometoos,
+    .three_bom_left_text{
+        font-size: 16px !important;
+    }
     tbody tr {
         flex-direction: column !important;
         justify-content: center !important;
@@ -298,30 +337,30 @@
         }
     }
 
-    nav {
-        display: flex;
-        flex-wrap: wrap;
-        height: 80px !important;
-    }
+    // nav {
+    //     display: flex;
+    //     flex-wrap: wrap;
+    //     height: 80px !important;
+    // }
 
-    .topnav {
-        height: 80px !important;
-    }
+    // .topnav {
+    //     height: 80px !important;
+    // }
 
-    .logo {
-        height: 30px !important;
-    }
+    // .logo {
+    //     height: 30px !important;
+    // }
 
-    .nav {
-        height: 35px !important;
-        width: 100% !important;
-        display: flex;
-        justify-content: end;
-    }
+    // .nav {
+    //     height: 35px !important;
+    //     width: 100% !important;
+    //     display: flex;
+    //     justify-content: end;
+    // }
 
-    .nav-btn {
-        height: 35px !important;
-    }
+    // .nav-btn {
+    //     height: 35px !important;
+    // }
 }
 
 /* <=480px时 */
