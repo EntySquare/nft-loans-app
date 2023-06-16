@@ -325,50 +325,50 @@ async function connectWallet() { // 连接钱包
         console.log("ret", ret);
     }
 
-    // if (chainId !== MATIC_CHAIN_ID) { // 检查当前网络是否为Matic网络
-    //     try { // 切换到Matic网络
-    //         await ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: MATIC_CHAIN_ID }] }); // 切换到Matic网络
-    //     } catch (switchError: any) { // 捕获错误
-    //         if (switchError.code === 4902) { // 如果错误码为4902，则尝试添加Matic网络
-    //             try {
-    //                 const res = await ethereum.request({
-    //                     method: 'wallet_addEthereumChain', // 添加Matic网络
-    //                     params: [
-    //                         {
-    //                             chainId: MATIC_CHAIN_ID, // Matic网络ID
-    //                             chainName: 'Polygon (MATIC)', // Matic网络名称
-    //                             nativeCurrency: {
-    //                                 name: 'MATIC', // MATIC代币名称
-    //                                 symbol: 'MATIC', // MATIC代币符号
-    //                                 decimals: 18, // MATIC代币精度
-    //                             },
-    //                             rpcUrls: [
-    //                                 'https://rpc-mainnet.matic.network',
-    //                                 'https://rpc-mainnet.maticvigil.com',
-    //                                 'https://rpc-mainnet.matic.quiknode.pro',
-    //                                 'https://matic-mainnet.chainstacklabs.com',
-    //                                 'https://matic-mainnet-full-rpc.bwarelabs.com'
-    //                             ], // Matic网络RPC节点
-    //                             blockExplorerUrls: [
-    //                                 'https://polygonscan.com/',
-    //                                 'https://explorer-mainnet.maticvigil.com/',
-    //                                 'https://explorer.matic.network/'
-    //                             ], // Matic网络区块浏览器
-    //                         },
-    //                     ],
-    //                 });
-    //                 console.log('res:', res)
-    //                 console.log('Polygon Network added');
-    //             } catch (addError) {
-    //                 alert("添加网络失败! 为你跳转到chainlist.org, 请手动添加Matic网络") // 添加Matic网络失败
-    //                 window.open('https://chainlist.org/chain/137', '_blank'); // 打开Matic网络添加页面
-    //                 console.error('无法添加Matic网络:', addError); // 打印日志
-    //             }
-    //         } else {
-    //             console.error('无法切换到Matic网络:', switchError); // 打印日志
-    //         }
-    //     }
-    // }
+    if (chainId !== MATIC_CHAIN_ID) { // 检查当前网络是否为Matic网络
+        try { // 切换到Matic网络
+            await ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: MATIC_CHAIN_ID }] }); // 切换到Matic网络
+        } catch (switchError: any) { // 捕获错误
+            if (switchError.code === 4902) { // 如果错误码为4902，则尝试添加Matic网络
+                try {
+                    const res = await ethereum.request({
+                        method: 'wallet_addEthereumChain', // 添加Matic网络
+                        params: [
+                            {
+                                chainId: MATIC_CHAIN_ID, // Matic网络ID
+                                chainName: 'Polygon (MATIC)', // Matic网络名称
+                                nativeCurrency: {
+                                    name: 'MATIC', // MATIC代币名称
+                                    symbol: 'MATIC', // MATIC代币符号
+                                    decimals: 18, // MATIC代币精度
+                                },
+                                rpcUrls: [
+                                    'https://rpc-mainnet.matic.network',
+                                    'https://rpc-mainnet.maticvigil.com',
+                                    'https://rpc-mainnet.matic.quiknode.pro',
+                                    'https://matic-mainnet.chainstacklabs.com',
+                                    'https://matic-mainnet-full-rpc.bwarelabs.com'
+                                ], // Matic网络RPC节点
+                                blockExplorerUrls: [
+                                    'https://polygonscan.com/',
+                                    'https://explorer-mainnet.maticvigil.com/',
+                                    'https://explorer.matic.network/'
+                                ], // Matic网络区块浏览器
+                            },
+                        ],
+                    });
+                    console.log('res:', res)
+                    console.log('Polygon Network added');
+                } catch (addError) {
+                    alert("添加网络失败! 为你跳转到chainlist.org, 请手动添加Matic网络") // 添加Matic网络失败
+                    window.open('https://chainlist.org/chain/137', '_blank'); // 打开Matic网络添加页面
+                    console.error('无法添加Matic网络:', addError); // 打印日志
+                }
+            } else {
+                console.error('无法切换到Matic网络:', switchError); // 打印日志
+            }
+        }
+    }
     let balance = 0;
     let balanceChain = "0";
     try {
