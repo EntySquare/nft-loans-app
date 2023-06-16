@@ -6,6 +6,7 @@ export interface benefitInfo {
     accumulated_benefit: number;
 }
 export interface covenantInfo {
+    covenant_id: number;
     nft_name: string;
     pledge_id: string;
     chain_name: string;

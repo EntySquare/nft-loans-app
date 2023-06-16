@@ -32,6 +32,7 @@ const cfRes = ref({
 } as myCovenantFlowRep)
 const cdRes = ref({
   covenant_info: {
+    covenant_id: 0,
     nft_name: '',
     pledge_id: '',
     chain_name: '',
