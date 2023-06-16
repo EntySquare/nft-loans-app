@@ -62,19 +62,18 @@ async function dataInit() {
     // config.headers = {
     //   'Content-Type': 'application/x-www-form-urlencoded',
     // };
-    // const res = await myCovenantFlow()
-    // console.log('res:', res)
-    // console.log(res.data)
-    // cfRes.value.benefit_info = res.data.json.benefit_info
-    // cfRes.value.covenant_flows = res.data.json.covenant_flows
-    // for (let i = 0; i < res.data.json.covenant_flows.length; i++) {
-    //   if (res.data.json.covenant_flows[i].flag == '1') {
-    //     coinList.value.covenant_flows.push(res.data.json.covenant_flows[i])
-    //   }
-    //   if (res.data.json.covenant_flows[i].flag == '2') {
-    //     cooutList.value.covenant_flows.push(res.data.json.covenant_flows[i])
-    //   }
-    // }
+    const res = await myCovenantFlow()
+    console.log(res.data)
+    cfRes.value.benefit_info = res.data.json.benefit_info
+    cfRes.value.covenant_flows = res.data.json.covenant_flows
+    for (let i = 0; i < res.data.json.covenant_flows.length; i++) {
+      if (res.data.json.covenant_flows[i].flag == '1') {
+        coinList.value.covenant_flows.push(res.data.json.covenant_flows[i])
+      }
+      if (res.data.json.covenant_flows[i].flag == '2') {
+        cooutList.value.covenant_flows.push(res.data.json.covenant_flows[i])
+      }
+    }
   } catch (err) {
     console.log('queryMyCovenantFlow err-------------------')
     console.log(err)
@@ -349,10 +348,10 @@ export default {
                 </i>
                 <div class="covenant_detail_top">
                   <div class="covenant_detail_top_body" style="
-                                display: flex;
-                                justify-content: space-around;
-                                margin: 20px 0;
-                              ">
+                                    display: flex;
+                                    justify-content: space-around;
+                                    margin: 20px 0;
+                                  ">
                     <covenant_detail_span1 class="detail_alive-light1">{{
                       cdRes.covenant_info.chain_name
                     }}</covenant_detail_span1>

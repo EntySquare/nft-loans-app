@@ -34,7 +34,7 @@ export interface myBenefitFlowRep {
     benefit_flows: benefitFlowInfo[];
 }
 // 获取计划详情
-export function myCovenantFlow(data:any) {
+export function myCovenantFlow() {
     const token = getToken()
     console.log('token:', token)
     return request({
@@ -44,7 +44,6 @@ export function myCovenantFlow(data:any) {
             'token': token,
             // Add more headers as needed
         },
-        data
     })
 }
 
