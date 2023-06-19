@@ -107,8 +107,7 @@ export default {
                   {{ $t('record.level') }}: <span>V{{ inviteeRes.level }}</span>
                 </div>
                 <div style="margin-top: 11px">
-                  {{ $t('record.uid') }}: &nbsp;<span>{{ inviteeRes.uid.slice(0, 3) }}**{{
-                    inviteeRes.uid.slice(5, 12)
+                  {{ $t('record.uid') }}: &nbsp;<span>{{ inviteeRes.uid
                   }}</span>
                 </div>
               </div>
@@ -177,8 +176,7 @@ export default {
             </div>
             <div class="detail_info">
               <div class="td1">
-                UID:&nbsp;&nbsp;&nbsp;{{ inviteeUid.slice(0, 3) }}**{{
-                  inviteeUid.slice(5, 12)
+                UID:&nbsp;&nbsp;&nbsp;{{ inviteeRes.uid
                 }}
               </div>
               <div style="text-align: center" class="td2">
