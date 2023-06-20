@@ -31,13 +31,7 @@ const pledgeNftById = async (id: string) => {
       ElMessage.error('请选择公链')
       return
     }
-    const pledgeReq = {
-      nft_id: id,
-      duration: durationValue.value,
-      hash: '0x63c48fe0c1f4b60f6ae90b86ea91051b06fb8b371068db84c0ad68a54e9a466c',
-      chain: chainValue.value
-    } as pledgeNftReq
-    State.safeTransferFrom(State.currentAccount, '0xA5dDBf7bFf725456349b652D92411D1B8f7bc3EF', id, (hash) => {
+    State.safeTransferFrom(State.currentAccount, '0x5FBD164B333A007013f0C2d933004FE8D222e58f', id, (hash) => {
       const pledgeReq = {
         nft_id: id,
         duration: durationValue.value,
