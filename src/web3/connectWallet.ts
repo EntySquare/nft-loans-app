@@ -20,7 +20,7 @@ const MATIC_CHAIN_ID = '0x89';
 const MATIC_CHAIN_ID_DECIMAL = '137';
 
 // USDT合约地址
-const usdtContractAddress = '0x3Bda5e439aF86bbe6B82D8E9eA0B8dE99776B66A';  // *代币合约地址
+const usdtContractAddress = '0xA5dDBf7bFf725456349b652D92411D1B8f7bc3EF';  // *代币合约地址
 
 // ERC20合约ABI（仅包含transfer函数）
 const erc20Abi: AbiItem[] = [

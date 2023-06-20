@@ -30,6 +30,7 @@ let MainStore = defineStore('main', {
     state: () => ({
         password: '',
         currentAccount: '', //当前账户
+        managerAccount: '0xE36E6a35a616527FE9e7889385dA352B80f51287', //当前账户
         currentBalance: '', //当前余额
         balanceChain: 0, //链余额
         currentStatus: -3, //当前状态

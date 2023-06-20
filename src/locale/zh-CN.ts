@@ -102,6 +102,8 @@ export default {
         confirmButtonText:'确认',
         cancelButtonText:'取消',
         successMessage:'取消成功',
-        failMessage:'取消失败'
+        failMessage:'取消失败',
+        updateNftTip:'利率管理',
+        updateNftMessage:'输入修改后的日利率',
     }
 }

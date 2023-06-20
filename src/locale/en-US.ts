@@ -103,7 +103,9 @@ export default {
         confirmButtonText:'confirm',
         cancelButtonText:'cancel',
         successMessage:'cancel success',
-        failMessage:'cancel failed'
+        failMessage:'cancel failed',
+        updateNftTip:'rate management',
+        updateNftMessage:'Enter the modified daily interest rate',
     }
 
 }

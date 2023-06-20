@@ -2,21 +2,28 @@
 import Card from '@/components/card/index.vue'
 import MainStore from '@/store'
 //import {login } from '@/api/user' //*获取计划列表
-import { ref } from 'vue'
+import {onBeforeUnmount, ref} from 'vue'
 import { useI18n } from 'vue-i18n' //国际化
 // import { fr } from 'element-plus/es/locale'
-import { ElMessage } from 'element-plus'
-import { pledgeNftReq, pledgeNft } from '@/api/pledge'
+import { ElMessage ,ElMessageBox} from 'element-plus'
+import {pledgeNftReq, pledgeNft, nftInfoRep,nftInfo,getAllNftInfo,updateNftInfo} from '@/api/pledge'
+import {myNgt, myTransactionsRep, transactionInfo} from "@/api/flow";
+import {cancelCovenant} from "@/api/benefit";
 const { t, locale } = useI18n() //国际化
+let timmer: any = null
 const State = MainStore() //获取store
 let chainValue = ref('')
 let durationValue = ref('')
+const managerFlag = ref('')
 const imgData = [
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5711684853279_.pic.jpg',
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5701684853267_.pic.jpg',
   'https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5691684853125_.pic.jpg'
 ]
 const id = ref('')
+const niRes = ref({
+  nft_infos: [] as nftInfo[]
+} as nftInfoRep)
 const pledgeNftById = async (id: string) => {
   try {
     if (id == '') {
@@ -58,6 +65,70 @@ const pledgeNftById = async (id: string) => {
 //   const res = await login(data) //*使用sync await 异步获取数据
 //   console.log(res) //*打印数据
 // }
+async function dataInit() {
+  try {
+    // config.headers = { 'Access-Control-Allow-Origin': '*' };
+    // config.headers = {
+    //   'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type',
+    // };
+    // config.headers = {
+    //   'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
+    // };
+    // config.headers = {
+    //   'Content-Type': 'application/x-www-form-urlencoded',
+    // };
+    const res = await getAllNftInfo()
+    console.log(res.data)
+    niRes.value.nft_infos = res.data.json.list
+  } catch (err) {
+    console.log('query nft info err-------------------')
+    console.log(err)
+  }
+}
+const update = async (id :number) => {
+  if (managerFlag.value == "2") {
+    ElMessageBox.prompt(t('messageBox.updateNftMessage'), t('messageBox.updateNftTip'), {
+      confirmButtonText: t('messageBox.confirmButtonText'),
+      cancelButtonText: t('messageBox.cancelButtonText'),
+      inputPattern:
+          /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+      inputErrorMessage: 'Invalid num',
+    })
+        .then(async({ value }) => {
+          try {
+            const res = await updateNftInfo(id,value)
+          ElMessage({
+            type: 'success',
+            message: `success`,
+          })
+            await dataInit()
+          } catch (error) {
+            console.log('cancelCovenant err-------------------')
+            console.log(error)
+            ElMessage({
+              type: 'info',
+              message: t('messageBox.failMessage'),
+            })
+          }
+        })
+  }
+
+}
+dataInit()
+timmer = setInterval(() => {
+  if (State.account == State.managerAccount) {
+    managerFlag.value = "2"
+    console.log(State.account)
+  }
+  console.log(managerFlag.value)
+}, 1000)
+onBeforeUnmount(() => {
+  managerFlag.value = "1"
+  const one = setInterval(() => { }, 1000)
+  for (let i = 0; i < +one; i++) {
+    clearInterval(i)
+  }
+})
 </script>
 <script lang="ts">
 export default {
@@ -98,11 +169,11 @@ export default {
           </div>
         </div>
       </Card>
-      <Card bradius="100px">
-        <p class="hometoos" style="font-weight: 400; font-size: 20px; margin-left: 20px">
-          {{ $t('plan.news') }}
-        </p>
-      </Card>
+<!--      <Card bradius="100px" v-if="managerFlag == '2'">-->
+<!--        <p class="hometoos" style="font-weight: 400; font-size: 20px; margin-left: 20px">-->
+<!--          {{ $t('plan.news') }}-->
+<!--        </p>-->
+<!--      </Card>-->
       <Card>
         <div class="plan_three_body">
           <div class="three_top">
@@ -204,38 +275,38 @@ export default {
               </div>
             </div>
           </div>
-          <div class="three_bom">
+          <div class="three_bom" >
             <div class="three_bom_left_text alive-light">
               {{ $t('plan.dayBenefit') }}：
             </div>
-            <div class="three_bom_box">
+            <div class="three_bom_box"  v-for="(item, index) in niRes.nft_infos" :key="index">
               <div class="three_bom_box_itemt">
                 <div class="three_bom_box_itemt_text alive-light">
-                  {{ $t('plan.btTitle') }}
+                  {{ item.name }}
                 </div>
-                <img src="https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5721684853355_.pic.jpg" alt="" />
+                <img :src="item.img_url" alt="" @click="update"/>
                 <div class="three_bom_box_itemt_desc">
-                  0.5% {{ $t('plan.per') }}
+                  0.{{ item.type_num }}% {{ $t('plan.per') }}
                 </div>
               </div>
-              <div class="three_bom_box_itemt">
-                <div class="three_bom_box_itemt_text alive-light">
-                  {{ $t('plan.wtTitle') }}
-                </div>
-                <img src="https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5741684853386_.pic.jpg" alt="" />
-                <div class="three_bom_box_itemt_desc">
-                  0.6% {{ $t('plan.per') }}
-                </div>
-              </div>
-              <div class="three_bom_box_itemt">
-                <div class="three_bom_box_itemt_text alive-light">
-                  {{ $t('plan.vbTitle') }}
-                </div>
-                <img src="https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5731684853378_.pic.jpg" alt="" />
-                <div class="three_bom_box_itemt_desc">
-                  0.7% {{ $t('plan.per') }}
-                </div>
-              </div>
+<!--              <div class="three_bom_box_itemt">-->
+<!--                <div class="three_bom_box_itemt_text alive-light">-->
+<!--                  {{ $t('plan.wtTitle') }}-->
+<!--                </div>-->
+<!--                <img src="https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5741684853386_.pic.jpg" alt="" />-->
+<!--                <div class="three_bom_box_itemt_desc">-->
+<!--                  0.6% {{ $t('plan.per') }}-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div class="three_bom_box_itemt">-->
+<!--                <div class="three_bom_box_itemt_text alive-light">-->
+<!--                  {{ $t('plan.vbTitle') }}-->
+<!--                </div>-->
+<!--                <img src="https://nft-loans-app.oss-cn-shenzhen.aliyuncs.com/5731684853378_.pic.jpg" alt="" />-->
+<!--                <div class="three_bom_box_itemt_desc">-->
+<!--                  0.7% {{ $t('plan.per') }}-->
+<!--                </div>-->
+<!--              </div>-->
             </div>
           </div>
         </div>
