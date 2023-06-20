@@ -89,10 +89,7 @@ const update = async (id :number) => {
   if (managerFlag.value == "2") {
     ElMessageBox.prompt(t('messageBox.updateNftMessage'), t('messageBox.updateNftTip'), {
       confirmButtonText: t('messageBox.confirmButtonText'),
-      cancelButtonText: t('messageBox.cancelButtonText'),
-      inputPattern:
-          /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-      inputErrorMessage: 'Invalid num',
+      cancelButtonText: t('messageBox.cancelButtonText')
     })
         .then(async({ value }) => {
           try {
@@ -118,9 +115,7 @@ dataInit()
 timmer = setInterval(() => {
   if (State.account == State.managerAccount) {
     managerFlag.value = "2"
-    console.log(State.account)
   }
-  console.log(managerFlag.value)
 }, 1000)
 onBeforeUnmount(() => {
   managerFlag.value = "1"
@@ -284,9 +279,9 @@ export default {
                 <div class="three_bom_box_itemt_text alive-light">
                   {{ item.name }}
                 </div>
-                <img :src="item.img_url" alt="" @click="update"/>
+                <img :src="item.img_url" alt="" @click="update(item.nft_info_id)"/>
                 <div class="three_bom_box_itemt_desc">
-                  0.{{ item.type_num }}% {{ $t('plan.per') }}
+                  0.{{ item.day_rate.charAt(item.day_rate.length-1) }}% {{ $t('plan.per') }}
                 </div>
               </div>
 <!--              <div class="three_bom_box_itemt">-->

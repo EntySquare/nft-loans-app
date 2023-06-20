@@ -29,7 +29,7 @@ export interface nftInfo {
     nft_info_id: number;
     name: string;
     type_num: number;
-    day_rate: number;
+    day_rate: string;
     img_url: string;
 }
 export interface nftInfoRep {
